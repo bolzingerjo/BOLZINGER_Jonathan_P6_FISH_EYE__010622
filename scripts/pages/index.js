@@ -30,3 +30,9 @@
     };
 
     init();
+
+    //rajout d'attributs d'accessibilité
+    const indexNav = document.querySelector('.photographer_section');
+    indexNav.setAttribute("aria-label", 'photographers navigation')
+    const indexLogo = document.querySelector('.logo');
+    indexLogo.setAttribute("alt", 'Fisheye home page')
