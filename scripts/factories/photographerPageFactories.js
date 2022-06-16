@@ -2,9 +2,10 @@ console.log(1234);
 
 function photographerFactory(data) {
     const { name, portrait, city, country, tagline, price, id } = data;
-    // console.log(data)
+    console.log(data)
     const picture = `assets/photographers/${portrait}`;
     const photographersSection = document.querySelector(".photograph-header");
+
 
     function getUserCardDOM() {
         const img = document.createElement('img');

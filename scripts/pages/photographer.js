@@ -1,14 +1,14 @@
 //Mettre le code JavaScript lié à la page photographer.html
 let params = (new URL(document.location)).searchParams;
-let id = params.get('id');
-console.log(id);
+let pageId = params.get('id');
+console.log(pageId);
 
 async function getMedia() {
     // Penser à remplacer par les données récupérées dans le json
     const media =
         await fetch('./data/photographers.json')
         .then((Response) => Response.json())
-        .then(data => data.media)
+        .then(data => data.media.filter((object) => object.photographerId == pageId))
 
     console.log(media)
         // et bien retourner le tableau photographers seulement une fois
@@ -18,10 +18,10 @@ async function getMedia() {
 
 };
 
-// // async function displayData(photographies) {
-// //     const photographiesSection = document.querySelector(".photographer_section");
+// // async function displayData(media) {
+// //     const photographiesSection = document.querySelector(".photograph-article");
 
-// //     photographers.forEach((photographer) => {
+// //     media.forEach((photographer) => {
 // //         const photographerModel = photographerFactory(photographer);
 // //         const userCardDOM = photographerModel.getUserCardDOM();
 // //         photographersSection.appendChild(userCardDOM);
@@ -41,7 +41,7 @@ async function getPhotographers() {
     const photographers =
         await fetch('./data/photographers.json')
         .then((Response) => Response.json())
-        .then(data => data.photographers)
+        .then(data => data.photographers.filter((object) => object.id == pageId))
 
     console.log(photographers);
     // et bien retourner le tableau photographers seulement une fois
