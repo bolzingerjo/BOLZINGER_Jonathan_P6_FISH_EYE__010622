@@ -11,27 +11,28 @@ async function getMedia() {
         .then(data => data.media.filter((object) => object.photographerId == pageId))
 
     console.log(media)
-        // et bien retourner le tableau photographers seulement une fois
+        // et bien retourner le tableau photos seulement une fois
     return ({
         media: media
     })
 
 };
 
-// // async function displayData(media) {
-// //     const photographiesSection = document.querySelector(".photograph-article");
+// changement de photographers en media
 
-// //     media.forEach((photographer) => {
-// //         const photographerModel = photographerFactory(photographer);
-// //         const userCardDOM = photographerModel.getUserCardDOM();
-// //         photographersSection.appendChild(userCardDOM);
-// //     });
-// // };
+async function displayData2(media) {
+    const photographiesSection = document.querySelector(".photograph-article");
+
+    media.forEach((media) => {
+        const mediaModel = mediaFactory(media);
+        const mediaCardDOM = mediaModel.getMediaCardDOM();
+        photographiesSection.appendChild(mediaCardDOM);
+    });
+};
 
 async function init2() {
     // Récupère les medias des photographies
     const { photographies } = await getMedia();
-    console.log(photographies);
 };
 
 init2();
