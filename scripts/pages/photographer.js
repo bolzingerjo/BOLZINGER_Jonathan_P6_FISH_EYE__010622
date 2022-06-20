@@ -24,7 +24,7 @@ async function displayData2(media) {
     const photographiesSection = document.querySelector(".photograph-article");
 
     media.forEach((media) => {
-        const mediaModel = mediaFactory(media);
+        const mediaModel = mediaFactory(data1);
         const mediaCardDOM = mediaModel.getMediaCardDOM();
         photographiesSection.appendChild(mediaCardDOM);
     });
