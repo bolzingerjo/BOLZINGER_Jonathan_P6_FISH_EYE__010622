@@ -1,30 +1,33 @@
 function photographerFactory(data) {
     const { name, portrait, city, country, tagline, price, id } = data;
-    // console.log(data);
+    console.log(data);
     const picture = `assets/photographers/${portrait}`;
 
     function getUserCardDOM() {
-
+        const article = document.createElement('article');
+        const btnmodal = document.querySelector(".contact_button")
         const img = document.createElement('img');
-        img.setAttribute("src", picture)
-        img.setAttribute("role", 'link')
-        img.setAttribute("alt", name + ', from ' + city + ', ' + country + ', citation : ' + tagline + ', ' + price + '€ par jour')
-        img.className = 'img_index';
+        img.setAttribute("src", picture);
+        img.setAttribute("role", 'link');
+        img.setAttribute("alt", name + ', from ' + city + ', ' + country + ', citation : ' + tagline + ', ' + price + '€ par jour');
+        img.className = 'img-Page';
         const h1 = document.createElement('h1');
         h1.textContent = name;
-        h1.className = 'name';
+        h1.className = 'name-Page';
         const where = document.createElement('p');
         where.textContent = city + ', ' + country;
-        where.className = 'where';
+        where.className = 'where-Page';
         const tag = document.createElement('p');
         tag.textContent = tagline;
-        tag.className = 'tag';
+        tag.className = 'tag-Page';
 
-        photographersSection.appendChild(img);
-        photographersSection.appendChild(h1);
-        photographersSection.appendChild(where);
-        photographersSection.appendChild(tag);
-        return (photographersSection);
+        article.appendChild(h1);
+        article.appendChild(where);
+        article.appendChild(tag);
+        article.appendChild(btnmodal);
+        article.appendChild(img);
+
+        return (article);
     }
     return { getUserCardDOM }
 };
@@ -32,28 +35,52 @@ function photographerFactory(data) {
 function mediaFactory(data1) {
     const { photgrapherId, image, video, title, likes, date, price, id } = data1;
     console.log(data1);
-    const photoSection = document.querySelector(".photograph-article");
-
+    const pictures = `assets/images/${image}`;
+    const videos = `assets/images/${video}`;
 
     function getMediaCardDOM() {
-        const article = document.createElement('article');
-        const photos = document.createElement('img');
-        photos.setAttribute("src", image)
-        photos.setAttribute("role", 'link')
-        photos.setAttribute("alt", title + ', ' + date + ', ' + likes + ', prix : ' + price + '€')
-        photos.className = 'photobook';
-        const text = document.createElement('p');
-        h1.textContent = title;
-        h1.className = 'title-photo';
-        const likes = document.createElement('p');
-        likes.textContent = likes + ', ';
-        likes.className = 'likes';
+        if (object = image) {
+            const articlePhoto = document.createElement('article');
+            const photos = document.createElement('img');
+            photos.setAttribute("src", pictures);
+            photos.setAttribute("role", 'link');
+            photos.setAttribute("alt", title + ', ' + date + ', ' + likes + ', prix : ' + price + '€');
+            photos.className = 'photobook';
+            const text = document.createElement('p');
+            text.textContent = title;
+            text.className = 'title-photo';
+            const cptLikes = document.createElement('p');
+            cptLikes.textContent = likes;
+            cptLikes.className = 'likes';
 
-        photoSection.appendChild(article);
-        photoSection.appendChild(photos);
-        photoSection.appendChild(text);
-        photoSection.appendChild(likes);
-        return (photoSection);
+            articlePhoto.appendChild(photos);
+            articlePhoto.appendChild(text);
+            articlePhoto.appendChild(cptLikes);
+            return (articlePhoto);
+        }
+        if (Object = video) {
+            const articleVideo = document.createElement('article');
+            const videoPage = document.createElement('video');
+            videoPage.setAttribute("controls", 'controls');
+            const source = document.createElement('source');
+            source.setAttribute("src", videos);
+            // source.setAttribute("type", 'video/mp4');
+
+            articleVideo.appendChild(videoPage);
+            videoPage.appendChild(source);
+            return (articleVideo);
+        } else {
+            return console.log('erreur')
+        }
+
+
+
+
+        // article.appendChild(videoPage);
+
+        // article.appendChild(cptLikes);
+
+
     }
     return { getMediaCardDOM }
 };
