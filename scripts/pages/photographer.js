@@ -1,7 +1,7 @@
 //Mettre le code JavaScript lié à la page photographer.html
 let params = (new URL(document.location)).searchParams;
 let pageId = params.get('id');
-console.log(pageId);
+// console.log(pageId);
 
 async function getMedia() {
     // Penser à remplacer par les données récupérées dans le json
@@ -10,8 +10,8 @@ async function getMedia() {
         .then((Response) => Response.json())
         .then(data => data.media.filter((object) => object.photographerId == pageId))
 
-    console.log(media)
-        // et bien retourner le tableau photos seulement une fois
+    // console.log(media)
+    // et bien retourner le tableau photos seulement une fois
     return ({
         media: media
     })
@@ -20,10 +20,10 @@ async function getMedia() {
 
 // changement de photographers en media
 
-async function displayData2(media) {
+async function displayData2(medias) {
     const photographiesSection = document.querySelector(".photograph-article");
 
-    media.forEach((media) => {
+    medias.forEach((media) => {
         const mediaModel = mediaFactory(data1);
         const mediaCardDOM = mediaModel.getMediaCardDOM();
         photographiesSection.appendChild(mediaCardDOM);
@@ -44,7 +44,7 @@ async function getPhotographers() {
         .then((Response) => Response.json())
         .then(data => data.photographers.filter((object) => object.id == pageId))
 
-    console.log(photographers);
+    // console.log(photographers);
     // et bien retourner le tableau photographers seulement une fois
     return ({
         photographers: photographers
@@ -52,14 +52,16 @@ async function getPhotographers() {
 
 };
 
-async function displayData(photographers) {
+async function displayData(photographer) {
     const photographersSection = document.querySelector(".photograph-header");
+    console.log(photographer);
+    // photographers.forEach((photographer) => {
+    const photographerModel = photographerFactory(photographer);
+    console.log(photographerModel);
+    const userCardDOM = photographerModel.getUserCardDOM();
 
-    photographers.forEach((photographer) => {
-        const photographerModel = photographerFactory(photographer);
-        const userCardDOM = photographerModel.getUserCardDOM();
-        photographersSection.appendChild(userCardDOM);
-    });
+    // photographersSection.appendChild(userCardDOM);
+    // });
 };
 
 async function init() {
