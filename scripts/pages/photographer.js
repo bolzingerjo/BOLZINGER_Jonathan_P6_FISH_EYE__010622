@@ -73,7 +73,7 @@ init2();
 // gestion video //
 // JS //
 
-const gstVideo = document.querySelector('.video');
+const gstVideo = document.querySelectorAll('.video');
 const controls = document.querySelector('.controls');
 
 const play = document.querySelector('.play');

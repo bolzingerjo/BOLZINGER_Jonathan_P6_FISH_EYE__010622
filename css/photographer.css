@@ -51,18 +51,26 @@
 /*header*/
 
 .photograph-article {
-    background-color: #FAFAFA;
+    margin: 0 100px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 7%;
+    grid-template-rows: auto;
 }
 
 
 /*photos*/
 
 .article-Photo {
-    background-color: #FAFAFA;
+    justify-self: center;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .photobook {
-    background-color: #FAFAFA;
+    height: 300px;
+    width: 100%;
 }
 
 .title-photo {
@@ -80,11 +88,13 @@
 /* video */
 
 .article-video {
-    background-color: #FAFAFA;
+    justify-self: center;
+    width: 100%;
 }
 
 .video {
-    background-color: #FAFAFA;
+    height: 300px;
+    width: 100%;
 }
 
 
