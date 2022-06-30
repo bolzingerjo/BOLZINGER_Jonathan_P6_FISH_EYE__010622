@@ -50,6 +50,39 @@
 
 /*header*/
 
+
+/*compteur de likes */
+
+#main {
+    position: relative;
+}
+
+.comptLikes {
+    width: 300px;
+    height: 50px;
+    background-color: #D3573C;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    position: fixed;
+    right: 0px;
+    bottom: 0px;
+}
+
+.comptLikes p {
+    color: black;
+    font-size: 20px;
+    margin: 0px;
+}
+
+.comptLikes p i {
+    color: black;
+    font-size: 20px;
+}
+
+
+/*compteur de likes */
+
 .photograph-article {
     margin: 0 100px;
     display: grid;
@@ -64,8 +97,6 @@
 .article-Photo {
     justify-self: center;
     width: 100%;
-    display: flex;
-    flex-wrap: wrap;
 }
 
 .photobook {
@@ -73,12 +104,32 @@
     width: 100%;
 }
 
+.photo-text {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.photo-text span {
+    display: flex;
+    align-items: center;
+}
+
 .title-photo {
-    background-color: #FAFAFA;
+    color: #D3573C;
+    font-size: 24px;
+    margin: 0px;
 }
 
 .likes {
-    background-color: #FAFAFA;
+    color: #D3573C;
+    font-size: 16px;
+    margin: 0px 8px;
+}
+
+i {
+    color: #D3573C;
+    width: 15px;
 }
 
 
