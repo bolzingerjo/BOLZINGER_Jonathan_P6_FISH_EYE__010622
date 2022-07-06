@@ -172,88 +172,88 @@ function gestionVideo() {
     rwd.addEventListener('click', mediaBackward);
     fwd.addEventListener('click', mediaForward);
     gstVideo.addEventListener('timeupdate', setTime);
-
-    function playPauseMedia() {
-        rwd.classList.remove('active');
-        fwd.classList.remove('active');
-        clearInterval(intervalRwd);
-        clearInterval(intervalFwd);
-        if (gstVideo.paused) {
-            play.setAttribute('data-icon', 'u');
-            gstVideo.play();
-        } else {
-            play.setAttribute('data-icon', 'P');
-            gstVideo.pause();
-        }
-    };
-
-    function stopMedia() {
-        gstVideo.pause();
-        gstVideo.currentTime = 0;
-        rwd.classList.remove('active');
-        fwd.classList.remove('active');
-        clearInterval(intervalRwd);
-        clearInterval(intervalFwd);
-        play.setAttribute('data-icon', 'P');
-    };
-
-    function mediaBackward() {
-        clearInterval(intervalFwd);
-        fwd.classList.remove('active');
-
-        if (rwd.classList.contains('active')) {
-            rwd.classList.remove('active');
-            clearInterval(intervalRwd);
-            gstVideo.play();
-        } else {
-            rwd.classList.add('active');
-            gstVideo.pause();
-            intervalRwd = setInterval(windBackward, 200);
-        }
-    };
-
-    function mediaForward() {
-        clearInterval(intervalRwd);
-        rwd.classList.remove('active');
-
-        if (fwd.classList.contains('active')) {
-            fwd.classList.remove('active');
-            clearInterval(intervalFwd);
-            gstVideo.play();
-        } else {
-            fwd.classList.add('active');
-            gstVideo.pause();
-            intervalFwd = setInterval(windForward, 200);
-        }
-    };
-
-    function windBackward() {
-        if (gstVideo.currentTime <= 3) {
-            stopMedia();
-        } else {
-            gstVideo.currentTime -= 3;
-        }
-    };
-
-    function windForward() {
-        if (gstVideo.currentTime >= gstVideo.duration - 3) {
-            stopMedia();
-        } else {
-            gstVideo.currentTime += 3;
-        }
-    };
-
-    function setTime() {
-        const minutes = Math.floor(gstVideo.currentTime / 60);
-        const seconds = Math.floor(gstVideo.currentTime - minutes * 60);
-
-        const minuteValue = minutes.toString().padStart(2, '0');
-        const secondValue = seconds.toString().padStart(2, '0');
-
-        const mediaTime = `${minuteValue}:${secondValue}`;
-        timer.textContent = mediaTime;
-
-        const barLength = timerWrapper.clientWidth * (gstVideo.currentTime / gstVideo.duration);
-        timerBar.style.width = `${barLength}px`;
-    };
 }
+
+function playPauseMedia() {
+    rwd.classList.remove('active');
+    fwd.classList.remove('active');
+    clearInterval(intervalRwd);
+    clearInterval(intervalFwd);
+    if (gstVideo.paused) {
+        play.setAttribute('data-icon', 'u');
+        gstVideo.play();
+    } else {
+        play.setAttribute('data-icon', 'P');
+        gstVideo.pause();
+    }
+};
+
+function stopMedia() {
+    gstVideo.pause();
+    gstVideo.currentTime = 0;
+    rwd.classList.remove('active');
+    fwd.classList.remove('active');
+    clearInterval(intervalRwd);
+    clearInterval(intervalFwd);
+    play.setAttribute('data-icon', 'P');
+};
+
+function mediaBackward() {
+    clearInterval(intervalFwd);
+    fwd.classList.remove('active');
+
+    if (rwd.classList.contains('active')) {
+        rwd.classList.remove('active');
+        clearInterval(intervalRwd);
+        gstVideo.play();
+    } else {
+        rwd.classList.add('active');
+        gstVideo.pause();
+        intervalRwd = setInterval(windBackward, 200);
+    }
+};
+
+function mediaForward() {
+    clearInterval(intervalRwd);
+    rwd.classList.remove('active');
+
+    if (fwd.classList.contains('active')) {
+        fwd.classList.remove('active');
+        clearInterval(intervalFwd);
+        gstVideo.play();
+    } else {
+        fwd.classList.add('active');
+        gstVideo.pause();
+        intervalFwd = setInterval(windForward, 200);
+    }
+};
+
+function windBackward() {
+    if (gstVideo.currentTime <= 3) {
+        stopMedia();
+    } else {
+        gstVideo.currentTime -= 3;
+    }
+};
+
+function windForward() {
+    if (gstVideo.currentTime >= gstVideo.duration - 3) {
+        stopMedia();
+    } else {
+        gstVideo.currentTime += 3;
+    }
+};
+
+function setTime() {
+    const minutes = Math.floor(gstVideo.currentTime / 60);
+    const seconds = Math.floor(gstVideo.currentTime - minutes * 60);
+
+    const minuteValue = minutes.toString().padStart(2, '0');
+    const secondValue = seconds.toString().padStart(2, '0');
+
+    const mediaTime = `${minuteValue}:${secondValue}`;
+    timer.textContent = mediaTime;
+
+    const barLength = timerWrapper.clientWidth * (gstVideo.currentTime / gstVideo.duration);
+    timerBar.style.width = `${barLength}px`;
+};

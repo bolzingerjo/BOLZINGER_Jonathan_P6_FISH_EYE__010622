@@ -7,7 +7,7 @@
     .photograph-header {
         background-color: #FAFAFA;
         height: 300px;
-        margin: 50px 120px;
+        padding: 50px 120px;
     }
     
     .article-header {
@@ -63,26 +63,31 @@
     }
     
     nav {
-        background-color: #901C1C;
         display: flex;
         justify-content: center;
         align-items: center;
         flex-direction: column;
         width: 150px;
-        border-radius: 5px;
     }
     
     ul {
         list-style: none;
     }
     
+    li:hover {
+        background-color: #D3573C;
+    }
+    
     .ulPrincipale {
+        background-color: #901C1C;
         position: relative;
         margin: 0px;
         width: 100%;
+        height: 99%;
         padding: 0;
         display: flex;
         flex-direction: column;
+        border-radius: 5px 5px 0px 0px;
     }
     
     .ulPrincipale a {
@@ -91,6 +96,7 @@
     
     .ulSecondaire {
         background-color: #901C1C;
+        border-radius: 0px 0px 5px 5px;
         margin: 0px;
         width: 100%;
         padding: 0;
@@ -98,7 +104,6 @@
         flex-direction: column;
         position: absolute;
         top: calc(100%);
-        border-radius: 5px;
         visibility: hidden;
         opacity: 0;
         transition: all 0.2s ease;
@@ -142,19 +147,19 @@
         width: 100%;
     }
     
-    ul a:hover {
-        background-color: #D3573C;
-    }
-    
     .ulPrincipale li {
         display: flex;
+        height: 100%;
+        justify-content: center;
+        align-items: center;
+        border-radius: 5px;
     }
     
     ul i {
         color: white;
         position: absolute;
         right: 8px;
-        top: 8px;
+        top: 16px;
         font-size: 20px;
     }
     /*nav de tri*/
@@ -203,7 +208,7 @@
     }
     
     .photobook {
-        height: 300px;
+        height: 400px;
         width: 100%;
     }
     
