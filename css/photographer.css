@@ -353,6 +353,10 @@
     /*video */
     /* modal */
     
+    *:focus {
+        box-shadow: 0 0 10px blue;
+    }
+    
     #contact_modal {
         display: none;
         position: fixed;

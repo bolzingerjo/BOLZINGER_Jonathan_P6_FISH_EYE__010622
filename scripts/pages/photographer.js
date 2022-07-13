@@ -20,7 +20,7 @@ async function getPhotographers() {
 
 async function displayData(photographer) {
     const photographersSection = document.querySelector(".photograph-header");
-    console.log(photographer);
+    // console.log(photographer);
     photographer.forEach((photographer) => {
         const photographerModel = photographerFactory(photographer);
         // console.log(photographerModel);
@@ -44,8 +44,8 @@ async function getMedia() {
         .then((Response) => Response.json())
         .then(data => data.media.filter((object) => object.photographerId == pageId))
 
-    console.log(media)
-        // et bien retourner le tableau photos seulement une fois
+    // console.log(media)
+    // et bien retourner le tableau photos seulement une fois
     return ({
         media: media
     })
@@ -54,7 +54,7 @@ async function getMedia() {
 // changement de photographers en media
 async function displayData2(medias) {
     const photographiesSection = document.querySelector(".photograph-article");
-    console.log(medias);
+    // console.log(medias);
     medias.forEach((pho) => {
         const mediaModel = mediaFactory(pho);
         const mediaCardDOM = mediaModel.getMediaCardDOM();
