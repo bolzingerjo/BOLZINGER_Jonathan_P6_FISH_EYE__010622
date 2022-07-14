@@ -1,7 +1,7 @@
 // factory header //
 function photographerFactory(data) {
     const { name, portrait, city, country, tagline, price, id } = data;
-    console.log(data);
+    // console.log(data);
     const picture = `assets/photographers/${portrait}`;
     const main = document.querySelector('main');
     const likesTarifs = document.createElement('div');
@@ -12,6 +12,8 @@ function photographerFactory(data) {
     imgHeart.className = 'fa-solid fa-heart';
     const prix = document.createElement('p');
     prix.innerText = price + '€/jour';
+    const h2 = document.querySelector('#title-modal');
+    h2.innerText = 'Contactez-moi ' + name;
 
     main.appendChild(likesTarifs);
     likesTarifs.appendChild(nbr);
@@ -52,7 +54,7 @@ function photographerFactory(data) {
 // factory media //
 function mediaFactory(data1) {
     const { photgrapherId, image, video, title, likes, date, price, id } = data1;
-    console.log(data1);
+    // console.log(data1);
     const pictures = `assets/images/${image}`;
     const videos = `assets/images/${video}`;
 
@@ -158,9 +160,7 @@ function mediaFactory(data1) {
         } else {
             return console.log('erreur')
         }
-
     }
-
     return { getMediaCardDOM }
 };
 // factory media //

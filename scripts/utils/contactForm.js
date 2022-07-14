@@ -13,6 +13,7 @@ function displayModal() {
     focusables[0].focus()
     modal.addEventListener('click', closeModal);
     modal.querySelector('.modal').addEventListener('click', stopPropagation);
+
 };
 
 function closeModal() {

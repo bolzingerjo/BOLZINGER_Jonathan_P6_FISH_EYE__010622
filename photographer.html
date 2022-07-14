@@ -44,30 +44,30 @@
     <div id="contact_modal" aria-hidden="true" aria-modal="false" role="dialog" aria-describedby="contactForm" aria-labelledby="title-modal">
         <div class="modal">
             <header>
-                <h2 id="title-modal">Contactez-moi</h2>
-                <img class="close-modal" src="assets/icons/close.svg" onclick="closeModal()" aria-label="close" />
+                <h2 id="title-modal"></h2>
+                <img class="close-modal" src="assets/icons/close.svg" onclick="closeModal()" aria-label="close contact form" />
             </header>
             <form>
                 <div>
-                    <label>Prénom</label>
-                    <input type="text" name="forname" required aria-required="true" minlength="2" />
+                    <label class="pénom">Prénom</label>
+                    <input type="text" name="forname" required aria-required="true" minlength="2" aria-labelledby="pénom" />
                     <small id="prenom-small"></small>
                 </div>
                 <div>
-                    <label>Nom</label>
-                    <input type="text" name="name" required aria-required="true " minlength="2" />
+                    <label class="nom">Nom</label>
+                    <input type="text" name="name" required aria-required="true " minlength="2" aria-labelledby="nom" />
                     <small id="nom-small"></small>
                 </div>
                 <div>
-                    <label>Email</label>
-                    <input type="email " name="email" required aria-required="true" />
+                    <label class="email">Email</label>
+                    <input type="email " name="email" required aria-required="true" aria-labelledby="email" />
                     <small id="email-small"></small>
                 </div>
                 <div>
-                    <label>Votre message</label>
-                    <input type="text " name="message" required aria-required="true" />
+                    <label class="message">Votre message</label>
+                    <input type="text " name="message" required aria-required="true" aria-labelledby="message" />
                 </div>
-                <button class="contact_button ">Envoyer</button>
+                <button aria-label="Send" class="contact_button ">Envoyer</button>
             </form>
         </div>
     </div>

@@ -366,7 +366,6 @@
         height: 100%;
         background-color: rgba(255, 255, 255, 0.5);
         padding-top: 50px;
-        padding-bottom: 50px;
     }
     
     .modal {
@@ -375,25 +374,21 @@
         width: 50%;
         display: flex;
         flex-direction: column;
-        align-items: center;
-        justify-content: space-between;
         padding: 35px;
         margin: auto;
     }
     
-    .modal header {
-        justify-content: space-between;
-        width: 100%;
-    }
+    .modal header {}
     
     .modal header img {
         cursor: pointer;
     }
     
     .modal header h2 {
-        font-size: 64px;
+        font-size: 50px;
         font-weight: normal;
-        text-align: center;
+        text-align: left;
+        margin: 0px;
     }
     /* modal */
     /*formulaire*/
@@ -420,7 +415,7 @@
     
     form input {
         width: 100%;
-        height: 68px;
+        height: 50px;
         border: none;
         border-radius: 5px;
     }
