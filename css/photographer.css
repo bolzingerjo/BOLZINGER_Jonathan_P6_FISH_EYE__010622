@@ -378,8 +378,6 @@
         margin: auto;
     }
     
-    .modal header {}
-    
     .modal header img {
         cursor: pointer;
     }
@@ -418,5 +416,12 @@
         height: 50px;
         border: none;
         border-radius: 5px;
+        color: #312E2E;
+        font-size: 24px;
+    }
+    
+    #message {
+        height: 150px;
+        text-overflow: clip;
     }
     /*formulaire */
