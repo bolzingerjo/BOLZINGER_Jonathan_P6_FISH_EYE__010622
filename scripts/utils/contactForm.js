@@ -55,19 +55,20 @@ window.addEventListener('keydown', function(e) {
     }
 });
 
-// DOM ELEMENTS
-const forName = document.querySelector(".prénom");
-const birthName = document.querySelector(".nom");
-const email = document.querySelector(".email");
+// DOM Elements
+const forName = document.getElementById("prenom");
+const birthName = document.getElementById("nom");
+const email = document.getElementById("email");
+const message = document.getElementById("message");
+const ferm = document.querySelector(".contact_button");
 
-//Valider le prénom
 forName.addEventListener('change', function() {
     validForName(this);
 });
 const validForName = function(inputForName) {
     let smallForName = document.querySelector("#prenom-small");
     // console.log(inputForName);
-    // console.log(inputForName.value.length);
+    console.log(inputForName.value);
     if (inputForName.value.length >= 2) {
         // smallForName.innerHTML = 'Prénom valide'
         // smallForName.style.color = "green"
@@ -80,14 +81,13 @@ const validForName = function(inputForName) {
     }
 };
 
-//Valider le nom
 birthName.addEventListener('change', function() {
     validBirthName(this);
 });
 const validBirthName = function(inputBirthName) {
     let smallBirthName = document.querySelector("#nom-small");
     // console.log(inputBirthName);
-    // console.log(inputBirthName.value.length);
+    console.log(inputBirthName.value);
     if (inputBirthName.value.length >= 2) {
         // smallBirthName.innerHTML = 'Nom valide'
         // smallBirthName.style.color = "green"
@@ -100,7 +100,6 @@ const validBirthName = function(inputBirthName) {
     }
 };
 
-//Regex email
 email.addEventListener('change', function() {
     validEmail(this);
 });
@@ -110,7 +109,7 @@ const validEmail = function(inputEmail) {
     let testEmail = emailRegex.test(inputEmail.value);
     let small = document.querySelector("#email-small");
     // console.log(testEmail);
-    // console.log(inputEmail.value);
+    console.log(inputEmail.value);
     if (emailRegex.test(inputEmail.value)) {
         // small.innerHTML = 'Adresse valide'
         // small.style.color = "green"
@@ -123,36 +122,9 @@ const validEmail = function(inputEmail) {
     };
 };
 
-//vider la modal
-
-const btnSubmit = document.querySelector(".contact_button");
-const form = document.querySelector("form");
-const modalContact = document.querySelector('.modal');
-
-btnSubmit.addEventListener('click', function(event) {
-    event.preventDefault();
-    let errors = 0;
-    if (!validForName(forName)) {
-        errors++;
-    }
-    if (!validEmail(email)) {
-        errors++;
-    }
-    if (!validBirthName(birthName)) {
-        errors++;
-    }
-    if (errors == 0) {
-        form.innerHTML = "";
-        let p = document.createElement('p');
-        p.innerHTML = "Merci pour votre inscription";
-        let link = document.createElement('img');
-        link.classList.add('close-modal');
-        link.setAttribute('src', "assets/icons/close.svg");
-        content.classList.replace("content", "content2");
-        link.addEventListener('click', function() {
-            modalBg.style.display = "none";
-        })
-        modalContact.append(p);
-        modalContact.append(link);
-    }
+message.addEventListener('change', function() {
+    validMessage(this);
 });
+const validMessage = function(inputMessage) {
+    console.log(inputMessage.value);
+};

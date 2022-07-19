@@ -388,6 +388,18 @@
         text-align: left;
         margin: 0px;
     }
+    
+    .btn-close {
+        background-color: #DB8876;
+        border: none;
+        box-shadow: none;
+    }
+    
+    .btn-close:hover,
+    .btn-close:active,
+    .btn-close:focus {
+        box-shadow: none;
+    }
     /* modal */
     /*formulaire*/
     

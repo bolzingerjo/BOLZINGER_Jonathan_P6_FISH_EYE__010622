@@ -45,27 +45,27 @@
         <div class="modal">
             <header>
                 <h2 id="title-modal"></h2>
-                <img class="close-modal" src="assets/icons/close.svg" onclick="closeModal()" aria-label="close contact form" />
+                <button class="btn-close"><img class="close-modal" src="assets/icons/close.svg" onclick="closeModal()" aria-label="close contact form" /></button>
             </header>
             <form>
                 <div>
-                    <label class="prénom">Prénom</label>
-                    <input type="text" name="forname" required aria-required="true" minlength="2" aria-labelledby="pénom" />
+                    <label class="prenom">Prénom</label>
+                    <input id="prenom" type="text" name="forname" required aria-required="true" minlength="2" aria-labelledby="pénom" />
                     <small id="prenom-small"></small>
                 </div>
                 <div>
                     <label class="nom">Nom</label>
-                    <input type="text" name="name" required aria-required="true " minlength="2" aria-labelledby="nom" />
+                    <input id="nom" type="text" name="name" required aria-required="true " minlength="2" aria-labelledby="nom" />
                     <small id="nom-small"></small>
                 </div>
                 <div>
                     <label class="email">Email</label>
-                    <input type="email " name="email" required aria-required="true" aria-labelledby="email" />
+                    <input id="email" type="email " name="email" required aria-required="true" aria-labelledby="email" />
                     <small id="email-small"></small>
                 </div>
                 <div>
                     <label class="message">Votre message</label>
-                    <input id="message" type="text " name="message" required aria-required="true" aria-labelledby="message" />
+                    <input id="message" type="text " name="message" required aria-required="true" aria-labelledby="message" maxlength="100" />
                 </div>
                 <button aria-label="Send" class="contact_button">Envoyer</button>
             </form>
