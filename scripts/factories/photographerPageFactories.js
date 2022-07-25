@@ -62,6 +62,10 @@ function mediaFactory(data1) {
         if (object = image) {
             const articlePhoto = document.createElement('article');
             articlePhoto.className = 'article-Photo';
+            const linkLightbox = document.createElement('a');
+            linkLightbox.setAttribute("href", pictures);
+            linkLightbox.setAttribute("aria-label", 'Lilac breasted roller, closeup view');
+
             const photos = document.createElement('img');
             photos.setAttribute("src", pictures);
             photos.setAttribute("role", 'link');
@@ -80,7 +84,8 @@ function mediaFactory(data1) {
             const imgHeart = document.createElement('i');
             imgHeart.className = 'fa-solid fa-heart';
 
-            articlePhoto.appendChild(photos);
+            articlePhoto.appendChild(linkLightbox);
+            linkLightbox.appendChild(photos);
             articlePhoto.appendChild(divText);
             divText.appendChild(text);
             divText.appendChild(spanLikes);
