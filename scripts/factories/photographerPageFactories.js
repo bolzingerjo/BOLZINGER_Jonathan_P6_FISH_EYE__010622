@@ -168,6 +168,7 @@ function mediaFactory(data1) {
     }
     return { getMediaCardDOM }
 };
+
 // factory media //
 // gestion video //
 // JS //

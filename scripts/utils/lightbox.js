@@ -9,9 +9,16 @@ class Lightbox {
 
         // tous les liens cliquables en tableau []
         this.elements = elements;
-
+        // for (let i = 0; i <= elements.length; i++) {
+        //     elements.addEventlistener('click', function(event) {
+        //         event.preventDefault();
+        //         elements.current = 0;
+        //     })
+        // };
+        // show(this.current);
         // index dans l'array
         this.current = 0;
+
 
 
 
@@ -102,9 +109,7 @@ class Lightbox {
 
 };
 
-l = new Lightbox(
-    document.querySelectorAll("photograph-article a")
-);
+l = new Lightbox(document.querySelectorAll("photograph-article a"));
 /* <div class="lightbox">
         <button class="lightbox__close" onclick="closeLightbox()" aria-label="close dialog"><i class="fa-solid fa-xmark"></i></button>
         <button class="lightbox__next" aria-label="next image"><i class="fa-solid fa-chevron-right"></i></button>

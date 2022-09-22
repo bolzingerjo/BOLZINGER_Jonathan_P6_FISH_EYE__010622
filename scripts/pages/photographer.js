@@ -65,8 +65,50 @@ async function displayData2(medias) {
 async function init2() {
     // Récupère les medias des photographies
     const { media } = await getMedia();
+    console.log(media);
     displayData2(media);
     gestionVideo();
 };
 
 init2();
+
+//Trier
+async function trierPop() {
+    //trier par popularité
+    const boutonTrier = document.querySelector(".btn-pop");
+    const { media } = await getMedia();
+    boutonTrier.addEventListener("click", function() {
+        const mediasTrierPop = Array.from(media);
+        mediasTrierPop.sort(function(a, b) {
+            return a.likes - b.likes;
+        });
+        console.log(mediasTrierPop);
+    });
+};
+trierPop();
+async function trierDate() {
+    //trier par date
+    const boutonDate = document.querySelector(".btn-date");
+    const { media } = await getMedia();
+    boutonDate.addEventListener("click", function() {
+        const mediasTrierDate = Array.from(media);
+        mediasTrierDate.sort(function(a, b) {
+            return a.date - b.date;
+        });
+        console.log(mediasTrierDate);
+    });
+};
+trierDate();
+async function trierTitre() {
+    //trier par titre
+    const boutonTitre = document.querySelector(".btn-titre");
+    const { media } = await getMedia();
+    boutonTitre.addEventListener("click", function() {
+        const mediasTrierTitre = Array.from(media);
+        mediasTrierTitre.sort(function(a, b) {
+            return a.title - b.title;
+        });
+        console.log(mediasTrierTitre);
+    });
+};
+trierTitre();
