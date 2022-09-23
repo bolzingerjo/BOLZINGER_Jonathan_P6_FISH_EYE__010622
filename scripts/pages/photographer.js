@@ -80,9 +80,11 @@ async function trierPop() {
     boutonTrier.addEventListener("click", function() {
         const mediasTrierPop = Array.from(media);
         mediasTrierPop.sort(function(a, b) {
-            return a.likes - b.likes;
+            return b.likes - a.likes;
         });
         console.log(mediasTrierPop);
+        document.querySelector(".photograph-article").innerHTML = "";
+        displayData2(mediasTrierPop);
     });
 };
 trierPop();
@@ -93,9 +95,11 @@ async function trierDate() {
     boutonDate.addEventListener("click", function() {
         const mediasTrierDate = Array.from(media);
         mediasTrierDate.sort(function(a, b) {
-            return a.date - b.date;
+            return b.date.localeCompare(a.date);
         });
         console.log(mediasTrierDate);
+        document.querySelector(".photograph-article").innerHTML = "";
+        displayData2(mediasTrierDate);
     });
 };
 trierDate();
@@ -106,9 +110,11 @@ async function trierTitre() {
     boutonTitre.addEventListener("click", function() {
         const mediasTrierTitre = Array.from(media);
         mediasTrierTitre.sort(function(a, b) {
-            return a.title - b.title;
+            return a.title.localeCompare(b.title);
         });
         console.log(mediasTrierTitre);
+        document.querySelector(".photograph-article").innerHTML = "";
+        displayData2(mediasTrierTitre);
     });
 };
 trierTitre();
