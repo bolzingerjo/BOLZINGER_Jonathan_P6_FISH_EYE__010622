@@ -65,7 +65,7 @@ async function displayData2(medias) {
 async function init2() {
     // Récupère les medias des photographies
     const { media } = await getMedia();
-    console.log(media);
+    // console.log(media);
     displayData2(media);
     gestionVideo();
 };
@@ -82,7 +82,7 @@ async function trierPop() {
         mediasTrierPop.sort(function(a, b) {
             return b.likes - a.likes;
         });
-        console.log(mediasTrierPop);
+        // console.log(mediasTrierPop);
         document.querySelector(".photograph-article").innerHTML = "";
         displayData2(mediasTrierPop);
     });
@@ -97,7 +97,7 @@ async function trierDate() {
         mediasTrierDate.sort(function(a, b) {
             return b.date.localeCompare(a.date);
         });
-        console.log(mediasTrierDate);
+        // console.log(mediasTrierDate);
         document.querySelector(".photograph-article").innerHTML = "";
         displayData2(mediasTrierDate);
     });
@@ -112,7 +112,7 @@ async function trierTitre() {
         mediasTrierTitre.sort(function(a, b) {
             return a.title.localeCompare(b.title);
         });
-        console.log(mediasTrierTitre);
+        // console.log(mediasTrierTitre);
         document.querySelector(".photograph-article").innerHTML = "";
         displayData2(mediasTrierTitre);
     });

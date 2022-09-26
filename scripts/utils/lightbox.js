@@ -1,29 +1,17 @@
 class Lightbox {
 
     constructor(elements) {
-        this.dom;
+        this.page = document.querySelector("#main");
+        this.lightbox;
         this.closeLightbox;
         this.btnNext;
         this.btnPrev;
         this.lightboxContainer;
-
-        // tous les liens cliquables en tableau []
         this.elements = elements;
-        // for (let i = 0; i <= elements.length; i++) {
-        //     elements.addEventlistener('click', function(event) {
-        //         event.preventDefault();
-        //         elements.current = 0;
-        //     })
-        // };
-        // show(this.current);
-        // index dans l'array
         this.current = 0;
-
-
-
-
         this.createDom();
-    }
+        this._manageEventlistener();
+    };
 
     next() {
         this.current++;
@@ -31,7 +19,7 @@ class Lightbox {
             this.current = 0;
         }
         this.show();
-    }
+    };
 
     prev() {
         this.current--;
@@ -39,21 +27,35 @@ class Lightbox {
             this.current = this.elements.length;
         }
         this.show();
-    }
+    };
 
     createDom() {
-        const dom = document.createElement('div');
-        dom.classList.add('lightbox')
+        this.lightbox = document.createElement('div');
+        this.lightbox.classList.add('lightbox');
+        this.show();
+        this.page.append(this.lightbox);
         this.closeLightbox = this._createCloseLightbox();
-        this.dom.append(this.closeLightbox);
+        this.page.append(this.closeLightbox);
         this.btnNext = this._createBtnNext();
-        this.dom.append(this.btnNext);
+        this.page.append(this.btnNext);
         this.btnPrev = this._createBtnPrev();
-        this.dom.append(this.btnPrev);
+        this.page.append(this.btnPrev);
         this.lightboxContainer = document.createElement("div");
         this.lightboxContainer.classList.add("lightbox__container");
-        this.dom.append(this.lightboxContainer);
-    }
+        this.page.append(this.lightboxContainer);
+    };
+
+    _manageEventlistener() {
+        let getLiens = document.querySelectorAll('.lightboxable');
+        // console.log(getLiens);
+        for (let i = 0; i < getLiens.length; i++) {
+            let lien = getLiens[i];
+            lien.addEventListener('click', function(event) {
+                event.stopPropagation();
+                event.preventDefault();
+            })
+        };
+    };
 
     _createCloseLightbox() {
         const closeLightbox = document.createElement('button')
@@ -61,38 +63,39 @@ class Lightbox {
         closeLightbox.setAttribute("aria-label", "close dialog");
         closeLightbox.onclick = this.closeLightbox();
         const xmark = document.createElement("i");
-        xmark.classList.add("fa-solid fa-xmark");
+        xmark.className = "fa-solid fa-xmark";
         closeLightbox.append(xmark);
         return closeLightbox;
-    }
+    };
 
     _createBtnNext() {
         const btnNext = document.createElement("button");
         btnNext.classList.add("lightbox__next")
         btnNext.setAttribute("aria-label", "next image");
         const chevronRight = document.createElement("i");
-        chevronRight.classList.add("fa-solid fa-chevron-right");
+        chevronRight.className = "fa-solid fa-chevron-right";
         btnNext.append(chevronRight);
         return btnNext;
-    }
+    };
 
     _createBtnPrev() {
         const btnPrev = document.createElement("button");
         btnPrev.classList.add("lightbox__next")
         btnPrev.setAttribute("aria-label", "previous image");
         const chevronLeft = document.createElement("i");
-        chevronLeft.classList.add("fa-solid fa-chevron-left");
+        chevronLeft.className = "fa-solid fa-chevron-left";
         btnPrev.append(chevronLeft);
         return btnPrev;
-    }
+    };
 
     closeLightbox() {
         const lightbox = document.querySelector('.lightbox');
         lightbox.style.display = "none";
-    }
+    };
 
     show() {
-        src = this.element[this.current].href;
+        this.lightbox.style.display = "block";
+        let src = this.elements[this.current].href;
         if (src == "image") // refaire la condition sur l'extension du fichier
         {
             // image
@@ -105,16 +108,18 @@ class Lightbox {
         {
             // video
         }
-    }
+    };
+
+    // hide() {
+    //     this.lightbox.style.display = "none";
+    // };
 
 };
 
-l = new Lightbox(document.querySelectorAll("photograph-article a"));
-/* <div class="lightbox">
-        <button class="lightbox__close" onclick="closeLightbox()" aria-label="close dialog"><i class="fa-solid fa-xmark"></i></button>
-        <button class="lightbox__next" aria-label="next image"><i class="fa-solid fa-chevron-right"></i></button>
-        <button class="lightbox__prev" aria-label="previous image"><i class="fa-solid fa-chevron-left"></i></button>
-        <div class="lightbox__container">
-            <img src="${src}" alt="">
-        </div>
-    </div> */
+async function lightbox() {
+    const { media } = await getMedia();
+    let getLiens = document.querySelectorAll('.lightboxable');
+    // console.log(getLiens);
+    let l = new Lightbox(getLiens);
+};
+lightbox();

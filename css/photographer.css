@@ -213,6 +213,12 @@
         width: 100%;
     }
     
+    .lightboxable {
+        display: block;
+        height: 400px;
+        width: 100%;
+    }
+    
     .photo-text {
         display: flex;
         align-items: center;

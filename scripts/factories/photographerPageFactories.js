@@ -64,8 +64,8 @@ function mediaFactory(data1) {
             articlePhoto.className = 'article-Photo';
             const linkLightbox = document.createElement('a');
             linkLightbox.setAttribute("href", pictures);
-            linkLightbox.setAttribute("aria-label", 'Lilac breasted roller, closeup view');
-
+            linkLightbox.setAttribute("aria-label", title);
+            linkLightbox.className = 'lightboxable';
             const photos = document.createElement('img');
             photos.setAttribute("src", pictures);
             photos.setAttribute("role", 'link');
