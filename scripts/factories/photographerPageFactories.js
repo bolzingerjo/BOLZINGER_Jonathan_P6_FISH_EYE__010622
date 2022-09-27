@@ -65,6 +65,7 @@ function mediaFactory(data1) {
             const linkLightbox = document.createElement('a');
             linkLightbox.setAttribute("href", pictures);
             linkLightbox.setAttribute("aria-label", title);
+            linkLightbox.setAttribute("onclick", "lightbox()");
             linkLightbox.className = 'lightboxable';
             const photos = document.createElement('img');
             photos.setAttribute("src", pictures);
@@ -165,10 +166,9 @@ function mediaFactory(data1) {
         } else {
             return console.log('erreur')
         }
-    }
+    };
     return { getMediaCardDOM }
 };
-
 // factory media //
 // gestion video //
 // JS //

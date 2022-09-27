@@ -118,3 +118,17 @@ async function trierTitre() {
     });
 };
 trierTitre();
+
+async function manageEventlistener() {
+    const { media } = await getMedia();
+    let getLiens = document.querySelectorAll('.lightboxable');
+    // console.log(getLiens);
+    for (let i = 0; i < getLiens.length; i++) {
+        let lien = getLiens[i];
+        lien.addEventListener('click', function(event) {
+            event.stopPropagation();
+            event.preventDefault();
+        })
+    };
+};
+manageEventlistener();
