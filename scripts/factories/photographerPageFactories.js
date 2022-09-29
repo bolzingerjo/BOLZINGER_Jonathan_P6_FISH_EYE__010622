@@ -82,6 +82,8 @@ function mediaFactory(data1) {
             const cptLikes = document.createElement('p');
             cptLikes.textContent = likes;
             cptLikes.className = 'likes';
+            const likebtn = document.createElement('button');
+            likebtn.className = '.like-btn';
             const imgHeart = document.createElement('i');
             imgHeart.className = 'fa-solid fa-heart';
 
@@ -91,7 +93,8 @@ function mediaFactory(data1) {
             divText.appendChild(text);
             divText.appendChild(spanLikes);
             spanLikes.appendChild(cptLikes);
-            spanLikes.appendChild(imgHeart);
+            spanLikes.appendChild(likebtn);
+            likebtn.appendChild(imgHeart);
 
             return (articlePhoto);
         }
@@ -141,6 +144,8 @@ function mediaFactory(data1) {
             const cptLikes = document.createElement('p');
             cptLikes.textContent = likes;
             cptLikes.className = 'likes';
+            const likebtn = document.createElement('button');
+            likebtn.className = '.like-btn';
             const imgHeart = document.createElement('i');
             imgHeart.className = 'fa-solid fa-heart';
 
@@ -158,7 +163,8 @@ function mediaFactory(data1) {
             divText.appendChild(text);
             divText.appendChild(spanLikes);
             spanLikes.appendChild(cptLikes);
-            spanLikes.appendChild(imgHeart);
+            spanLikes.appendChild(likebtn);
+            likebtn.appendChild(imgHeart);
 
             return (articleVideo);
 

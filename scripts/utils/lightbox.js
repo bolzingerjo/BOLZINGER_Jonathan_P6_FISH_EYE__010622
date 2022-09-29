@@ -109,13 +109,13 @@ async function lightbox() {
     // console.log(getLiens);
     let l = new Lightbox(getLiens);
 };
-
 async function getHREF() {
     const { media } = await getMedia();
-    let links = document.querySelectorAll('.lightboxable[href$=".jpg"], .lightboxable[href$=".mp4"]');
-    links.forEach(links => links.addEventListener('click', e => {
-        e.currentTarget.getAttribute("href");
+    let links = document.querySelectorAll(".lightboxable[href]");
+    links.forEach(links => links.addEventListener('click', function(event) {
+        event.currentTarget.getAttribute("href");
     }));
     console.log(links);
 };
 getHREF();
+console.log(getHREF());
