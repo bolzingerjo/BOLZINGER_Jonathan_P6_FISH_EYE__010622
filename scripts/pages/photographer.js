@@ -1,76 +1,67 @@
-//Mettre le code JavaScript lié à la page photographer.html
-let params = (new URL(document.location)).searchParams;
-let pageId = params.get('id');
-// console.log(pageId);
+// //Mettre le code JavaScript lié à la page photographer.html
+// let params = (new URL(document.location)).searchParams;
+// let pageId = params.get('id');
+// // console.log(pageId);
 
-async function getPhotographers() {
-    // Penser à remplacer par les données récupérées dans le json
-    const photographers =
-        await fetch('./data/photographers.json')
-        .then((Response) => Response.json())
-        .then(data => data.photographers.filter((object) => object.id == pageId))
+// async function getDataHeader() {
+//     // remplacer par les données récupérées dans le json
+//     const photographers =
+//         await fetch('./data/photographers.json')
+//         .then((Response) => Response.json())
+//         .then(data => data.photographers.filter((object) => object.id == pageId))
+//         // console.log(photographers);
+//         // retourner le tableau photographers seulement une fois
+//     return ({
+//         photographers: photographers
+//     })
+// };
+// async function createHeader(photographer) {
+//     const photographersSection = document.querySelector(".photograph-header");
+//     // console.log(photographer);
+//     photographer.forEach((photographer) => {
+//         const photographerModel = headerFactory(photographer);
+//         // console.log(photographerModel);
+//         const userCardDOM = photographerModel.createUserDOM();
+//         photographersSection.appendChild(userCardDOM);
+//     });
+// };
+// async function initHeaderPhotographer() {
+//     // Récupère les datas des photographes
+//     const { photographers } = await getDataHeader();
+//     createHeader(photographers);
+// };
+// initHeaderPhotographer();
 
-    // console.log(photographers);
-    // et bien retourner le tableau photographers seulement une fois
-    return ({
-        photographers: photographers
-    })
-
-};
-
-async function displayData(photographer) {
-    const photographersSection = document.querySelector(".photograph-header");
-    // console.log(photographer);
-    photographer.forEach((photographer) => {
-        const photographerModel = photographerFactory(photographer);
-        // console.log(photographerModel);
-        const userCardDOM = photographerModel.getUserCardDOM();
-        photographersSection.appendChild(userCardDOM);
-    });
-};
-
-async function init() {
-    // Récupère les datas des photographes
-    const { photographers } = await getPhotographers();
-    displayData(photographers);
-};
-
-init();
-
-async function getMedia() {
-    // Penser à remplacer par les données récupérées dans le json
+async function getDataMedia() {
+    // remplacer par les données récupérées dans le json
     const media =
         await fetch('./data/photographers.json')
         .then((Response) => Response.json())
         .then(data => data.media.filter((object) => object.photographerId == pageId))
-
-    // console.log(media)
-    // et bien retourner le tableau photos seulement une fois
+        // console.log(media)
+        // retourner le tableau photos seulement une fois
     return ({
         media: media
     })
-
 };
 // changement de photographers en media
-async function displayData2(medias) {
+async function createArticlePhoto(medias) {
     const photographiesSection = document.querySelector(".photograph-article");
     // console.log(medias);
     medias.forEach((pho) => {
         const mediaModel = mediaFactory(pho);
-        const mediaCardDOM = mediaModel.getMediaCardDOM();
+        const mediaCardDOM = mediaModel.createMediaDOM();
         photographiesSection.appendChild(mediaCardDOM);
     });
 };
-
-async function init2() {
+async function initArticlePhoto() {
     // Récupère les medias des photographies
-    const { media } = await getMedia();
+    const { media } = await getDataMedia();
     // console.log(media);
-    displayData2(media);
+    createArticlePhoto(media);
     gestionVideo();
 };
-
-init2();
+initArticlePhoto();
 
 //Trier
 async function trierPop() {

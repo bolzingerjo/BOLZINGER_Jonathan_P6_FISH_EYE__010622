@@ -1,13 +1,13 @@
 // factory header //
-function photographerFactory(data) {
-    const { name, portrait, city, country, tagline, price, id } = data;
+function headerFactory(dataPhotograph) {
+    const { name, portrait, city, country, tagline, price, id } = dataPhotograph;
     // console.log(data);
     const picture = `assets/photographers/${portrait}`;
     const main = document.querySelector('main');
     const likesTarifs = document.createElement('div');
     likesTarifs.className = 'comptLikes';
     const nbr = document.createElement('p');
-    nbr.innerText = '362565';
+    nbr.innerText = '';
     const imgHeart = document.createElement('i');
     imgHeart.className = 'fa-solid fa-heart';
     const prix = document.createElement('p');
@@ -20,7 +20,7 @@ function photographerFactory(data) {
     nbr.appendChild(imgHeart);
     likesTarifs.appendChild(prix);
 
-    function getUserCardDOM() {
+    function createUserDOM() {
         const article = document.createElement('article');
         article.className = 'article-header';
         const div1 = document.createElement('div');
@@ -48,17 +48,59 @@ function photographerFactory(data) {
 
         return (article);
     }
-    return { getUserCardDOM }
+    return { createUserDOM }
 };
+//Mettre le code JavaScript lié à la page photographer.html
+
+async function getDataHeader() {
+    let params = (new URL(document.location)).searchParams;
+    let pageId = params.get('id');
+    // console.log(pageId);
+    // remplacer par les données récupérées dans le json
+    const photographers =
+        await fetch('./data/photographers.json')
+        .then((Response) => Response.json())
+        .then(data => data.photographers.filter((object) => object.id == pageId))
+        // console.log(photographers);
+        // retourner le tableau photographers seulement une fois
+    return ({
+        photographers: photographers
+    })
+};
+async function createHeader(photographer) {
+    const photographersSection = document.querySelector(".photograph-header");
+    // console.log(photographer);
+    photographer.forEach((photographer) => {
+        const photographerModel = headerFactory(photographer);
+        // console.log(photographerModel);
+        const userCardDOM = photographerModel.createUserDOM();
+        photographersSection.appendChild(userCardDOM);
+    });
+};
+async function initHeaderPhotographer() {
+    // Récupère les datas des photographes
+    const { photographers } = await getDataHeader();
+    createHeader(photographers);
+};
+initHeaderPhotographer();
+
+
+
+
+
+
+
+
+
 // factory header //
 // factory media //
-function mediaFactory(data1) {
-    const { photgrapherId, image, video, title, likes, date, price, id } = data1;
+function mediaFactory(dataMedia) {
+    const { photgrapherId, image, video, title, likes, date, price, id } = dataMedia;
     // console.log(data1);
     const pictures = `assets/images/${image}`;
     const videos = `assets/images/${video}`;
 
-    function getMediaCardDOM() {
+    function createMediaDOM() {
         if (object = image) {
             const articlePhoto = document.createElement('article');
             articlePhoto.className = 'article-Photo';
@@ -168,12 +210,11 @@ function mediaFactory(data1) {
 
             return (articleVideo);
 
-
         } else {
             return console.log('erreur')
         }
     };
-    return { getMediaCardDOM }
+    return { createMediaDOM }
 };
 // factory media //
 // gestion video //
@@ -181,12 +222,10 @@ function mediaFactory(data1) {
 function gestionVideo() {
     const gstVideo = document.querySelector('.video');
     const controls = document.querySelector('.controls');
-
     const play = document.querySelector('.play');
     const stop = document.querySelector('.stop');
     const rwd = document.querySelector('.rwd');
     const fwd = document.querySelector('.fwd');
-
     const timerWrapper = document.querySelector('.timer');
     const timer = document.querySelector('.timer span');
     const timerBar = document.querySelector('.timer div');
@@ -195,14 +234,12 @@ function gestionVideo() {
 
     gstVideo.removeAttribute("controls");
     controls.style.visibility = 'visible';
-
     play.addEventListener('click', playPauseMedia);
     stop.addEventListener('click', stopMedia);
     gstVideo.addEventListener('ended', stopMedia);
     rwd.addEventListener('click', mediaBackward);
     fwd.addEventListener('click', mediaForward);
     gstVideo.addEventListener('timeupdate', setTime);
-
 
     function playPauseMedia() {
         rwd.classList.remove('active');
