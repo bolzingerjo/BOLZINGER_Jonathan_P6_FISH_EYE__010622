@@ -1,64 +1,66 @@
 function photographerFactory(data) {
     const { name, portrait, city, country, tagline, price, id } = data;
-    const picture = `assets/photographers/${portrait}`;
-    let text = document.createElement('p');
-
-    function createLinkPagePhotographe() {
-        const link = document.createElement('a');
-        link.className = 'link';
-        link.href = "photographer.html?id=" + id;
-        link.appendChild(createIMG());
-        link.appendChild(createTitleNom());
-        return link
-    };
-
-    function createIMG() {
-        const img = document.createElement('img');
-        img.setAttribute("src", picture)
-        img.setAttribute("role", 'link')
-        img.setAttribute("alt", name + ', from ' + city + ', ' + country + ', citation : ' + tagline + ', ' + price + '€ par jour')
-        img.className = 'img_index';
-        return img
-    };
-
-    function createTitleNom() {
-        const h2 = document.createElement('h2');
-        h2.textContent = name;
-        h2.className = 'name';
-        return h2
-    };
-
-    function createTextCity() {
-        const where = document.createElement('p');
-        where.textContent = city + ', ' + country;
-        where.className = 'where';
-        return where
-    };
-
-    function createTextTag() {
-        const tag = document.createElement('p');
-        tag.textContent = tagline;
-        tag.className = 'tag';
-        return tag
-    };
-
-    function createTextTarif() {
-        const tarif = text;
-        tarif.textContent = price + '€/jour';
-        tarif.className = 'tarif';
-        return tarif
-    };
-
-    function createIndexDOM() {
-        const article = document.createElement('article');
-        article.append(createLinkPagePhotographe());
-        article.append(createTextCity());
-        article.append(createTextTag());
-        article.append(createTextTarif());
-        return article
-    };
     return { createIndexDOM }
 };
+let text = document.createElement('p');
+
+
+function createLinkPagePhotographe(id) {
+    const link = document.createElement('a');
+    link.className = 'link';
+    link.href = "photographer.html?id=" + id;
+    link.appendChild(createIMG());
+    link.appendChild(createTitleNom());
+    return link
+};
+
+function createIMG(portrait, name, city, country, tagline, price) {
+    const img = document.createElement('img');
+    const picture = `assets/photographers/${portrait}`;
+    img.setAttribute("src", picture)
+    img.setAttribute("role", 'link')
+    img.setAttribute("alt", name + ', from ' + city + ', ' + country + ', citation : ' + tagline + ', ' + price + '€ par jour')
+    img.className = 'img_index';
+    return img
+};
+
+function createTitleNom(name) {
+    const h2 = document.createElement('h2');
+    h2.textContent = name;
+    h2.className = 'name';
+    return h2
+};
+
+function createTextCity(city, country) {
+    const where = document.createElement('p');
+    where.textContent = city + ', ' + country;
+    where.className = 'where';
+    return where
+};
+
+function createTextTag(tagline) {
+    const tag = document.createElement('p');
+    tag.textContent = tagline;
+    tag.className = 'tag';
+    return tag
+};
+
+function createTextTarif(price) {
+    const tarif = text;
+    tarif.textContent = price + '€/jour';
+    tarif.className = 'tarif';
+    return tarif
+};
+
+function createIndexDOM() {
+    const article = document.createElement('article');
+    article.append(createLinkPagePhotographe());
+    article.append(createTextCity());
+    article.append(createTextTag());
+    article.append(createTextTarif());
+    return article
+};
+
 
 async function getPhotographers() {
     // Penser à remplacer par les données récupérées dans le json
