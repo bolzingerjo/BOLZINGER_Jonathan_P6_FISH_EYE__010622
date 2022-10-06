@@ -1,16 +1,14 @@
 function photographerFactory(data) {
     const { name, portrait, city, country, tagline, price, id } = data;
-    console.log(data)
     const picture = `assets/photographers/${portrait}`;
-
     let text = document.createElement('p');
 
-    function createLienPagePhotographe() {
+    function createLinkPagePhotographe() {
         const link = document.createElement('a');
         link.className = 'link';
         link.href = "photographer.html?id=" + id;
         link.appendChild(createIMG());
-        link.appendChild(createTitreNom());
+        link.appendChild(createTitleNom());
         return link
     };
 
@@ -23,14 +21,14 @@ function photographerFactory(data) {
         return img
     };
 
-    function createTitreNom() {
+    function createTitleNom() {
         const h2 = document.createElement('h2');
         h2.textContent = name;
         h2.className = 'name';
         return h2
     };
 
-    function createTextVille() {
+    function createTextCity() {
         const where = document.createElement('p');
         where.textContent = city + ', ' + country;
         where.className = 'where';
@@ -53,14 +51,15 @@ function photographerFactory(data) {
 
     function createIndexDOM() {
         const article = document.createElement('article');
-        article.append(createLienPagePhotographe());
-        article.append(createTextVille());
+        article.append(createLinkPagePhotographe());
+        article.append(createTextCity());
         article.append(createTextTag());
         article.append(createTextTarif());
         return article
     };
     return { createIndexDOM }
 };
+
 async function getPhotographers() {
     // Penser à remplacer par les données récupérées dans le json
     const photographers =
@@ -78,10 +77,9 @@ async function getPhotographers() {
 
 async function displayData(photographers) {
     const photographersSection = document.querySelector(".photographer_section");
-
     photographers.forEach((photographer) => {
-        const photographerModel = photographerFactory(photographer);
-        const userCardDOM = photographerModel.createIndexDOM();
+        const photographermodel = photographerFactory(photographer);
+        const userCardDOM = photographermodel.createIndexDOM();
         photographersSection.appendChild(userCardDOM);
     });
 };
