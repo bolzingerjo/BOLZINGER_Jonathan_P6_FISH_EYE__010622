@@ -1,20 +1,16 @@
-function photographerFactory(data) {
-    const { name, portrait, city, country, tagline, price, id } = data;
-    return { createIndexDOM }
-};
+const { name, portrait, city, country, tagline, price, id } = data;
 let text = document.createElement('p');
 
-
-function createLinkPagePhotographe(id) {
+function createLinkPagePhotographe(data) {
     const link = document.createElement('a');
     link.className = 'link';
     link.href = "photographer.html?id=" + id;
     link.appendChild(createIMG());
-    link.appendChild(createTitleNom());
+    link.appendChild(createTitleName());
     return link
 };
 
-function createIMG(portrait, name, city, country, tagline, price) {
+function createIMG(data) {
     const img = document.createElement('img');
     const picture = `assets/photographers/${portrait}`;
     img.setAttribute("src", picture)
@@ -24,35 +20,35 @@ function createIMG(portrait, name, city, country, tagline, price) {
     return img
 };
 
-function createTitleNom(name) {
+function createTitleName(data) {
     const h2 = document.createElement('h2');
     h2.textContent = name;
     h2.className = 'name';
     return h2
 };
 
-function createTextCity(city, country) {
+function createTextCity(data) {
     const where = document.createElement('p');
     where.textContent = city + ', ' + country;
     where.className = 'where';
     return where
 };
 
-function createTextTag(tagline) {
+function createTextTag(data) {
     const tag = document.createElement('p');
     tag.textContent = tagline;
     tag.className = 'tag';
     return tag
 };
 
-function createTextTarif(price) {
+function createTextTarif(data) {
     const tarif = text;
     tarif.textContent = price + '€/jour';
     tarif.className = 'tarif';
     return tarif
 };
 
-function createIndexDOM() {
+function createIndexDOM(data) {
     const article = document.createElement('article');
     article.append(createLinkPagePhotographe());
     article.append(createTextCity());
@@ -62,40 +58,38 @@ function createIndexDOM() {
 };
 
 
-async function getPhotographers() {
+async function getDataPhotographers() {
     // Penser à remplacer par les données récupérées dans le json
     const photographers =
         await fetch('./data/photographers.json')
         .then((Response) => Response.json())
         .then(data => data.photographers)
-
-    // console.log(photographers);
-    // et bien retourner le tableau photographers seulement une fois
+        // console.log(photographers);
+        // et bien retourner le tableau photographers seulement une fois
     return ({
         photographers: photographers
     })
 
 };
 
-async function displayData(photographers) {
+async function applyDOMData(photographers) {
     const photographersSection = document.querySelector(".photographer_section");
     photographers.forEach((photographer) => {
-        const photographermodel = photographerFactory(photographer);
-        const userCardDOM = photographermodel.createIndexDOM();
+        const userCardDOM = createIndexDOM(photographer);
         photographersSection.appendChild(userCardDOM);
     });
 };
 
-async function init() {
+async function initPageIndex() {
     // Récupère les datas des photographes
     const { photographers } = await getPhotographers();
     displayData(photographers);
 };
 
-init();
+initPageIndex();
 
 // //rajout d'attributs d'accessibilité
-function accessibilitéIndex() {
+function accessibilityIndex() {
     const indexNav = document.querySelector('.photographer_section');
     indexNav.setAttribute("aria-label", 'photographers navigation');
     const indexLogo = document.querySelector('.logo');
@@ -106,4 +100,4 @@ function accessibilitéIndex() {
     linkIndex.appendChild(indexLogo);
     linkIndex.href = "index.html";
 };
-accessibilitéIndex();
+accessibilityIndex();
