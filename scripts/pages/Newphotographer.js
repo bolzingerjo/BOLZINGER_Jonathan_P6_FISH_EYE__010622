@@ -1,4 +1,5 @@
 const main = document.querySelector('main');
+main.appendChild(createLikeCount(photographer));
 
 function createLikeCount(photographer) {
     const likesTarifs = document.createElement('div');
@@ -10,8 +11,6 @@ function createLikeCount(photographer) {
     likesTarifs.appendChild(PricePerDay(photographer));
     return likesTarifs
 };
-
-main.appendChild(createLikeCount());
 
 function createHeart() {
     const imgHeart = document.createElement('i');
@@ -98,11 +97,10 @@ async function getDataHeader() {
     })
 };
 
-async function createHeader(photographer) {
+async function createHeader(photographers) {
     const photographersHeader = document.querySelector(".photograph-header");
     // console.log(photographer);
-    photographer.forEach((photographer) => {
-        // console.log(photographerModel);
+    photographers.photographers.forEach((photographer) => {
         const articleHeader = createArticleHeader(photographer);
         photographersHeader.appendChild(articleHeader);
     });
@@ -126,9 +124,9 @@ if (object = image) {
 
     function createLinkLightbox(media) {
         const linkLightbox = document.createElement('a');
-        const pictures = `assets/images/${image}`;
+        const pictures = `assets/images/${media.image}`;
         linkLightbox.setAttribute("href", pictures);
-        linkLightbox.setAttribute("aria-label", title);
+        linkLightbox.setAttribute("aria-label", media.title);
         linkLightbox.setAttribute("onclick", "lightbox()");
         linkLightbox.className = 'lightboxable';
         linkLightbox.appendChild(createImg());
@@ -137,10 +135,10 @@ if (object = image) {
 
     function createImg(media) {
         const photos = document.createElement('img');
-        const pictures = `assets/images/${image}`;
+        const pictures = `assets/images/${media.image}`;
         photos.setAttribute("src", pictures);
         photos.setAttribute("role", 'link');
-        photos.setAttribute("alt", title + ', ' + date + ', ' + likes + ', prix : ' + price + '€');
+        photos.setAttribute("alt", media.title + ', ' + media.date + ', ' + media.likes + ', prix : ' + media.price + '€');
         photos.className = 'photobook';
         return photos
     };
@@ -155,7 +153,7 @@ if (object = image) {
 
     function createTitleUnderPhoto(media) {
         const text = document.createElement('p');
-        text.textContent = title;
+        text.textContent = media.title;
         text.className = 'title-photo';
         return text
     };
@@ -170,7 +168,7 @@ if (object = image) {
 
     function createCountLikes(media) {
         const cptLikes = document.createElement('p');
-        cptLikes.textContent = likes;
+        cptLikes.textContent = media.likes;
         cptLikes.className = 'likes';
         return cptLikes
     };
@@ -202,14 +200,14 @@ if (object = video) {
         const videoPage = document.createElement('video');
         videoPage.setAttribute("controls", 'controls');
         videoPage.className = 'video';
-        videoPage.setAttribute("aria-label", title + ', ' + date + ', ' + likes + ', prix : ' + price + '€');
+        videoPage.setAttribute("aria-label", media.title + ', ' + media.date + ', ' + media.likes + ', prix : ' + media.price + '€');
         videoPage.appendChild(createElmtSource(media));
         return videoPage
     };
 
     function createElmtSource(media) {
         const source = document.createElement('source');
-        const videos = `assets/images/${video}`;
+        const videos = `assets/images/${media.video}`;
         source.setAttribute("src", videos);
         source.setAttribute("type", 'video/mp4');
         source.setAttribute("preload", 'auto');
@@ -227,7 +225,7 @@ if (object = video) {
 
     function createTxtVideo(media) {
         const text = document.createElement('p');
-        text.textContent = title;
+        text.textContent = media.title;
         text.className = 'title-photo';
         return text
     };
@@ -242,7 +240,7 @@ if (object = video) {
 
     function createCountLikes(media) {
         const cptLikes = document.createElement('p');
-        cptLikes.textContent = likes;
+        cptLikes.textContent = media.likes;
         cptLikes.className = 'likes';
         return cptLikes
     };
@@ -323,8 +321,6 @@ if (object = video) {
         return forward
     };
 
-} else {
-    return console.log('erreur')
 };
 
 function gestionVideo() {
@@ -446,11 +442,10 @@ async function getDataMedia() {
         media
     })
 };
-// changement de photographers en media
-async function createArticlePhotoVideo(media) {
+
+async function createArticlePhotoVideo(medias) {
     const photographiesSection = document.querySelector(".photograph-article");
-    // console.log(medias);
-    media.forEach((pho) => {
+    medias.medias.forEach((media) => {
         const photoCardDOM = createArticlePhoto(media);
         const videoCardDOM = createArticleVideo(media);
         photographiesSection.appendChild(photoCardDOM);
@@ -466,3 +461,213 @@ async function initArticlePhoto() {
     gestionVideo();
 };
 initArticlePhoto();
+
+async function getDataMedia() {
+    // remplacer par les données récupérées dans le json
+    const media =
+        await fetch('./data/photographers.json')
+        .then((Response) => Response.json())
+        .then(data => data.media.filter((object) => object.photographerId == pageId))
+        // console.log(media)
+        // retourner le tableau photos seulement une fois
+    return ({
+        media: media
+    })
+};
+
+async function createArticlePhoto(medias) {
+    const photographiesSection = document.querySelector(".photograph-article");
+    // console.log(medias);
+    medias.forEach((pho) => {
+        const mediaModel = mediaFactory(pho);
+        const mediaCardDOM = mediaModel.createMediaDOM();
+        photographiesSection.appendChild(mediaCardDOM);
+    });
+};
+async function initArticlePhoto() {
+    // Récupère les medias des photographies
+    const { media } = await getDataMedia();
+    // console.log(media);
+    createArticlePhoto(media);
+    gestionVideo();
+};
+initArticlePhoto();
+
+//Trier
+async function trierPop() {
+    //trier par popularité
+    const boutonTrier = document.querySelector(".btn-pop");
+    const { media } = await getMedia();
+    boutonTrier.addEventListener("click", function() {
+        const mediasTrierPop = Array.from(media);
+        mediasTrierPop.sort(function(a, b) {
+            return b.likes - a.likes;
+        });
+        // console.log(mediasTrierPop);
+        document.querySelector(".photograph-article").innerHTML = "";
+        displayData2(mediasTrierPop);
+    });
+};
+trierPop();
+async function trierDate() {
+    //trier par date
+    const boutonDate = document.querySelector(".btn-date");
+    const { media } = await getMedia();
+    boutonDate.addEventListener("click", function() {
+        const mediasTrierDate = Array.from(media);
+        mediasTrierDate.sort(function(a, b) {
+            return b.date.localeCompare(a.date);
+        });
+        // console.log(mediasTrierDate);
+        document.querySelector(".photograph-article").innerHTML = "";
+        displayData2(mediasTrierDate);
+    });
+};
+trierDate();
+async function trierTitre() {
+    //trier par titre
+    const boutonTitre = document.querySelector(".btn-titre");
+    const { media } = await getMedia();
+    boutonTitre.addEventListener("click", function() {
+        const mediasTrierTitre = Array.from(media);
+        mediasTrierTitre.sort(function(a, b) {
+            return a.title.localeCompare(b.title);
+        });
+        // console.log(mediasTrierTitre);
+        document.querySelector(".photograph-article").innerHTML = "";
+        displayData2(mediasTrierTitre);
+    });
+};
+trierTitre();
+
+// Modale de contact
+const focusableSelector = 'img, input, button';
+let focusables = [];
+let previouslyFocusedElement = null;
+const modal = document.getElementById("contact_modal");
+
+function displayModal() {
+    const modal = document.getElementById("contact_modal");
+    modal.style.display = "block";
+    modal.setAttribute('aria-hidden', false);
+    modal.setAttribute('aria-modal', true);
+    focusables = Array.from(modal.querySelectorAll(focusableSelector));
+    previouslyFocusedElement = document.querySelector(':focus')
+    focusables[0].focus()
+    modal.addEventListener('click', closeModal);
+    modal.querySelector('.modal').addEventListener('click', stopPropagation);
+
+};
+
+function closeModal() {
+    const modal = document.getElementById("contact_modal");
+    if (previouslyFocusedElement !== null) previouslyFocusedElement.focus()
+    modal.style.display = "none";
+    modal.setAttribute('aria-hidden', true);
+    modal.setAttribute('aria-modal', false);
+    modal.removeEventListener('click', closeModal);
+    modal.querySelector('.modal').removeEventListener('click', stopPropagation);
+};
+const stopPropagation = function(e) {
+    e.stopPropagation()
+};
+
+const focusInModal = function(e) {
+    e.preventDefault()
+    let index = focusables.findIndex(f => f === modal.querySelector(':focus'))
+    if (e.shiftKey === true) {
+        index--
+    } else {
+        index++
+    }
+    if (index >= focusables.length) {
+        index = 0
+    }
+    if (index < 0) {
+        index = focusables.length - 1
+    }
+    focusables[index].focus()
+};
+
+window.addEventListener('keydown', function(e) {
+    if (e.key === "Escape" || e.key === "Esc") {
+        closeModal(e)
+    }
+    if (e.key === 'Tab') {
+        focusInModal(e)
+    }
+});
+
+// DOM Elements
+const forName = document.getElementById("prenom");
+const birthName = document.getElementById("nom");
+const email = document.getElementById("email");
+const message = document.getElementById("message");
+const ferm = document.querySelector(".contact_button");
+
+forName.addEventListener('change', function() {
+    validForName(this);
+});
+const validForName = function(inputForName) {
+    let smallForName = document.querySelector("#prenom-small");
+    // console.log(inputForName);
+    console.log(inputForName.value);
+    if (inputForName.value.length >= 2) {
+        // smallForName.innerHTML = 'Prénom valide'
+        // smallForName.style.color = "green"
+        smallForName.innerHTML = ''
+        return true
+    } else {
+        smallForName.innerHTML = 'le prénom doit contenir au moins 2 lettres'
+        smallForName.style.color = "red"
+        return false
+    }
+};
+
+birthName.addEventListener('change', function() {
+    validBirthName(this);
+});
+const validBirthName = function(inputBirthName) {
+    let smallBirthName = document.querySelector("#nom-small");
+    // console.log(inputBirthName);
+    console.log(inputBirthName.value);
+    if (inputBirthName.value.length >= 2) {
+        // smallBirthName.innerHTML = 'Nom valide'
+        // smallBirthName.style.color = "green"
+        smallBirthName.innerHTML = ''
+        return true
+    } else {
+        smallBirthName.innerHTML = 'Le nom doit contenir au moins 2 lettres'
+        smallBirthName.style.color = "red"
+        return false
+    }
+};
+
+email.addEventListener('change', function() {
+    validEmail(this);
+});
+// création regex pour validation email
+const validEmail = function(inputEmail) {
+    let emailRegex = new RegExp('^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$');
+    let testEmail = emailRegex.test(inputEmail.value);
+    let small = document.querySelector("#email-small");
+    // console.log(testEmail);
+    console.log(inputEmail.value);
+    if (emailRegex.test(inputEmail.value)) {
+        // small.innerHTML = 'Adresse valide'
+        // small.style.color = "green"
+        small.innerHTML = ''
+        return true
+    } else {
+        small.innerHTML = 'Adresse non valide'
+        small.style.color = "red"
+        return false
+    };
+};
+
+message.addEventListener('change', function() {
+    validMessage(this);
+});
+const validMessage = function(inputMessage) {
+    console.log(inputMessage.value);
+};
