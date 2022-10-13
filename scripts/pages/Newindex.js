@@ -1,94 +1,60 @@
-const { name, portrait, city, country, tagline, price, id } = data;
-let text = document.createElement('p');
-
-function createLinkPagePhotographe(data) {
+function createLinkPagePhotographe(photographer) {
     const link = document.createElement('a');
     link.className = 'link';
-    link.href = "photographer.html?id=" + id;
-    link.appendChild(createIMG());
-    link.appendChild(createTitleName());
+    link.href = "photographer.html?id=" + photographer.id;
+    link.appendChild(createIMG(photographer));
+    link.appendChild(createTitleName(photographer));
     return link
 };
 
-function createIMG(data) {
+function createIMG(photographer) {
     const img = document.createElement('img');
-    const picture = `assets/photographers/${portrait}`;
+    let picture = `assets/photographers/${photographer.portrait}`;
     img.setAttribute("src", picture)
     img.setAttribute("role", 'link')
-    img.setAttribute("alt", name + ', from ' + city + ', ' + country + ', citation : ' + tagline + ', ' + price + '€ par jour')
+    img.setAttribute("alt", photographer.name + ', from ' + photographer.city + ', ' + photographer.country + ', citation : ' + photographer.tagline + ', ' + photographer.price + '€ par jour')
     img.className = 'img_index';
     return img
 };
 
-function createTitleName(data) {
+function createTitleName(photographer) {
     const h2 = document.createElement('h2');
-    h2.textContent = name;
+    h2.textContent = photographer.name;
     h2.className = 'name';
     return h2
 };
 
-function createTextCity(data) {
+function createTextCity(photographer) {
     const where = document.createElement('p');
-    where.textContent = city + ', ' + country;
+    where.textContent = photographer.city + ', ' + photographer.country;
     where.className = 'where';
     return where
 };
 
-function createTextTag(data) {
+function createTextTag(photographer) {
     const tag = document.createElement('p');
-    tag.textContent = tagline;
+    tag.textContent = photographer.tagline;
     tag.className = 'tag';
     return tag
 };
 
-function createTextTarif(data) {
-    const tarif = text;
-    tarif.textContent = price + '€/jour';
+function createTextTarif(photographer) {
+    const tarif = document.createElement('p');
+    tarif.textContent = photographer.price + '€/jour';
     tarif.className = 'tarif';
     return tarif
 };
 
-function createIndexDOM(data) {
+function createIndexDOM(photographer) {
     const article = document.createElement('article');
-    article.append(createLinkPagePhotographe());
-    article.append(createTextCity());
-    article.append(createTextTag());
-    article.append(createTextTarif());
+    article.append(createLinkPagePhotographe(photographer));
+    article.append(createTextCity(photographer));
+    article.append(createTextTag(photographer));
+    article.append(createTextTarif(photographer));
     return article
 };
 
-
-async function getDataPhotographers() {
-    // Penser à remplacer par les données récupérées dans le json
-    const photographers =
-        await fetch('./data/photographers.json')
-        .then((Response) => Response.json())
-        .then(data => data.photographers)
-        // console.log(photographers);
-        // et bien retourner le tableau photographers seulement une fois
-    return ({
-        photographers: photographers
-    })
-
-};
-
-async function applyDOMData(photographers) {
-    const photographersSection = document.querySelector(".photographer_section");
-    photographers.forEach((photographer) => {
-        const userCardDOM = createIndexDOM(photographer);
-        photographersSection.appendChild(userCardDOM);
-    });
-};
-
-async function initPageIndex() {
-    // Récupère les datas des photographes
-    const { photographers } = await getPhotographers();
-    displayData(photographers);
-};
-
-initPageIndex();
-
-// //rajout d'attributs d'accessibilité
+//rajout d'attributs d'accessibilité
 function accessibilityIndex() {
     const indexNav = document.querySelector('.photographer_section');
     indexNav.setAttribute("aria-label", 'photographers navigation');
@@ -100,4 +66,32 @@ function accessibilityIndex() {
     linkIndex.appendChild(indexLogo);
     linkIndex.href = "index.html";
 };
-accessibilityIndex();
+
+async function getDataPhotographers() {
+    // Penser à remplacer par les données récupérées dans le json
+    const photographers =
+        await fetch('./data/photographers.json')
+        .then((Response) => Response.json())
+        .then(data => data.photographers)
+        // console.log(photographers);
+        // et bien retourner le tableau photographers seulement une fois
+    return ({
+        photographers
+    })
+};
+
+async function applyDOMData(photographers) {
+    const photographersSection = document.querySelector(".photographer_section");
+    photographers.photographers.forEach((photographer) => {
+        const userCardDOM = createIndexDOM(photographer);
+        photographersSection.appendChild(userCardDOM);
+    });
+};
+
+async function initPageIndex() {
+    // Récupère les datas des photographes
+    let photographers = await getDataPhotographers();
+    applyDOMData(photographers);
+    accessibilityIndex();
+};
+initPageIndex();

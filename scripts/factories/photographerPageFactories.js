@@ -52,46 +52,6 @@ function headerFactory(dataPhotograph) {
 };
 //Mettre le code JavaScript lié à la page photographer.html
 
-async function getDataHeader() {
-    let params = (new URL(document.location)).searchParams;
-    let pageId = params.get('id');
-    // console.log(pageId);
-    // remplacer par les données récupérées dans le json
-    const photographers =
-        await fetch('./data/photographers.json')
-        .then((Response) => Response.json())
-        .then(data => data.photographers.filter((object) => object.id == pageId))
-        // console.log(photographers);
-        // retourner le tableau photographers seulement une fois
-    return ({
-        photographers: photographers
-    })
-};
-async function createHeader(photographer) {
-    const photographersSection = document.querySelector(".photograph-header");
-    // console.log(photographer);
-    photographer.forEach((photographer) => {
-        const photographerModel = headerFactory(photographer);
-        // console.log(photographerModel);
-        const userCardDOM = photographerModel.createUserDOM();
-        photographersSection.appendChild(userCardDOM);
-    });
-};
-async function initHeaderPhotographer() {
-    // Récupère les datas des photographes
-    const { photographers } = await getDataHeader();
-    createHeader(photographers);
-};
-initHeaderPhotographer();
-
-
-
-
-
-
-
-
-
 // factory header //
 // factory media //
 function mediaFactory(dataMedia) {
