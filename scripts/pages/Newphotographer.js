@@ -1,5 +1,5 @@
-const main = document.querySelector('main');
-main.appendChild(createLikeCount(photographer));
+let params = (new URL(document.location)).searchParams;
+let pageId = params.get('id');
 
 function createLikeCount(photographer) {
     const likesTarifs = document.createElement('div');
@@ -29,7 +29,7 @@ function createTitleModal(photographer) {
     h2.innerText = 'Contactez-moi ' + photographer.name;
 };
 
-function createDiv() {
+function createDiv(photographer) {
     const div1 = document.createElement('div');
     div1.appendChild(createNamePage(photographer));
     div1.appendChild(createWherePage(photographer));
@@ -72,17 +72,16 @@ function createTagPage(photographer) {
     return tag
 };
 
-function createArticleHeader() {
+function createArticleHeader(photographer) {
+    const main = document.querySelector('main');
     const article = document.createElement('article');
     article.className = 'article-header';
     article.appendChild(createDiv());
     article.appendChild(createBtnModal());
     article.appendChild(createImg());
+    main.appendChild(createLikeCount(photographer));
     return article
 };
-
-let params = (new URL(document.location)).searchParams;
-let pageId = params.get('id');
 
 async function getDataHeader() {
     // remplacer par les données récupérées dans le json
@@ -113,214 +112,212 @@ async function initHeaderPhotographe() {
 };
 initHeaderPhotographe();
 
-if (object = image) {
-    function createArticlePhoto(media) {
-        const articlePhoto = document.createElement('article');
-        articlePhoto.className = 'article-Photo';
-        articlePhoto.appendChild(createLinkLightbox(media));
-        articlePhoto.appendChild(createDivUnderPhoto(media));
-        return articlePhoto
-    };
+//Photo
+function createArticlePhoto(media) {
+    const articlePhoto = document.createElement('article');
+    articlePhoto.className = 'article-Photo';
+    articlePhoto.appendChild(createLinkLightbox(media));
+    articlePhoto.appendChild(createDivUnderPhoto(media));
+    return articlePhoto
+};
 
-    function createLinkLightbox(media) {
-        const linkLightbox = document.createElement('a');
-        const pictures = `assets/images/${media.image}`;
-        linkLightbox.setAttribute("href", pictures);
-        linkLightbox.setAttribute("aria-label", media.title);
-        linkLightbox.setAttribute("onclick", "lightbox()");
-        linkLightbox.className = 'lightboxable';
-        linkLightbox.appendChild(createImg());
-        return linkLightbox
-    };
+function createLinkLightbox(media) {
+    const linkLightbox = document.createElement('a');
+    const pictures = `assets/images/${media.image}`;
+    linkLightbox.setAttribute("href", pictures);
+    linkLightbox.setAttribute("aria-label", media.title);
+    linkLightbox.setAttribute("onclick", "lightbox()");
+    linkLightbox.className = 'lightboxable';
+    linkLightbox.appendChild(createImg());
+    return linkLightbox
+};
 
-    function createImg(media) {
-        const photos = document.createElement('img');
-        const pictures = `assets/images/${media.image}`;
-        photos.setAttribute("src", pictures);
-        photos.setAttribute("role", 'link');
-        photos.setAttribute("alt", media.title + ', ' + media.date + ', ' + media.likes + ', prix : ' + media.price + '€');
-        photos.className = 'photobook';
-        return photos
-    };
+function createImg(media) {
+    const photos = document.createElement('img');
+    const pictures = `assets/images/${media.image}`;
+    photos.setAttribute("src", pictures);
+    photos.setAttribute("role", 'link');
+    photos.setAttribute("alt", media.title + ', ' + media.date + ', ' + media.likes + ', prix : ' + media.price + '€');
+    photos.className = 'photobook';
+    return photos
+};
 
-    function createDivUnderPhoto(media) {
-        const divText = document.createElement('div');
-        divText.className = 'photo-text';
-        divText.appendChild(createTitleUnderPhoto(media));
-        divText.appendChild(createSpanUnderPhoto(media));
-        return divText
-    };
+function createDivUnderPhoto(media) {
+    const divText = document.createElement('div');
+    divText.className = 'photo-text';
+    divText.appendChild(createTitleUnderPhoto(media));
+    divText.appendChild(createSpanUnderPhoto(media));
+    return divText
+};
 
-    function createTitleUnderPhoto(media) {
-        const text = document.createElement('p');
-        text.textContent = media.title;
-        text.className = 'title-photo';
-        return text
-    };
+function createTitleUnderPhoto(media) {
+    const text = document.createElement('p');
+    text.textContent = media.title;
+    text.className = 'title-photo';
+    return text
+};
 
-    function createSpanUnderPhoto(media) {
-        const spanLikes = document.createElement('span');
-        spanLikes.setAttribute("aria-label", 'likes');
-        spanLikes.appendChild(createCountLikes(media));
-        spanLikes.appendChild(createLikeButton(media));
-        return spanLikes
-    };
+function createSpanUnderPhoto(media) {
+    const spanLikes = document.createElement('span');
+    spanLikes.setAttribute("aria-label", 'likes');
+    spanLikes.appendChild(createCountLikes(media));
+    spanLikes.appendChild(createLikeButton(media));
+    return spanLikes
+};
 
-    function createCountLikes(media) {
-        const cptLikes = document.createElement('p');
-        cptLikes.textContent = media.likes;
-        cptLikes.className = 'likes';
-        return cptLikes
-    };
+function createCountLikes(media) {
+    const cptLikes = document.createElement('p');
+    cptLikes.textContent = media.likes;
+    cptLikes.className = 'likes';
+    return cptLikes
+};
 
-    function createLikeButton(media) {
-        const likebtn = document.createElement('button');
-        likebtn.className = '.like-btn';
-        likebtn.appendChild(createHeart());
-        return likebtn
-    };
+function createLikeButton(media) {
+    const likebtn = document.createElement('button');
+    likebtn.className = '.like-btn';
+    likebtn.appendChild(createHeart());
+    return likebtn
+};
 
-    function createHeart() {
-        const imgHeart = document.createElement('i');
-        imgHeart.className = 'fa-solid fa-heart';
-        return imgHeart
-    };
-}
-if (object = video) {
-    function createArticleVideo(media) {
-        const articleVideo = document.createElement('article');
-        articleVideo.className = 'article-video';
-        articleVideo.appendChild(createElmtVideo(media));
-        articleVideo.appendChild(createDivTxtVideo(media));
-        articleVideo.appendChild(createDivControls());
-        return articleVideo
-    };
+function createHeart() {
+    const imgHeart = document.createElement('i');
+    imgHeart.className = 'fa-solid fa-heart';
+    return imgHeart
+};
+// Photo
+//Video
+function createArticleVideo(media) {
+    const articleVideo = document.createElement('article');
+    articleVideo.className = 'article-video';
+    articleVideo.appendChild(createElmtVideo(media));
+    articleVideo.appendChild(createDivTxtVideo(media));
+    articleVideo.appendChild(createDivControls());
+    return articleVideo
+};
 
-    function createElmtVideo(media) {
-        const videoPage = document.createElement('video');
-        videoPage.setAttribute("controls", 'controls');
-        videoPage.className = 'video';
-        videoPage.setAttribute("aria-label", media.title + ', ' + media.date + ', ' + media.likes + ', prix : ' + media.price + '€');
-        videoPage.appendChild(createElmtSource(media));
-        return videoPage
-    };
+function createElmtVideo(media) {
+    const videoPage = document.createElement('video');
+    videoPage.setAttribute("controls", 'controls');
+    videoPage.className = 'video';
+    videoPage.setAttribute("aria-label", media.title + ', ' + media.date + ', ' + media.likes + ', prix : ' + media.price + '€');
+    videoPage.appendChild(createElmtSource(media));
+    return videoPage
+};
 
-    function createElmtSource(media) {
-        const source = document.createElement('source');
-        const videos = `assets/images/${media.video}`;
-        source.setAttribute("src", videos);
-        source.setAttribute("type", 'video/mp4');
-        source.setAttribute("preload", 'auto');
-        source.className = 'source';
-        return source
-    };
+function createElmtSource(media) {
+    const source = document.createElement('source');
+    const videos = `assets/images/${media.video}`;
+    source.setAttribute("src", videos);
+    source.setAttribute("type", 'video/mp4');
+    source.setAttribute("preload", 'auto');
+    source.className = 'source';
+    return source
+};
 
-    function createDivTxtVideo(media) {
-        const divText = document.createElement('div');
-        divText.className = 'photo-text';
-        divText.appendChild(createTxtVideo(media));
-        divText.appendChild(createSpanUnderPhoto(media));
-        return divText
-    };
+function createDivTxtVideo(media) {
+    const divText = document.createElement('div');
+    divText.className = 'photo-text';
+    divText.appendChild(createTxtVideo(media));
+    divText.appendChild(createSpanUnderPhoto(media));
+    return divText
+};
 
-    function createTxtVideo(media) {
-        const text = document.createElement('p');
-        text.textContent = media.title;
-        text.className = 'title-photo';
-        return text
-    };
+function createTxtVideo(media) {
+    const text = document.createElement('p');
+    text.textContent = media.title;
+    text.className = 'title-photo';
+    return text
+};
 
-    function createSpanUnderPhoto(media) {
-        const spanLikes = document.createElement('span');
-        spanLikes.setAttribute("aria-label", 'likes');
-        spanLikes.appendChild(createCountLikes(media));
-        spanLikes.appendChild(createLikeButton());
-        return spanLikes
-    };
+function createSpanUnderPhoto(media) {
+    const spanLikes = document.createElement('span');
+    spanLikes.setAttribute("aria-label", 'likes');
+    spanLikes.appendChild(createCountLikes(media));
+    spanLikes.appendChild(createLikeButton());
+    return spanLikes
+};
 
-    function createCountLikes(media) {
-        const cptLikes = document.createElement('p');
-        cptLikes.textContent = media.likes;
-        cptLikes.className = 'likes';
-        return cptLikes
-    };
+function createCountLikes(media) {
+    const cptLikes = document.createElement('p');
+    cptLikes.textContent = media.likes;
+    cptLikes.className = 'likes';
+    return cptLikes
+};
 
-    function createLikeButton() {
-        const likebtn = document.createElement('button');
-        likebtn.className = '.like-btn';
-        likebtn.appendChild(createHeart());
-        return likebtn
-    };
+function createLikeButton() {
+    const likebtn = document.createElement('button');
+    likebtn.className = '.like-btn';
+    likebtn.appendChild(createHeart());
+    return likebtn
+};
 
-    function createHeart() {
-        const imgHeart = document.createElement('i');
-        imgHeart.className = 'fa-solid fa-heart';
-        return imgHeart
-    };
+function createHeart() {
+    const imgHeart = document.createElement('i');
+    imgHeart.className = 'fa-solid fa-heart';
+    return imgHeart
+};
 
-    function createDivControls() {
-        const ariaControls = document.createElement('div');
-        ariaControls.className = 'controls';
-        ariaControls.appendChild(createBtnPlay());
-        ariaControls.appendChild(createBtnStop());
-        ariaControls.appendChild(createDiv1Timer());
-        ariaControls.appendChild(createBtnRewind());
-        ariaControls.appendChild(createBtnForward());
-        return ariaControls
-    };
+function createDivControls() {
+    const ariaControls = document.createElement('div');
+    ariaControls.className = 'controls';
+    ariaControls.appendChild(createBtnPlay());
+    ariaControls.appendChild(createBtnStop());
+    ariaControls.appendChild(createDiv1Timer());
+    ariaControls.appendChild(createBtnRewind());
+    ariaControls.appendChild(createBtnForward());
+    return ariaControls
+};
 
-    function createBtnPlay() {
-        const btnPlay = document.createElement('button');
-        btnPlay.className = 'play';
-        btnPlay.setAttribute("data-icon", 'P');
-        btnPlay.setAttribute("aria-label", 'Play Pause Toggle');
-        return btnPlay
-    };
+function createBtnPlay() {
+    const btnPlay = document.createElement('button');
+    btnPlay.className = 'play';
+    btnPlay.setAttribute("data-icon", 'P');
+    btnPlay.setAttribute("aria-label", 'Play Pause Toggle');
+    return btnPlay
+};
 
-    function createBtnStop() {
-        const btnStop = document.createElement('button');
-        btnStop.className = 'stop';
-        btnStop.setAttribute("data-icon", 'S');
-        btnStop.setAttribute("aria-label", 'Stop');
-        return btnStop
-    };
+function createBtnStop() {
+    const btnStop = document.createElement('button');
+    btnStop.className = 'stop';
+    btnStop.setAttribute("data-icon", 'S');
+    btnStop.setAttribute("aria-label", 'Stop');
+    return btnStop
+};
 
-    function createDiv1Timer() {
-        const timer = document.createElement('div');
-        timer.className = 'timer';
-        timer.appendChild(createDiv2Timer());
-        timer.appendChild(createSpantimer());
-        return timer
-    };
+function createDiv1Timer() {
+    const timer = document.createElement('div');
+    timer.className = 'timer';
+    timer.appendChild(createDiv2Timer());
+    timer.appendChild(createSpantimer());
+    return timer
+};
 
-    function createDiv2Timer() {
-        const div2 = document.createElement('div');
-        return div2;
-    };
+function createDiv2Timer() {
+    const div2 = document.createElement('div');
+    return div2;
+};
 
-    function createSpantimer() {
-        const span = document.createElement('span');
-        span.setAttribute("aria-label", 'timer');
-        span.textContent = '00:00';
-        return span
-    };
+function createSpantimer() {
+    const span = document.createElement('span');
+    span.setAttribute("aria-label", 'timer');
+    span.textContent = '00:00';
+    return span
+};
 
-    function createBtnRewind() {
-        const rewind = document.createElement('button');
-        rewind.className = 'rwd';
-        rewind.setAttribute("data-icon", 'B');
-        rewind.setAttribute("aria-label", 'Rewind');
-        return rewind
-    };
+function createBtnRewind() {
+    const rewind = document.createElement('button');
+    rewind.className = 'rwd';
+    rewind.setAttribute("data-icon", 'B');
+    rewind.setAttribute("aria-label", 'Rewind');
+    return rewind
+};
 
-    function createBtnForward() {
-        const forward = document.createElement('button');
-        forward.className = 'fwd';
-        forward.setAttribute("data-icon", 'F');
-        forward.setAttribute("aria-label", 'Fast forward');
-        return forward
-    };
-
+function createBtnForward() {
+    const forward = document.createElement('button');
+    forward.className = 'fwd';
+    forward.setAttribute("data-icon", 'F');
+    forward.setAttribute("aria-label", 'Fast forward');
+    return forward
 };
 
 function gestionVideo() {
@@ -429,7 +426,7 @@ function gestionVideo() {
         timerBar.style.width = `${barLength}px`;
     };
 };
-
+//Video
 async function getDataMedia() {
     // remplacer par les données récupérées dans le json
     const media =
@@ -448,8 +445,12 @@ async function createArticlePhotoVideo(medias) {
     medias.medias.forEach((media) => {
         const photoCardDOM = createArticlePhoto(media);
         const videoCardDOM = createArticleVideo(media);
-        photographiesSection.appendChild(photoCardDOM);
-        photographiesSection.appendChild(videoCardDOM);
+        if (object = image) {
+            photographiesSection.appendChild(photoCardDOM);
+        };
+        if (object = video) {
+            photographiesSection.appendChild(videoCardDOM);
+        };
     });
 };
 
@@ -462,42 +463,11 @@ async function initArticlePhoto() {
 };
 initArticlePhoto();
 
-async function getDataMedia() {
-    // remplacer par les données récupérées dans le json
-    const media =
-        await fetch('./data/photographers.json')
-        .then((Response) => Response.json())
-        .then(data => data.media.filter((object) => object.photographerId == pageId))
-        // console.log(media)
-        // retourner le tableau photos seulement une fois
-    return ({
-        media: media
-    })
-};
-
-async function createArticlePhoto(medias) {
-    const photographiesSection = document.querySelector(".photograph-article");
-    // console.log(medias);
-    medias.forEach((pho) => {
-        const mediaModel = mediaFactory(pho);
-        const mediaCardDOM = mediaModel.createMediaDOM();
-        photographiesSection.appendChild(mediaCardDOM);
-    });
-};
-async function initArticlePhoto() {
-    // Récupère les medias des photographies
-    const { media } = await getDataMedia();
-    // console.log(media);
-    createArticlePhoto(media);
-    gestionVideo();
-};
-initArticlePhoto();
-
 //Trier
 async function trierPop() {
     //trier par popularité
     const boutonTrier = document.querySelector(".btn-pop");
-    const { media } = await getMedia();
+    const { media } = await getDataMedia();
     boutonTrier.addEventListener("click", function() {
         const mediasTrierPop = Array.from(media);
         mediasTrierPop.sort(function(a, b) {
@@ -512,7 +482,7 @@ trierPop();
 async function trierDate() {
     //trier par date
     const boutonDate = document.querySelector(".btn-date");
-    const { media } = await getMedia();
+    const { media } = await getDataMedia();
     boutonDate.addEventListener("click", function() {
         const mediasTrierDate = Array.from(media);
         mediasTrierDate.sort(function(a, b) {
@@ -527,7 +497,7 @@ trierDate();
 async function trierTitre() {
     //trier par titre
     const boutonTitre = document.querySelector(".btn-titre");
-    const { media } = await getMedia();
+    const { media } = await getDataMedia();
     boutonTitre.addEventListener("click", function() {
         const mediasTrierTitre = Array.from(media);
         mediasTrierTitre.sort(function(a, b) {
