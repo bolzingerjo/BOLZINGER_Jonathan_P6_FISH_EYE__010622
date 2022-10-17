@@ -1,6 +1,70 @@
 let params = (new URL(document.location)).searchParams;
 let pageId = params.get('id');
 
+initHeaderPhotographe();
+
+async function initHeaderPhotographe() {
+    // Récupère les datas des photographes
+    let photographer = await getDataHeader();
+    // console.log(photographer[0]);
+    createHeader(photographer[0]);
+};
+
+async function getDataHeader() {
+    // remplacer par les données récupérées dans le json
+    const photographer =
+        await fetch('./data/photographers.json')
+        .then((Response) => Response.json())
+        .then(data => data.photographers.filter((object) => object.id == pageId))
+        // console.log(photographers);
+        // retourner le tableau photographers seulement une fois
+    return (
+        photographer
+    )
+};
+
+async function createHeader(photographer) {
+    const photographersHeader = document.querySelector(".photograph-header");
+    // photographer.forEach((photographer) => {
+    const articleHeader = createArticleHeader(photographer);
+    photographersHeader.appendChild(articleHeader);
+    // });
+};
+
+function createArticleHeader(photographer) {
+    const main = document.querySelector('main');
+    const article = document.createElement('article');
+    article.className = 'article-header';
+    article.appendChild(createDiv(photographer));
+    article.appendChild(createBtnModal());
+    article.appendChild(createImgHeader(photographer));
+    main.appendChild(createLikeCount(photographer));
+    createTitleModal(photographer);
+    return article
+};
+
+function createDiv(photographer) {
+    const div1 = document.createElement('div');
+    div1.appendChild(createNamePage(photographer));
+    div1.appendChild(createWherePage(photographer));
+    div1.appendChild(createTagPage(photographer));
+    return div1
+};
+
+function createBtnModal() {
+    const btnmodal = document.querySelector('.contact_button ');
+    return btnmodal
+};
+
+function createImgHeader(photographer) {
+    const img = document.createElement('img');
+    let picture = `assets/photographers/${photographer.portrait}`;
+    img.setAttribute("src", picture);
+    img.setAttribute("alt", photographer.name);
+    img.className = 'img-Page';
+    return img
+};
+
 function createLikeCount(photographer) {
     const likesTarifs = document.createElement('div');
     likesTarifs.className = 'comptLikes';
@@ -24,33 +88,6 @@ function PricePerDay(photographer) {
     return prix
 };
 
-function createTitleModal(photographer) {
-    const h2 = document.querySelector('#title-modal');
-    h2.innerText = 'Contactez-moi ' + photographer.name;
-};
-
-function createDiv(photographer) {
-    const div1 = document.createElement('div');
-    div1.appendChild(createNamePage(photographer));
-    div1.appendChild(createWherePage(photographer));
-    div1.appendChild(createTagPage(photographer));
-    return div1
-};
-
-function createBtnModal() {
-    const btnmodal = document.querySelector('.contact_button ');
-    return btnmodal
-};
-
-function createImg(photographer) {
-    const img = document.createElement('img');
-    let picture = `assets/photographers/${photographer.portrait}`;
-    img.setAttribute("src", picture);
-    img.setAttribute("alt", photographer.name);
-    img.className = 'img-Page';
-    return img
-};
-
 function createNamePage(photographer) {
     const h1 = document.createElement('h1');
     h1.textContent = photographer.name;
@@ -72,252 +109,45 @@ function createTagPage(photographer) {
     return tag
 };
 
-function createArticleHeader(photographer) {
-    const main = document.querySelector('main');
-    const article = document.createElement('article');
-    article.className = 'article-header';
-    article.appendChild(createDiv());
-    article.appendChild(createBtnModal());
-    article.appendChild(createImg());
-    main.appendChild(createLikeCount(photographer));
-    return article
+function createTitleModal(photographer) {
+    const h2 = document.querySelector('#title-modal');
+    h2.innerText = 'Contactez-moi ' + photographer.name;
+    return h2
 };
 
-async function getDataHeader() {
+initArticlePhoto();
+
+async function initArticlePhoto() {
+    // Récupère les medias des photographies
+    const { media } = await getDataMedia();
+    // console.log(media);
+    createArticlePhotoVideo(media);
+    gestionVideo();
+};
+async function getDataMedia() {
     // remplacer par les données récupérées dans le json
-    const photographers =
+    const media =
         await fetch('./data/photographers.json')
         .then((Response) => Response.json())
-        .then(data => data.photographers.filter((object) => object.id == pageId))
-        // console.log(photographers);
-        // retourner le tableau photographers seulement une fois
+        .then(data => data.media.filter((object) => object.photographerId == pageId))
+        // console.log(media)
+        // retourner le tableau photos seulement une fois
     return ({
-        photographers
+        media
     })
 };
-
-async function createHeader(photographers) {
-    const photographersHeader = document.querySelector(".photograph-header");
-    // console.log(photographer);
-    photographers.photographers.forEach((photographer) => {
-        const articleHeader = createArticleHeader(photographer);
-        photographersHeader.appendChild(articleHeader);
+async function createArticlePhotoVideo(media) {
+    const photographiesSection = document.querySelector(".photograph-article");
+    media.forEach((media) => {
+        const photoCardDOM = createArticlePhoto(media);
+        const videoCardDOM = createArticleVideo(media);
+        if (object = media.image) {
+            photographiesSection.appendChild(photoCardDOM);
+        };
+        if (object = media.video) {
+            photographiesSection.appendChild(videoCardDOM);
+        };
     });
-};
-
-async function initHeaderPhotographe() {
-    // Récupère les datas des photographes
-    let photographers = await getDataHeader();
-    createHeader(photographers);
-};
-initHeaderPhotographe();
-
-//Photo
-function createArticlePhoto(media) {
-    const articlePhoto = document.createElement('article');
-    articlePhoto.className = 'article-Photo';
-    articlePhoto.appendChild(createLinkLightbox(media));
-    articlePhoto.appendChild(createDivUnderPhoto(media));
-    return articlePhoto
-};
-
-function createLinkLightbox(media) {
-    const linkLightbox = document.createElement('a');
-    const pictures = `assets/images/${media.image}`;
-    linkLightbox.setAttribute("href", pictures);
-    linkLightbox.setAttribute("aria-label", media.title);
-    linkLightbox.setAttribute("onclick", "lightbox()");
-    linkLightbox.className = 'lightboxable';
-    linkLightbox.appendChild(createImg());
-    return linkLightbox
-};
-
-function createImg(media) {
-    const photos = document.createElement('img');
-    const pictures = `assets/images/${media.image}`;
-    photos.setAttribute("src", pictures);
-    photos.setAttribute("role", 'link');
-    photos.setAttribute("alt", media.title + ', ' + media.date + ', ' + media.likes + ', prix : ' + media.price + '€');
-    photos.className = 'photobook';
-    return photos
-};
-
-function createDivUnderPhoto(media) {
-    const divText = document.createElement('div');
-    divText.className = 'photo-text';
-    divText.appendChild(createTitleUnderPhoto(media));
-    divText.appendChild(createSpanUnderPhoto(media));
-    return divText
-};
-
-function createTitleUnderPhoto(media) {
-    const text = document.createElement('p');
-    text.textContent = media.title;
-    text.className = 'title-photo';
-    return text
-};
-
-function createSpanUnderPhoto(media) {
-    const spanLikes = document.createElement('span');
-    spanLikes.setAttribute("aria-label", 'likes');
-    spanLikes.appendChild(createCountLikes(media));
-    spanLikes.appendChild(createLikeButton(media));
-    return spanLikes
-};
-
-function createCountLikes(media) {
-    const cptLikes = document.createElement('p');
-    cptLikes.textContent = media.likes;
-    cptLikes.className = 'likes';
-    return cptLikes
-};
-
-function createLikeButton(media) {
-    const likebtn = document.createElement('button');
-    likebtn.className = '.like-btn';
-    likebtn.appendChild(createHeart());
-    return likebtn
-};
-
-function createHeart() {
-    const imgHeart = document.createElement('i');
-    imgHeart.className = 'fa-solid fa-heart';
-    return imgHeart
-};
-// Photo
-//Video
-function createArticleVideo(media) {
-    const articleVideo = document.createElement('article');
-    articleVideo.className = 'article-video';
-    articleVideo.appendChild(createElmtVideo(media));
-    articleVideo.appendChild(createDivTxtVideo(media));
-    articleVideo.appendChild(createDivControls());
-    return articleVideo
-};
-
-function createElmtVideo(media) {
-    const videoPage = document.createElement('video');
-    videoPage.setAttribute("controls", 'controls');
-    videoPage.className = 'video';
-    videoPage.setAttribute("aria-label", media.title + ', ' + media.date + ', ' + media.likes + ', prix : ' + media.price + '€');
-    videoPage.appendChild(createElmtSource(media));
-    return videoPage
-};
-
-function createElmtSource(media) {
-    const source = document.createElement('source');
-    const videos = `assets/images/${media.video}`;
-    source.setAttribute("src", videos);
-    source.setAttribute("type", 'video/mp4');
-    source.setAttribute("preload", 'auto');
-    source.className = 'source';
-    return source
-};
-
-function createDivTxtVideo(media) {
-    const divText = document.createElement('div');
-    divText.className = 'photo-text';
-    divText.appendChild(createTxtVideo(media));
-    divText.appendChild(createSpanUnderPhoto(media));
-    return divText
-};
-
-function createTxtVideo(media) {
-    const text = document.createElement('p');
-    text.textContent = media.title;
-    text.className = 'title-photo';
-    return text
-};
-
-function createSpanUnderPhoto(media) {
-    const spanLikes = document.createElement('span');
-    spanLikes.setAttribute("aria-label", 'likes');
-    spanLikes.appendChild(createCountLikes(media));
-    spanLikes.appendChild(createLikeButton());
-    return spanLikes
-};
-
-function createCountLikes(media) {
-    const cptLikes = document.createElement('p');
-    cptLikes.textContent = media.likes;
-    cptLikes.className = 'likes';
-    return cptLikes
-};
-
-function createLikeButton() {
-    const likebtn = document.createElement('button');
-    likebtn.className = '.like-btn';
-    likebtn.appendChild(createHeart());
-    return likebtn
-};
-
-function createHeart() {
-    const imgHeart = document.createElement('i');
-    imgHeart.className = 'fa-solid fa-heart';
-    return imgHeart
-};
-
-function createDivControls() {
-    const ariaControls = document.createElement('div');
-    ariaControls.className = 'controls';
-    ariaControls.appendChild(createBtnPlay());
-    ariaControls.appendChild(createBtnStop());
-    ariaControls.appendChild(createDiv1Timer());
-    ariaControls.appendChild(createBtnRewind());
-    ariaControls.appendChild(createBtnForward());
-    return ariaControls
-};
-
-function createBtnPlay() {
-    const btnPlay = document.createElement('button');
-    btnPlay.className = 'play';
-    btnPlay.setAttribute("data-icon", 'P');
-    btnPlay.setAttribute("aria-label", 'Play Pause Toggle');
-    return btnPlay
-};
-
-function createBtnStop() {
-    const btnStop = document.createElement('button');
-    btnStop.className = 'stop';
-    btnStop.setAttribute("data-icon", 'S');
-    btnStop.setAttribute("aria-label", 'Stop');
-    return btnStop
-};
-
-function createDiv1Timer() {
-    const timer = document.createElement('div');
-    timer.className = 'timer';
-    timer.appendChild(createDiv2Timer());
-    timer.appendChild(createSpantimer());
-    return timer
-};
-
-function createDiv2Timer() {
-    const div2 = document.createElement('div');
-    return div2;
-};
-
-function createSpantimer() {
-    const span = document.createElement('span');
-    span.setAttribute("aria-label", 'timer');
-    span.textContent = '00:00';
-    return span
-};
-
-function createBtnRewind() {
-    const rewind = document.createElement('button');
-    rewind.className = 'rwd';
-    rewind.setAttribute("data-icon", 'B');
-    rewind.setAttribute("aria-label", 'Rewind');
-    return rewind
-};
-
-function createBtnForward() {
-    const forward = document.createElement('button');
-    forward.className = 'fwd';
-    forward.setAttribute("data-icon", 'F');
-    forward.setAttribute("aria-label", 'Fast forward');
-    return forward
 };
 
 function gestionVideo() {
@@ -426,44 +256,217 @@ function gestionVideo() {
         timerBar.style.width = `${barLength}px`;
     };
 };
+
+function createArticlePhoto(media) {
+    const articlePhoto = document.createElement('article');
+    articlePhoto.className = 'article-Photo';
+    articlePhoto.appendChild(createLinkLightbox(media));
+    articlePhoto.appendChild(createDivUnderPhoto(media));
+    return articlePhoto
+};
+
+function createArticleVideo(media) {
+    const articleVideo = document.createElement('article');
+    articleVideo.className = 'article-video';
+    articleVideo.appendChild(createElmtVideo(media));
+    articleVideo.appendChild(createDivTxtVideo(media));
+    articleVideo.appendChild(createDivControls());
+    return articleVideo
+};
+//Photo
+function createLinkLightbox(media) {
+    const linkLightbox = document.createElement('a');
+    const pictures = `assets/images/${media.image}`;
+    linkLightbox.setAttribute("href", pictures);
+    linkLightbox.setAttribute("aria-label", media.title);
+    linkLightbox.setAttribute("onclick", "lightbox()");
+    linkLightbox.className = 'lightboxable';
+    linkLightbox.appendChild(createImgMedia(media));
+    return linkLightbox
+};
+
+function createImgMedia(media) {
+    const photos = document.createElement('img');
+    const pictures = `assets/images/${media.image}`;
+    photos.setAttribute("src", pictures);
+    photos.setAttribute("role", 'link');
+    photos.setAttribute("alt", media.title + ', ' + media.date + ', ' + media.likes + ', prix : ' + media.price + '€');
+    photos.className = 'photobook';
+    return photos
+};
+
+function createDivUnderPhoto(media) {
+    const divText = document.createElement('div');
+    divText.className = 'photo-text';
+    divText.appendChild(createTitleUnderPhoto(media));
+    divText.appendChild(createSpanUnderPhoto(media));
+    return divText
+};
+
+function createTitleUnderPhoto(media) {
+    const text = document.createElement('p');
+    text.textContent = media.title;
+    text.className = 'title-photo';
+    return text
+};
+
+function createSpanUnderPhoto(media) {
+    const spanLikes = document.createElement('span');
+    spanLikes.setAttribute("aria-label", 'likes');
+    spanLikes.appendChild(createCountLikes(media));
+    spanLikes.appendChild(createLikeButton(media));
+    return spanLikes
+};
+
+function createCountLikes(media) {
+    const cptLikes = document.createElement('p');
+    cptLikes.textContent = media.likes;
+    cptLikes.className = 'likes';
+    return cptLikes
+};
+
+function createLikeButton(media) {
+    const likebtn = document.createElement('button');
+    likebtn.className = '.like-btn';
+    likebtn.appendChild(createHeart());
+    return likebtn
+};
+
+function createHeart() {
+    const imgHeart = document.createElement('i');
+    imgHeart.className = 'fa-solid fa-heart';
+    return imgHeart
+};
+// Photo
 //Video
-async function getDataMedia() {
-    // remplacer par les données récupérées dans le json
-    const media =
-        await fetch('./data/photographers.json')
-        .then((Response) => Response.json())
-        .then(data => data.media.filter((object) => object.photographerId == pageId))
-        // console.log(media)
-        // retourner le tableau photos seulement une fois
-    return ({
-        media
-    })
+function createElmtVideo(media) {
+    const videoPage = document.createElement('video');
+    videoPage.setAttribute("controls", 'controls');
+    videoPage.className = 'video';
+    videoPage.setAttribute("aria-label", media.title + ', ' + media.date + ', ' + media.likes + ', prix : ' + media.price + '€');
+    videoPage.appendChild(createElmtSource(media));
+    return videoPage
 };
 
-async function createArticlePhotoVideo(medias) {
-    const photographiesSection = document.querySelector(".photograph-article");
-    medias.medias.forEach((media) => {
-        const photoCardDOM = createArticlePhoto(media);
-        const videoCardDOM = createArticleVideo(media);
-        if (object = image) {
-            photographiesSection.appendChild(photoCardDOM);
-        };
-        if (object = video) {
-            photographiesSection.appendChild(videoCardDOM);
-        };
-    });
+function createDivTxtVideo(media) {
+    const divText = document.createElement('div');
+    divText.className = 'photo-text';
+    divText.appendChild(createTxtVideo(media));
+    divText.appendChild(createSpanUnderPhoto(media));
+    return divText
 };
 
-async function initArticlePhoto() {
-    // Récupère les medias des photographies
-    const { media } = await getDataMedia();
-    // console.log(media);
-    createArticlePhotoVideo(media);
-    gestionVideo();
+function createDivControls() {
+    const ariaControls = document.createElement('div');
+    ariaControls.className = 'controls';
+    ariaControls.appendChild(createBtnPlay());
+    ariaControls.appendChild(createBtnStop());
+    ariaControls.appendChild(createDiv1Timer());
+    ariaControls.appendChild(createBtnRewind());
+    ariaControls.appendChild(createBtnForward());
+    return ariaControls
 };
-initArticlePhoto();
 
+function createElmtSource(media) {
+    const source = document.createElement('source');
+    const videos = `assets/images/${media.video}`;
+    source.setAttribute("src", videos);
+    source.setAttribute("type", 'video/mp4');
+    source.setAttribute("preload", 'auto');
+    source.className = 'source';
+    return source
+};
+
+function createTxtVideo(media) {
+    const text = document.createElement('p');
+    text.textContent = media.title;
+    text.className = 'title-photo';
+    return text
+};
+
+function createSpanUnderPhoto(media) {
+    const spanLikes = document.createElement('span');
+    spanLikes.setAttribute("aria-label", 'likes');
+    spanLikes.appendChild(createCountLikes(media));
+    spanLikes.appendChild(createLikeButton());
+    return spanLikes
+};
+
+function createBtnPlay() {
+    const btnPlay = document.createElement('button');
+    btnPlay.className = 'play';
+    btnPlay.setAttribute("data-icon", 'P');
+    btnPlay.setAttribute("aria-label", 'Play Pause Toggle');
+    return btnPlay
+};
+
+function createBtnStop() {
+    const btnStop = document.createElement('button');
+    btnStop.className = 'stop';
+    btnStop.setAttribute("data-icon", 'S');
+    btnStop.setAttribute("aria-label", 'Stop');
+    return btnStop
+};
+
+function createDiv1Timer() {
+    const timer = document.createElement('div');
+    timer.className = 'timer';
+    timer.appendChild(createDiv2Timer());
+    timer.appendChild(createSpantimer());
+    return timer
+};
+
+function createDiv2Timer() {
+    const div2 = document.createElement('div');
+    return div2;
+};
+
+function createSpantimer() {
+    const span = document.createElement('span');
+    span.setAttribute("aria-label", 'timer');
+    span.textContent = '00:00';
+    return span
+};
+
+function createBtnRewind() {
+    const rewind = document.createElement('button');
+    rewind.className = 'rwd';
+    rewind.setAttribute("data-icon", 'B');
+    rewind.setAttribute("aria-label", 'Rewind');
+    return rewind
+};
+
+function createBtnForward() {
+    const forward = document.createElement('button');
+    forward.className = 'fwd';
+    forward.setAttribute("data-icon", 'F');
+    forward.setAttribute("aria-label", 'Fast forward');
+    return forward
+};
+
+function createCountLikes(media) {
+    const cptLikes = document.createElement('p');
+    cptLikes.textContent = media.likes;
+    cptLikes.className = 'likes';
+    return cptLikes
+};
+
+function createLikeButton() {
+    const likebtn = document.createElement('button');
+    likebtn.className = '.like-btn';
+    likebtn.appendChild(createHeart());
+    return likebtn
+};
+
+function createHeart() {
+    const imgHeart = document.createElement('i');
+    imgHeart.className = 'fa-solid fa-heart';
+    return imgHeart
+};
+//Video
 //Trier
+trierPop();
+
 async function trierPop() {
     //trier par popularité
     const boutonTrier = document.querySelector(".btn-pop");
@@ -475,10 +478,12 @@ async function trierPop() {
         });
         // console.log(mediasTrierPop);
         document.querySelector(".photograph-article").innerHTML = "";
-        displayData2(mediasTrierPop);
+        createArticlePhotoVideo(mediasTrierPop);
     });
 };
-trierPop();
+
+trierDate();
+
 async function trierDate() {
     //trier par date
     const boutonDate = document.querySelector(".btn-date");
@@ -490,10 +495,12 @@ async function trierDate() {
         });
         // console.log(mediasTrierDate);
         document.querySelector(".photograph-article").innerHTML = "";
-        displayData2(mediasTrierDate);
+        createArticlePhotoVideo(mediasTrierDate);
     });
 };
-trierDate();
+
+trierTitre();
+
 async function trierTitre() {
     //trier par titre
     const boutonTitre = document.querySelector(".btn-titre");
@@ -505,11 +512,11 @@ async function trierTitre() {
         });
         // console.log(mediasTrierTitre);
         document.querySelector(".photograph-article").innerHTML = "";
-        displayData2(mediasTrierTitre);
+        createArticlePhotoVideo(mediasTrierTitre);
     });
 };
-trierTitre();
 
+//Trier
 // Modale de contact
 const focusableSelector = 'img, input, button';
 let focusables = [];
@@ -526,7 +533,6 @@ function displayModal() {
     focusables[0].focus()
     modal.addEventListener('click', closeModal);
     modal.querySelector('.modal').addEventListener('click', stopPropagation);
-
 };
 
 function closeModal() {
