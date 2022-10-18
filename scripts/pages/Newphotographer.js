@@ -138,15 +138,15 @@ async function getDataMedia() {
 };
 async function createArticlePhotoVideo(media) {
     const photographiesSection = document.querySelector(".photograph-article");
+
     media.forEach((media) => {
-        const photoCardDOM = createArticlePhoto(media);
-        const videoCardDOM = createArticleVideo(media);
         if (object = media.image) {
+            const photoCardDOM = createArticlePhoto(media);
             photographiesSection.appendChild(photoCardDOM);
-        };
-        if (object = media.video) {
+        } else if (object = media.video) {
+            const videoCardDOM = createArticleVideo(media);
             photographiesSection.appendChild(videoCardDOM);
-        };
+        } else { console.log('erreur') };
     });
 };
 
@@ -260,7 +260,7 @@ function gestionVideo() {
 function createArticlePhoto(media) {
     const articlePhoto = document.createElement('article');
     articlePhoto.className = 'article-Photo';
-    articlePhoto.appendChild(createLinkLightbox(media));
+    articlePhoto.appendChild(createLinkLightboxImages(media));
     articlePhoto.appendChild(createDivUnderPhoto(media));
     return articlePhoto
 };
@@ -268,13 +268,13 @@ function createArticlePhoto(media) {
 function createArticleVideo(media) {
     const articleVideo = document.createElement('article');
     articleVideo.className = 'article-video';
-    articleVideo.appendChild(createElmtVideo(media));
+    articleVideo.appendChild(createLinkLightboxVideo(media));
     articleVideo.appendChild(createDivTxtVideo(media));
     articleVideo.appendChild(createDivControls());
     return articleVideo
 };
 //Photo
-function createLinkLightbox(media) {
+function createLinkLightboxImages(media) {
     const linkLightbox = document.createElement('a');
     const pictures = `assets/images/${media.image}`;
     linkLightbox.setAttribute("href", pictures);
@@ -339,6 +339,17 @@ function createHeart() {
 };
 // Photo
 //Video
+function createLinkLightboxVideo(media) {
+    const linkLightbox = document.createElement('a');
+    const videos = `assets/images/${media.video}`;
+    linkLightbox.setAttribute("src", videos);
+    linkLightbox.setAttribute("type", 'video/mp4');
+    linkLightbox.setAttribute("onclick", "lightbox()");
+    linkLightbox.className = 'lightboxable';
+    linkLightbox.appendChild(createElmtVideo(media));
+    return linkLightbox
+};
+
 function createElmtVideo(media) {
     const videoPage = document.createElement('video');
     videoPage.setAttribute("controls", 'controls');
@@ -352,7 +363,7 @@ function createDivTxtVideo(media) {
     const divText = document.createElement('div');
     divText.className = 'photo-text';
     divText.appendChild(createTxtVideo(media));
-    divText.appendChild(createSpanUnderPhoto(media));
+    divText.appendChild(createSpanUnderVideo(media));
     return divText
 };
 
@@ -384,7 +395,7 @@ function createTxtVideo(media) {
     return text
 };
 
-function createSpanUnderPhoto(media) {
+function createSpanUnderVideo(media) {
     const spanLikes = document.createElement('span');
     spanLikes.setAttribute("aria-label", 'likes');
     spanLikes.appendChild(createCountLikes(media));
@@ -515,7 +526,6 @@ async function trierTitre() {
         createArticlePhotoVideo(mediasTrierTitre);
     });
 };
-
 //Trier
 // Modale de contact
 const focusableSelector = 'img, input, button';
@@ -573,14 +583,15 @@ window.addEventListener('keydown', function(e) {
         focusInModal(e)
     }
 });
-
+// Modale de contact
 // DOM Elements
 const forName = document.getElementById("prenom");
 const birthName = document.getElementById("nom");
 const email = document.getElementById("email");
 const message = document.getElementById("message");
 const ferm = document.querySelector(".contact_button");
-
+// DOM Elements
+//Events
 forName.addEventListener('change', function() {
     validForName(this);
 });
@@ -647,3 +658,59 @@ message.addEventListener('change', function() {
 const validMessage = function(inputMessage) {
     console.log(inputMessage.value);
 };
+//Events
+
+class likesCounter {
+    constructor() {
+        this._count = 0
+        this._$likesCount = document.querySelector('.comptLikes p')
+        this._observers = []
+        this.handleLikesButton()
+    }
+
+    update(action) {
+        if (action === 'INC') {
+            this._count += 1
+        } else if (action === 'DEC') {
+            this._count -= 1
+        } else {
+            throw "Unknow action"
+        }
+
+        this._$likesCount.innerHTML = this._count
+    }
+    subscribe(observer) {
+        this._observers.push(observer)
+    }
+
+    unsubscribe(observer) {
+        this._observers = this._observers.filter(obs => obs !== observer)
+    }
+
+    fire(action) {
+        this._observers.forEach(observer => observer.update(action))
+    }
+
+    handleLikesButton() {
+        const that = this
+        this.$wrapper = document.querySelectorAll('span');
+
+        this.$wrapper
+            .querySelector('.like-btn')
+            .addEventListener('click', function() {
+                if (this.classList.contains('fa-solid fa-heart')) {
+                    this.classList.remove('fa-solid fa-heart')
+                    this.classList.add('fa-regular fa-heart')
+                    that.WishListSubject.fire('DEC')
+                } else {
+                    this.classList.add('fa-solid fa-heart')
+                    that.WishListSubject.fire('INC')
+                }
+            })
+    };
+};
+async function compteurLikes() {
+    const { media } = await getDataMedia();
+    let C = new likesCounter();
+};
+compteurLikes();
