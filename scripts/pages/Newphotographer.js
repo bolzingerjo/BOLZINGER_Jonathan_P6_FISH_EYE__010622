@@ -714,3 +714,137 @@ async function compteurLikes() {
     let C = new likesCounter();
 };
 compteurLikes();
+
+//Lightbox
+async function lightbox() {
+    const { media } = await getDataMedia();
+    lightboxAppear();
+};
+
+manageEventlistener(links);
+async function manageEventlistener(links) {
+    const { media } = await getDataMedia();
+    let getLiens = document.querySelectorAll('.lightboxable');
+    for (let i = 0; i < getLiens.length; i++) {
+        let lien = getLiens[i];
+        lien.addEventListener('click', function(event) {
+            // event.stopPropagation();
+            event.preventDefault();
+        })
+    };
+    let links = document.querySelectorAll(".lightboxable[href], .lightboxable[src]");
+    links.forEach(links => links.addEventListener('click', function(event) {
+        event.currentTarget.getAttribute("href");
+        event.currentTarget.getAttribute("src");
+        console.log(event.currentTarget.getAttribute("href"));
+        lightbox(event.currentTarget.getAttribute('href'));
+    }));
+    return links
+        // console.log(links);
+        // console.log(getLiens);
+
+};
+
+//Lightbox
+function lightboxAppear() {
+    createDivLightbox();
+    const lightbox = document.querySelector('lightbox');
+    lightbox.style.display = "block";
+};
+
+function createDivLightbox() { //ok 
+    const lightboxdiv = document.createElement('div');
+    lightboxdiv.classList.add('lightbox');
+    lightboxdiv.appendChild(createCloseLightbox());
+    lightboxdiv.appendChild(createBtnNext());
+    lightboxdiv.appendChild(createBtnPrev());
+    lightboxdiv.appendChild(createDivLightboxContainer());
+    show();
+    return lightboxdiv
+};
+
+function createCloseLightbox() { //ok
+    const btncloseLightbox = document.createElement('button')
+    btncloseLightbox.classList.add('lightbox__close')
+    btncloseLightbox.setAttribute("aria-label", "close dialog");
+    const xmark = document.createElement("i");
+    xmark.className = "fa-solid fa-xmark";
+    btncloseLightbox.append(xmark);
+    btncloseLightbox.onclick = function closeLightbox() {
+        const lightbox = document.querySelector('lightbox');
+        lightbox.style.display = "none";
+    };
+    return btncloseLightbox;
+};
+
+// function closeLightbox() {
+//     const lightbox = document.querySelector('lightbox');
+//     lightbox.style.display = "none";
+// };
+
+function createBtnNext() {
+    const btnNext = document.createElement("button");
+    btnNext.classList.add("lightbox__next")
+    btnNext.setAttribute("aria-label", "next image");
+    const chevronRight = document.createElement("i");
+    chevronRight.className = "fa-solid fa-chevron-right";
+    btnNext.append(chevronRight);
+    return btnNext;
+};
+
+function createBtnPrev() {
+    const btnPrev = document.createElement("button");
+    btnPrev.classList.add("lightbox__next")
+    btnPrev.setAttribute("aria-label", "previous image");
+    const chevronLeft = document.createElement("i");
+    chevronLeft.className = "fa-solid fa-chevron-left";
+    btnPrev.append(chevronLeft);
+    return btnPrev;
+};
+
+function createDivLightboxContainer() {
+    const lightboxContainer = document.createElement("div");
+    lightboxContainer.classList.add("lightbox__container");
+    return lightboxContainer
+};
+
+function show() {
+    const src = manageEventlistener();
+    if (src == ".jpg") // refaire la condition sur l'extension du fichier
+    {
+        // image
+        const img = document.createElement("img");
+        img.setAttribute("src", href);
+        const lightboxContainer = document.querySelector('lightbox__container');
+        lightboxContainer.appendChild(img);
+        return img
+    }
+    if (src == ".mp4") // refaire la condition sur l'extension du fichier
+    {
+        // video
+        const video = document.createElement("video");
+        const source = document.createElement("source");
+        source.setAttribute("src", src);
+        video.appendChild(source);
+        const lightboxContainer = document.querySelector('lightbox__container');
+        lightboxContainer.appendChild(video);
+        return video
+    }
+};
+// let current = 0;
+
+// function next() {
+//     current++;
+//     if (this.current >= this.elements.length) {
+//         this.current = 0;
+//     }
+//     this.show();
+// };
+
+// function prev() {
+//     current--;
+//     if (this.current < 0) {
+//         this.current = this.elements.length;
+//     }
+//     this.show();
+// };

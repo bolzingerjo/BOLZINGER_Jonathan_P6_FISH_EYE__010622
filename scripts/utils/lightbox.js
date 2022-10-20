@@ -104,13 +104,13 @@ class Lightbox {
 };
 
 async function lightbox() {
-    const { media } = await getMedia();
+    const { media } = await getDataMedia();
     let getLiens = document.querySelectorAll('.lightboxable');
     // console.log(getLiens);
     let l = new Lightbox(getLiens);
 };
 async function getHREF() {
-    const { media } = await getMedia();
+    const { media } = await getDataMedia();
     let links = document.querySelectorAll(".lightboxable[href]");
     links.forEach(links => links.addEventListener('click', function(event) {
         event.currentTarget.getAttribute("href");
@@ -245,4 +245,38 @@ async function manageEventlistener() {
         })
     };
 };
+
 //Lightbox
+// class Lightbox {
+
+//     static init() {
+//         let links = document.querySelectorAll(".lightboxable[href]");
+//         links.forEach(links => links.addEventListener('click', function(event) {
+//             event.currentTarget.getAttribute("href");
+//             event.preventDefault();
+//             new Lightbox(e.currentTarget.getAttribute('href'));
+//         }));
+//     }
+
+//     constructor(url) {
+//         this.element = this.buildDOM(url);
+//         document.body.appendChild(this.element);
+//     };
+
+//     loadImage(url) {
+//         const image = new Image();
+//         const container = this.element.querySelector('.lightbox__container');
+//         image.onload = function() {
+//             console.log('chargé');
+//             container.appendChild(image);
+//         };
+//         image.src = url
+//     }
+//     buildDOM(url) {
+//         const dom = document.createElement('div');
+//         dom.classList.add('lightbox');
+//         dom.innerHTML = '<button class = "lightbox__close"></button><button class = "lightbox__next"></button><button class = "lightbox__prev"></button><div class = "lightbox__container"></div>'
+//         return dom
+//     };
+// };
+// Lightbox.init();
