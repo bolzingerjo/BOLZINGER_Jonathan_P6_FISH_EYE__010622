@@ -25,10 +25,8 @@ async function getDataHeader() {
 
 async function createHeader(photographer) {
     const photographersHeader = document.querySelector(".photograph-header");
-    // photographer.forEach((photographer) => {
     const articleHeader = createArticleHeader(photographer);
     photographersHeader.appendChild(articleHeader);
-    // });
 };
 
 function createArticleHeader(photographer) {
@@ -68,15 +66,27 @@ function createImgHeader(photographer) {
 function createLikeCount(photographer) {
     const likesTarifs = document.createElement('div');
     likesTarifs.className = 'comptLikes';
-    const nbr = document.createElement('p');
-    nbr.innerText = '';
-    likesTarifs.appendChild(nbr);
-    nbr.appendChild(createHeart());
+    likesTarifs.appendChild(createSpanCount());
     likesTarifs.appendChild(PricePerDay(photographer));
     return likesTarifs
 };
 
-function createHeart() {
+function createSpanCount() {
+    const span = document.createElement('span');
+    span.className = 'span__count'
+    span.appendChild(createPCount());
+    span.appendChild(createHeartCount());
+    return span
+};
+
+function createPCount() {
+    const nbr = document.createElement('p');
+    nbr.className = 'cmptlikes';
+    nbr.innerText = '0';
+    return nbr
+};
+
+function createHeartCount() {
     const imgHeart = document.createElement('i');
     imgHeart.className = 'fa-solid fa-heart';
     return imgHeart
@@ -123,6 +133,16 @@ async function initArticlePhoto() {
     // console.log(media);
     createArticlePhotoVideo(media);
     gestionVideo();
+    const totallike = document.querySelectorAll('.likes');
+    console.log(totallike.innerHTML);
+    const initialValue = 0;
+    const sumWithInitial = totallike.reduce(
+        (previousValue, currentValue) => previousValue + currentValue,
+        initialValue
+    );
+
+    console.log(sumWithInitial);
+    console.log(totallike);
 };
 async function getDataMedia() {
     // remplacer par les données récupérées dans le json
@@ -274,12 +294,12 @@ function createArticleVideo(media) {
     return articleVideo
 };
 //Photo
-function createLinkLightboxImages(media) {
+function createLinkLightboxImages(media, links) {
     const linkLightbox = document.createElement('a');
     const pictures = `assets/images/${media.image}`;
     linkLightbox.setAttribute("href", pictures);
     linkLightbox.setAttribute("aria-label", media.title);
-    linkLightbox.setAttribute("onclick", "lightbox()");
+    linkLightbox.setAttribute("onclick", "lightbox(links)");
     linkLightbox.className = 'lightboxable';
     linkLightbox.appendChild(createImgMedia(media));
     return linkLightbox
@@ -319,7 +339,7 @@ function createSpanUnderPhoto(media) {
 };
 
 function createCountLikes(media) {
-    const cptLikes = document.createElement('p');
+    const cptLikes = document.createElement('div');
     cptLikes.textContent = media.likes;
     cptLikes.className = 'likes';
     return cptLikes
@@ -327,16 +347,11 @@ function createCountLikes(media) {
 
 function createLikeButton(media) {
     const likebtn = document.createElement('button');
-    likebtn.className = '.like-btn';
+    likebtn.className = 'like-btn';
     likebtn.appendChild(createHeart());
     return likebtn
 };
 
-function createHeart() {
-    const imgHeart = document.createElement('i');
-    imgHeart.className = 'fa-solid fa-heart';
-    return imgHeart
-};
 // Photo
 //Video
 function createLinkLightboxVideo(media) {
@@ -456,7 +471,7 @@ function createBtnForward() {
 };
 
 function createCountLikes(media) {
-    const cptLikes = document.createElement('p');
+    const cptLikes = document.createElement('div');
     cptLikes.textContent = media.likes;
     cptLikes.className = 'likes';
     return cptLikes
@@ -464,16 +479,18 @@ function createCountLikes(media) {
 
 function createLikeButton() {
     const likebtn = document.createElement('button');
-    likebtn.className = '.like-btn';
+    likebtn.className = 'like-btn';
     likebtn.appendChild(createHeart());
     return likebtn
 };
 
 function createHeart() {
-    const imgHeart = document.createElement('i');
-    imgHeart.className = 'fa-solid fa-heart';
+    const imgHeart = document.createElement('img');
+    imgHeart.className = 'regular__heart';
+    imgHeart.setAttribute("src", "./assets/icons/heart-regular.svg");
     return imgHeart
 };
+
 //Video
 //Trier
 trierPop();
@@ -659,70 +676,44 @@ const validMessage = function(inputMessage) {
     console.log(inputMessage.value);
 };
 //Events
+//Cpt Likes
+compteurLikes();
 
-class likesCounter {
-    constructor() {
-        this._count = 0
-        this._$likesCount = document.querySelector('.comptLikes p')
-        this._observers = []
-        this.handleLikesButton()
-    }
-
-    update(action) {
-        if (action === 'INC') {
-            this._count += 1
-        } else if (action === 'DEC') {
-            this._count -= 1
-        } else {
-            throw "Unknow action"
-        }
-
-        this._$likesCount.innerHTML = this._count
-    }
-    subscribe(observer) {
-        this._observers.push(observer)
-    }
-
-    unsubscribe(observer) {
-        this._observers = this._observers.filter(obs => obs !== observer)
-    }
-
-    fire(action) {
-        this._observers.forEach(observer => observer.update(action))
-    }
-
-    handleLikesButton() {
-        const that = this
-        this.$wrapper = document.querySelectorAll('span');
-
-        this.$wrapper
-            .querySelector('.like-btn')
-            .addEventListener('click', function() {
-                if (this.classList.contains('fa-solid fa-heart')) {
-                    this.classList.remove('fa-solid fa-heart')
-                    this.classList.add('fa-regular fa-heart')
-                    that.WishListSubject.fire('DEC')
-                } else {
-                    this.classList.add('fa-solid fa-heart')
-                    that.WishListSubject.fire('INC')
-                }
-            })
-    };
-};
 async function compteurLikes() {
     const { media } = await getDataMedia();
-    let C = new likesCounter();
+    handleLikesButton();
 };
-compteurLikes();
+
+function handleLikesButton() {
+    const btnLike = document.querySelectorAll('.like-btn');
+    // console.log(btnLike);
+    btnLike.forEach(button => button.addEventListener('click', function(event) {
+        const totallikes = document.querySelector('.cmptlikes');
+        console.log(totallikes.innerHTML);
+        event.currentTarget.getAttribute("src");
+        console.log(event.currentTarget.firstChild.getAttribute("src"));
+        if (event.currentTarget.firstChild.getAttribute("src") == './assets/icons/heart-solid.svg') {
+            // console.log(2);
+            event.currentTarget.firstChild.setAttribute("src", './assets/icons/heart-regular.svg');
+            event.currentTarget.previousSibling.innerHTML--
+                totallikes.innerHTML--
+        } else {
+            // console.log(1);
+            event.currentTarget.firstChild.setAttribute("src", './assets/icons/heart-solid.svg');
+            event.currentTarget.previousSibling.innerHTML++
+                totallikes.innerHTML++
+        }
+    }));
+};
 
 //Lightbox
 async function lightbox() {
     const { media } = await getDataMedia();
     lightboxAppear();
 };
-
-manageEventlistener(links);
-async function manageEventlistener(links) {
+//Cpt Likes
+manageEventlistener();
+async function manageEventlistener() {
     const { media } = await getDataMedia();
     let getLiens = document.querySelectorAll('.lightboxable');
     for (let i = 0; i < getLiens.length; i++) {
@@ -733,22 +724,19 @@ async function manageEventlistener(links) {
         })
     };
     let links = document.querySelectorAll(".lightboxable[href], .lightboxable[src]");
-    links.forEach(links => links.addEventListener('click', function(event) {
+    links.forEach(link => link.addEventListener('click', function(event) {
         event.currentTarget.getAttribute("href");
         event.currentTarget.getAttribute("src");
         console.log(event.currentTarget.getAttribute("href"));
-        lightbox(event.currentTarget.getAttribute('href'));
     }));
-    return links
-        // console.log(links);
-        // console.log(getLiens);
-
+    // console.log(links);
+    // console.log(getLiens);
 };
 
 //Lightbox
 function lightboxAppear() {
     createDivLightbox();
-    const lightbox = document.querySelector('lightbox');
+    const lightbox = document.querySelector('.lightbox');
     lightbox.style.display = "block";
 };
 

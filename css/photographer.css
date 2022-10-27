@@ -181,7 +181,12 @@
         bottom: 0px;
     }
     
-    .comptLikes p {
+    .span__count {
+        display: flex;
+        align-items: center;
+    }
+    
+    .cmptlikes {
         color: black;
         font-size: 20px;
         margin: 0px;
@@ -206,16 +211,17 @@
     .article-Photo {
         justify-self: center;
         width: 100%;
+        height: 400px;
     }
     
     .photobook {
-        height: 400px;
+        height: 369px;
         width: 100%;
     }
     
     .lightboxable {
         display: block;
-        height: 400px;
+        max-height: 369px;
         width: 100%;
     }
     
@@ -242,9 +248,22 @@
         margin: 0px 8px;
     }
     
-    i {
-        color: #D3573C;
-        /* width: 15px; */
+    .regular__heart {
+        fill: #D3573C;
+        width: 15px;
+    }
+    
+    .like-btn {
+        width: 15px;
+        height: 15px;
+        color: white;
+        border: none;
+        background-color: white;
+        border-radius: 5px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
     /*photos*/
     /* video */
@@ -252,16 +271,17 @@
     .article-video {
         justify-self: center;
         width: 100%;
+        height: 400px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
     }
     
-    .video {
+    .article-video .video {
         width: 100%;
     }
     
-    .controls {
+    .article-video .controls {
         visibility: hidden;
         width: 100%;
         border-radius: 10px;
@@ -271,16 +291,16 @@
         display: flex;
     }
     
-    button .controls {
+    .article-video button .controls {
         background: linear-gradient(to bottom, #901C1C, #D3573C);
     }
     
-    .player:hover .controls,
-    .player:focus .controls {
+    .article-video .player:hover .controls,
+    .article-video .player:focus .controls {
         opacity: 1;
     }
     
-    button:before {
+    .article-video button:before {
         font-family: "DM Sans", sans-serif;
         font-size: 20px;
         position: relative;
@@ -289,36 +309,36 @@
         text-shadow: 1px 1px 0px #D3573C;
     }
     
-    .play:before {
+    .article-video .play:before {
         font-size: 22px;
     }
     
-    button .timer {
+    .article-video button .timer {
         height: 38px;
         line-height: 19px;
         box-shadow: inset 0 -5px 25px #D3573C;
         border-right: 1px solid #901C1C;
     }
     
-    button.play,
-    button.stop,
-    button.fwd,
-    button.rwd {
+    .article-video button.play,
+    .article-video button.stop,
+    .article-video button.fwd,
+    .article-video button.rwd {
         position: relative;
         border: 0;
         flex: 1;
         outline: none;
     }
     
-    .play {
+    .article-video .play {
         border-radius: 10px 0 0 10px;
     }
     
-    .fwd {
+    .article-video .fwd {
         border-radius: 0 10px 10px 0;
     }
     
-    .timer {
+    .article-video .timer {
         line-height: 38px;
         font-size: 10px;
         font-family: "DM Sans", sans-serif;
@@ -328,7 +348,7 @@
         position: relative;
     }
     
-    .timer div {
+    .article-video .timer div {
         position: absolute;
         background-color: rgba(255, 255, 255, 0.2);
         left: 0;
@@ -338,7 +358,7 @@
         z-index: 2;
     }
     
-    .timer span {
+    .article-video .timer span {
         position: absolute;
         z-index: 3;
         left: 19px;
@@ -349,11 +369,11 @@
         box-shadow: inset 1px 1px 2px black;
     }
     
-    button:active {
+    .article-video button:active {
         box-shadow: inset 3px 3px 2px black;
     }
     
-    .active:before {
+    .article-video .active:before {
         color: red;
     }
     /*video */
