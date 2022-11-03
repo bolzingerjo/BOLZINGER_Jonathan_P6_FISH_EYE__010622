@@ -133,16 +133,6 @@ async function initArticlePhoto() {
     // console.log(media);
     createArticlePhotoVideo(media);
     gestionVideo();
-    const totallike = document.querySelectorAll('.likes');
-    console.log(totallike.innerHTML);
-    const initialValue = 0;
-    const sumWithInitial = totallike.reduce(
-        (previousValue, currentValue) => previousValue + currentValue,
-        initialValue
-    );
-
-    console.log(sumWithInitial);
-    console.log(totallike);
 };
 async function getDataMedia() {
     // remplacer par les données récupérées dans le json
@@ -682,6 +672,7 @@ compteurLikes();
 async function compteurLikes() {
     const { media } = await getDataMedia();
     handleLikesButton();
+    addLikescounter();
 };
 
 function handleLikesButton() {
@@ -706,12 +697,26 @@ function handleLikesButton() {
     }));
 };
 
+function addLikescounter() {
+    const totallike = document.querySelectorAll('.likes');
+    const arrayTotallike = Array.from(totallike);
+    // console.log(arrayTotallike);
+    let toto = 0;
+    for (let i = 0; i < arrayTotallike.length; i++) {
+        let like = arrayTotallike[i].innerText;
+        // console.log(like);
+        toto += parseInt(like);
+    };
+    document.querySelector('.cmptlikes').innerText = toto;
+    // console.log(toto)
+};
+//Cpt Likes
 //Lightbox
 async function lightbox() {
     const { media } = await getDataMedia();
     lightboxAppear();
 };
-//Cpt Likes
+
 manageEventlistener();
 async function manageEventlistener() {
     const { media } = await getDataMedia();
