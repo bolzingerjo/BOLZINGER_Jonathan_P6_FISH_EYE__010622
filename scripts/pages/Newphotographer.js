@@ -739,18 +739,12 @@ function closeLightbox() {
     const lightbox = document.querySelector('.lightbox');
     const imgLightbox = document.querySelector('.lightbox-image');
     const source = document.querySelector('lightbox-video');
-    if (imgLightbox.style.display = "block") // refaire la condition sur l'extension du fichier
-    {
-        imgLightbox.removeAttribute("src");
-        imgLightbox.style.display = "none";
-
-    } else if (source.style.display = "block") // refaire la condition sur l'extension du fichier
-    {
-        source.removeAttribute("src");
-        source.style.display = "none";
-    }
     lightbox.style.display = "none";
     lightbox.setAttribute('aria-hidden', true);
+    imgLightbox.removeAttribute("src");
+    imgLightbox.style.display = "none";
+    source.removeAttribute("src");
+    source.style.display = "none";
 };
 
 function show() {
@@ -762,16 +756,20 @@ function show() {
         // console.log(src);
         if (photo.split(".").pop() == "jpg") // refaire la condition sur l'extension du fichier
         {
-            console.log(1);
+            // console.log(1);
             // image
+            const source = document.querySelector('.lightbox-video');
+            source.style.display = "none";
             const img = document.querySelector('.lightbox-image');
             img.style.display = "block";
             img.setAttribute("src", photo);
 
         } else if (photo.split(".").pop() == "mp4") // refaire la condition sur l'extension du fichier
         {
-            console.log(2);
+            // console.log(2);
             //video
+            const img = document.querySelector('.lightbox-image');
+            img.style.display = "none";
             const source = document.querySelector('.lightbox-video');
             source.style.display = "block";
             source.setAttribute("src", photo);
@@ -781,9 +779,7 @@ function show() {
 };
 
 function next() {
-
     const btnNext = document.querySelector(".lightbox__next");
-    // console.log(src);
     btnNext.addEventListener('click', function(event) {
         event.preventDefault();
         const img = document.querySelector('.lightbox-image', '.lightbox-video');
@@ -791,44 +787,39 @@ function next() {
         const srcs = Array.from(document.querySelectorAll('.lightboxable'));
         const gallery = srcs.map(src => src.getAttribute('href'));
         let indexGallery = gallery.findIndex(image => image === href);
+        img.removeAttribute("src");
+        if (indexGallery > gallery.length) {
+            indexGallery = 0;
+        };
+        let nextImg = img.setAttribute('src', gallery[indexGallery + 1]);
+        show(nextImg);
+        console.log(img);
         console.log(href);
         console.log(srcs);
         console.log(gallery);
         console.log(indexGallery);
-        img.innerHTML = '';
-        let nextImg = img.setAttribute('src', gallery[indexGallery + 1]);
-        if (indexGallery > gallery.length) {
-            indexGallery = [0];
-        };
-        show(gallery[indexGallery + 1]);
-        // else if (href.split(".").pop() == "mp4") {
-        //     const photo = document.querySelector('.lightbox-image');
-        //     photo.style.display = "none";
-        //     const source = document.querySelector('.lightbox-video');
-        //     source.style.display = "block";
-        //     source.setAttribute('src', gallery[indexGallery]);
-        //     source.setAttribute("controls", 'controls');
-        // } else if (href.split(".").pop() == "jpg") {
-        //     const source = document.querySelector('.lightbox-video');
-        //     source.style.display = "none";
-        //     const photo = document.querySelector('.lightbox-image');
-        //     photo.style.display = "block";
-        //     //     photo.setAttribute("src", gallery[current.indexGallery]);
-        // }
     })
-
-    // let current = 0;
-    // current++;
-    // if (this.current >= this.elements.length) {
-    //     this.current = 0;
-    // }
-    // show();
 };
 
 // function prev() {
-//     current--;
-//     if (this.current < 0) {
-//         this.current = this.elements.length;
-//     }
-//     show();
+//     const btnNext = document.querySelector(".lightbox__prev");
+//     btnNext.addEventListener('click', function(event) {
+//         event.preventDefault();
+//         const img = document.querySelector('.lightbox-image', '.lightbox-video');
+//         let href = img.getAttribute("src");
+//         const srcs = Array.from(document.querySelectorAll('.lightboxable'));
+//         const gallery = srcs.map(src => src.getAttribute('href'));
+//         let indexGallery = gallery.findIndex(image => image === href);
+//         img.removeAttribute("src");
+//         if (indexGallery = 0) {
+//             indexGallery = gallery.length;
+//         };
+//         let prevImg = img.setAttribute('src', gallery[indexGallery - 1]);
+//         show(prevImg);
+//         // console.log(img);
+//         // console.log(href);
+//         // console.log(srcs);
+//         // console.log(gallery);
+//         console.log(indexGallery);
+//     })
 // };
