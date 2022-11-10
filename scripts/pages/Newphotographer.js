@@ -790,9 +790,22 @@ function next() {
         img.removeAttribute("src");
         if (indexGallery > gallery.length) {
             indexGallery = 0;
-        };
+        } else if (href.split(".").pop() == "mp4") {
+            const photo = document.querySelector('.lightbox-image');
+            photo.style.display = "none";
+            const source = document.querySelector('.lightbox-video');
+            source.style.display = "block";
+            source.setAttribute('src', gallery[indexGallery]);
+            source.setAttribute("controls", 'controls');
+        } else if (href.split(".").pop() == "jpg") {
+            const source = document.querySelector('.lightbox-video');
+            source.style.display = "none";
+            const photo = document.querySelector('.lightbox-image');
+            photo.style.display = "block";
+            //     photo.setAttribute("src", gallery[current.indexGallery]);
+        }
         let nextImg = img.setAttribute('src', gallery[indexGallery + 1]);
-        show(nextImg);
+        // show(nextImg);
         console.log(img);
         console.log(href);
         console.log(srcs);
@@ -823,3 +836,9 @@ function next() {
 //         console.log(indexGallery);
 //     })
 // };
+img.innerHTML = '';
+let nextImg = img.setAttribute('src', gallery[indexGallery + 1]);
+if (indexGallery > gallery.length) {
+    indexGallery = [0];
+};
+show(gallery[indexGallery + 1]);
