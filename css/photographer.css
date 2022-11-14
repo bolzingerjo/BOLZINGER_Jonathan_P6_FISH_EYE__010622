@@ -49,6 +49,7 @@
         clip-path: circle(50%);
         height: 200px;
         width: 200px;
+        object-fit: cover;
     }
     /*header*/
     /*nav de tri*/
@@ -92,6 +93,26 @@
     
     .ulPrincipale a {
         padding: 8px 16px;
+    }
+    
+    .btn-pop,
+    .btn-date,
+    .btn-titre {
+        width: 100%;
+        background-color: transparent;
+        border: none;
+        text-align: left;
+        color: white;
+        box-shadow: none;
+        padding: 0px;
+        font-size: 15px;
+        font-weight: 600;
+    }
+    
+    .btn-pop:hover,
+    .btn-date:hover,
+    .btn-titre:hover {
+        box-shadow: none;
     }
     
     .ulSecondaire {
@@ -217,6 +238,7 @@
     .photobook {
         height: 369px;
         width: 100%;
+        object-fit: cover;
     }
     
     .lightboxable {
