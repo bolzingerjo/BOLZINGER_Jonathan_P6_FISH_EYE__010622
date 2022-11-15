@@ -58,13 +58,6 @@ function createIndexDOM(photographer) {
 function accessibilityIndex() {
     const indexNav = document.querySelector('.photographer_section');
     indexNav.setAttribute("aria-label", 'photographers navigation');
-    const indexLogo = document.querySelector('.logo');
-    indexLogo.setAttribute("alt", 'Fisheye home page');
-    const linkIndex = document.createElement('a');
-    const head = document.querySelector('header');
-    head.appendChild(linkIndex);
-    linkIndex.appendChild(indexLogo);
-    linkIndex.href = "index.html";
 };
 
 async function getDataPhotographers() {

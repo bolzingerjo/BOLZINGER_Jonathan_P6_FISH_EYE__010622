@@ -534,12 +534,12 @@ async function trierTitre() {
 };
 //Trier
 // Modale de contact
+const modal = document.getElementById("contact_modal");
+const focusableSelector = 'img, input, button';
+let focusables = [];
+let previouslyFocusedElement = null;
 
 function displayModal() {
-    const focusableSelector = 'img, input, button';
-    let focusables = [];
-    let previouslyFocusedElement = null;
-    const modal = document.getElementById("contact_modal");
     modal.style.display = "block";
     modal.setAttribute('aria-hidden', false);
     modal.setAttribute('aria-modal', true);
@@ -551,8 +551,6 @@ function displayModal() {
 };
 
 function closeModal() {
-    const modal = document.getElementById("contact_modal");
-    let previouslyFocusedElement = null;
     if (previouslyFocusedElement !== null) previouslyFocusedElement.focus()
     modal.style.display = "none";
     modal.setAttribute('aria-hidden', true);
@@ -566,7 +564,6 @@ const stopPropagation = function(e) {
 
 const focusInModal = function(e) {
     e.preventDefault()
-    let focusables = [];
     let index = focusables.findIndex(f => f === modal.querySelector(':focus'))
     if (e.shiftKey === true) {
         index--
@@ -911,7 +908,7 @@ function show(photo, video) {
     }
 };
 
-function showPhoto(photo) {
+function showPhoto(photo, media) {
     const source = document.querySelector('.lightbox-video');
     source.style.display = "none";
     const img = document.querySelector('.lightbox-image');
