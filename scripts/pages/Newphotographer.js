@@ -149,15 +149,16 @@ async function getDataMedia() {
 };
 async function createArticlePhotoVideo(media) {
     const photographiesSection = document.querySelector(".photograph-article");
-
+    let index = 0;
     media.forEach((media) => {
         if (object = media.image) {
-            const photoCardDOM = createArticlePhoto(media);
+            const photoCardDOM = createArticlePhoto(media, index);
             photographiesSection.appendChild(photoCardDOM);
         } else if (object = media.video) {
-            const videoCardDOM = createArticleVideo(media);
+            const videoCardDOM = createArticleVideo(media, index);
             photographiesSection.appendChild(videoCardDOM);
         } else { console.log('erreur') };
+        index++;
     });
 };
 
@@ -268,30 +269,31 @@ function gestionVideo() {
     };
 };
 
-function createArticlePhoto(media) {
+function createArticlePhoto(media, index) {
     const articlePhoto = document.createElement('article');
     articlePhoto.className = 'article-Photo';
-    articlePhoto.appendChild(createLinkLightboxImages(media));
+    articlePhoto.appendChild(createLinkLightboxImages(media, index));
     articlePhoto.appendChild(createDivUnderPhoto(media));
     return articlePhoto
 };
 
-function createArticleVideo(media) {
+function createArticleVideo(media, index) {
     const articleVideo = document.createElement('article');
     articleVideo.className = 'article-video';
-    articleVideo.appendChild(createLinkLightboxVideo(media));
+    articleVideo.appendChild(createLinkLightboxVideo(media, index));
     articleVideo.appendChild(createDivControls());
     articleVideo.appendChild(createDivTxtVideo(media));
     return articleVideo
 };
 //Photo
-function createLinkLightboxImages(media, links) {
+function createLinkLightboxImages(media, index) {
     const linkLightbox = document.createElement('a');
     const pictures = `assets/images/${media.image}`;
     linkLightbox.setAttribute("href", pictures);
     linkLightbox.setAttribute("aria-label", media.title);
     linkLightbox.className = 'lightboxable';
     linkLightbox.appendChild(createImgMedia(media));
+    linkLightbox.dataset.index = index;
     return linkLightbox
 };
 
@@ -344,13 +346,14 @@ function createLikeButton(media) {
 
 // Photo
 //Video
-function createLinkLightboxVideo(media) {
+function createLinkLightboxVideo(media, index) {
     const linkLightbox = document.createElement('a');
     const videos = `assets/images/${media.video}`;
     linkLightbox.setAttribute("href", videos);
     linkLightbox.setAttribute("type", 'video/mp4');
     linkLightbox.className = 'lightboxable';
     linkLightbox.appendChild(createElmtVideo(media));
+    linkLightbox.dataset.index = index;
     return linkLightbox
 };
 
@@ -832,10 +835,14 @@ launchLightbox();
 async function launchLightbox() {
     const { media } = await getDataMedia();
     const src = document.querySelectorAll(".lightboxable[href]");
+
     src.forEach(link => link.addEventListener('click', function(event) {
         let photo = event.currentTarget.getAttribute("href");
+        let indexPhoto = event.currentTarget.dataset.index;
+        console.log(indexPhoto);
+        // photo.dataset.indexPhoto;
         lightbox();
-        show(photo);
+        show(photo, indexPhoto);
     }));
 };
 
@@ -868,14 +875,19 @@ function next() {
 
     const img = document.querySelector('.lightbox-image', '.lightbox-video');
     let href = img.getAttribute("src");
-    const srcs = Array.from(document.querySelectorAll('.lightboxable'));
-    const gallery = srcs.map(src => src.getAttribute('href'));
-    let currentIndex = gallery.findIndex(image => image === href);
-    let nextImg = gallery[currentIndex + 1]
-    show(nextImg);
-    if (currentIndex > gallery.length) {
-        currentIndex = 0;
+    // const srcs = Array.from(document.querySelectorAll('.lightboxable'));
+    // const gallery = srcs.map(src => src.getAttribute('href'));
+    // recup le dataset
+    let currentIndex = img.dataset.index;
+    console.log(currentIndex);
+    let nextIndex = currentIndex + 1;
+    if (nextIndex > gallery.length) {
+        nextIndex = 0;
     }
+    // recup img par rapport a next index
+    let nextImg = gallery[nextIndex];
+    console.log(nextImg);
+    show(nextImg);
 };
 
 function managePrevButton() {
@@ -890,31 +902,39 @@ function prev() {
 
     const img = document.querySelector('.lightbox-image', '.lightbox-video');
     let href = img.getAttribute("src");
-    const srcs = Array.from(document.querySelectorAll('.lightboxable'));
-    const gallery = srcs.map(src => src.getAttribute('href'));
+    // const srcs = Array.from(document.querySelectorAll('.lightboxable'));
+    // const gallery = srcs.map(src => src.getAttribute('href'));
     let currentIndex = gallery.findIndex(image => image === href);
-    let prevImg = gallery[currentIndex - 1]
+    let prevIndex = currentIndex - 1;
+    console.log(prevIndex);
+    console.log(currentIndex);
+    if (prevIndex < 0) {
+        prevIndex = gallery.length - 1;
+        console.log(prevIndex);
+    }
+    let prevImg = gallery[prevIndex];
+    console.log(prevImg);
     show(prevImg);
-    if (currentIndex < 0) {
-        currentIndex = gallery.length;
+};
+
+function show(media) {
+    if (media.split(".").pop() == "jpg") {
+        console.log(1);
+        showPhoto(media);
+    } else if (media.split(".").pop() == "mp4") {
+        console.log(2);
+        showVideo(media);
     }
 };
 
-function show(photo, video) {
-    if (photo.split(".").pop() == "jpg") {
-        showPhoto(photo);
-    } else if (video.split(".").pop() == "mp4") {
-        showVideo(video);
-    }
-};
-
-function showPhoto(photo, media) {
+function showPhoto(photo, indexPhoto) {
     const source = document.querySelector('.lightbox-video');
     source.style.display = "none";
     const img = document.querySelector('.lightbox-image');
     img.style.display = "block";
     img.setAttribute("src", photo);
-}
+    img.dataset.index = indexPhoto;
+};
 
 function showVideo(video) {
     const img = document.querySelector('.lightbox-image');
@@ -923,7 +943,7 @@ function showVideo(video) {
     source.style.display = "block";
     source.setAttribute("src", video);
     source.setAttribute("controls", 'controls');
-}
+};
 
 function manageCloseButton() {
     const btnclose = document.querySelector(".lightbox__close");
