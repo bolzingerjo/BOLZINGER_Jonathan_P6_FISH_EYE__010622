@@ -840,7 +840,6 @@ async function launchLightbox() {
         let photo = event.currentTarget.getAttribute("href");
         let indexPhoto = event.currentTarget.dataset.index;
         console.log(indexPhoto);
-        // photo.dataset.indexPhoto;
         lightbox();
         show(photo, indexPhoto);
     }));
@@ -878,6 +877,8 @@ function next() {
     // const srcs = Array.from(document.querySelectorAll('.lightboxable'));
     // const gallery = srcs.map(src => src.getAttribute('href'));
     // recup le dataset
+    let index = document.querySelector('lightboxable dataset');
+    console.log(index);
     let currentIndex = img.dataset.index;
     console.log(currentIndex);
     let nextIndex = currentIndex + 1;
@@ -917,10 +918,10 @@ function prev() {
     show(prevImg);
 };
 
-function show(media) {
+function show(media, indexPhoto) {
     if (media.split(".").pop() == "jpg") {
         console.log(1);
-        showPhoto(media);
+        showPhoto(media, indexPhoto);
     } else if (media.split(".").pop() == "mp4") {
         console.log(2);
         showVideo(media);
