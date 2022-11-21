@@ -839,7 +839,7 @@ async function launchLightbox() {
     src.forEach(link => link.addEventListener('click', function(event) {
         let photo = event.currentTarget.getAttribute("href");
         let indexPhoto = event.currentTarget.dataset.index;
-        console.log(indexPhoto);
+        // console.log(indexPhoto);
         lightbox();
         show(photo, indexPhoto);
     }));
@@ -872,23 +872,32 @@ function manageNextButton() {
 
 function next() {
 
-    const img = document.querySelector('.lightbox-image', '.lightbox-video');
-    let href = img.getAttribute("src");
-    // const srcs = Array.from(document.querySelectorAll('.lightboxable'));
-    // const gallery = srcs.map(src => src.getAttribute('href'));
+    const photo = document.querySelector('.lightbox-image');
+    const video = document.querySelector('.lightbox-video');
+    let media
+    if (photo.style.display == 'block') {
+        media = photo;
+    } else if (video.style.display == 'block') {
+        media = video
+    };
+    //NE PAS TOUCHER !!!!!!
+    let gallery = document.querySelectorAll('.lightboxable');
     // recup le dataset
-    let index = document.querySelector('lightboxable dataset');
-    console.log(index);
-    let currentIndex = img.dataset.index;
-    console.log(currentIndex);
+    let currentIndex = parseInt(media.dataset.index);
     let nextIndex = currentIndex + 1;
-    if (nextIndex > gallery.length) {
+    // console.log(nextIndex);
+    if (nextIndex > gallery.length - 1) {
         nextIndex = 0;
     }
+    console.log(currentIndex, nextIndex, gallery.length);
     // recup img par rapport a next index
-    let nextImg = gallery[nextIndex];
-    console.log(nextImg);
-    show(nextImg);
+    let nextSrc = "";
+    gallery.forEach(function(link) {
+        if (parseInt(link.dataset.index) == nextIndex) {
+            nextSrc = link.getAttribute('href');
+        }
+    });
+    show(nextSrc, nextIndex);
 };
 
 function managePrevButton() {
@@ -900,50 +909,65 @@ function managePrevButton() {
 };
 
 function prev() {
-
-    const img = document.querySelector('.lightbox-image', '.lightbox-video');
-    let href = img.getAttribute("src");
-    // const srcs = Array.from(document.querySelectorAll('.lightboxable'));
-    // const gallery = srcs.map(src => src.getAttribute('href'));
-    let currentIndex = gallery.findIndex(image => image === href);
+    const photo = document.querySelector('.lightbox-image');
+    const video = document.querySelector('.lightbox-video');
+    let media
+    if (photo.style.display == 'block') {
+        media = photo;
+    } else if (video.style.display == 'block') {
+        media = video
+    };
+    console.log(media);
+    //NE PAS TOUCHER !!!!!!
+    let gallery = document.querySelectorAll('.lightboxable');
+    // recup le dataset
+    let currentIndex = parseInt(media.dataset.index);
     let prevIndex = currentIndex - 1;
-    console.log(prevIndex);
-    console.log(currentIndex);
     if (prevIndex < 0) {
         prevIndex = gallery.length - 1;
-        console.log(prevIndex);
     }
-    let prevImg = gallery[prevIndex];
-    console.log(prevImg);
-    show(prevImg);
+    console.log(currentIndex, prevIndex, gallery.length);
+    // recup img par rapport a prev index
+    let prevSrc = "";
+    gallery.forEach(function(link) {
+        if (parseInt(link.dataset.index) == prevIndex) {
+            prevSrc = link.getAttribute('href');
+        }
+    });
+    show(prevSrc, prevIndex);
 };
 
 function show(media, indexPhoto) {
     if (media.split(".").pop() == "jpg") {
-        console.log(1);
+        // console.log(1);
         showPhoto(media, indexPhoto);
     } else if (media.split(".").pop() == "mp4") {
-        console.log(2);
-        showVideo(media);
+        // console.log(2);
+        showVideo(media, indexPhoto);
     }
 };
 
 function showPhoto(photo, indexPhoto) {
     const source = document.querySelector('.lightbox-video');
     source.style.display = "none";
+    source.dataset.index = "";
+    source.setAttribute('src', "");
     const img = document.querySelector('.lightbox-image');
     img.style.display = "block";
     img.setAttribute("src", photo);
     img.dataset.index = indexPhoto;
 };
 
-function showVideo(video) {
+function showVideo(video, indexPhoto) {
     const img = document.querySelector('.lightbox-image');
     img.style.display = "none";
+    img.setAttribute('src', "");
+    img.dataset.index = "";
     const source = document.querySelector('.lightbox-video');
     source.style.display = "block";
     source.setAttribute("src", video);
     source.setAttribute("controls", 'controls');
+    source.dataset.index = indexPhoto;
 };
 
 function manageCloseButton() {
