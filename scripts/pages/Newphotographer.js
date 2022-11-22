@@ -1,4 +1,4 @@
-initHeaderPhotographe();
+initHeaderPhotographe()
 
 async function initHeaderPhotographe() {
     // Récupère les datas des photographes
@@ -124,7 +124,7 @@ function createTitleModal(photographer) {
     return h2
 };
 
-initArticlePhoto();
+initArticlePhoto()
 
 async function initArticlePhoto() {
     // Récupère les medi
@@ -285,7 +285,7 @@ function createArticleVideo(media, index) {
     articleVideo.appendChild(createDivTxtVideo(media));
     return articleVideo
 };
-//Photo
+// Photo
 function createLinkLightboxImages(media, index) {
     const linkLightbox = document.createElement('a');
     const pictures = `assets/images/${media.image}`;
@@ -338,14 +338,13 @@ function createCountLikes(media) {
 };
 
 function createLikeButton(media) {
-    const likebtn = document.createElement('button');
-    likebtn.className = 'like-btn';
-    likebtn.appendChild(createHeart());
+    const likebtn = document.createElement('button')
+    likebtn.className = 'like-btn'
+    likebtn.appendChild(createHeart())
     return likebtn
 };
-
 // Photo
-//Video
+// Video
 function createLinkLightboxVideo(media, index) {
     const linkLightbox = document.createElement('a');
     const videos = `assets/images/${media.video}`;
@@ -460,20 +459,6 @@ function createBtnForward() {
     forward.setAttribute("data-icon", 'F');
     forward.setAttribute("aria-label", 'Fast forward');
     return forward
-};
-
-function createCountLikes(media) {
-    const cptLikes = document.createElement('div');
-    cptLikes.textContent = media.likes;
-    cptLikes.className = 'likes';
-    return cptLikes
-};
-
-function createLikeButton() {
-    const likebtn = document.createElement('button');
-    likebtn.className = 'like-btn';
-    likebtn.appendChild(createHeart());
-    return likebtn
 };
 
 function createHeart() {
@@ -740,96 +725,6 @@ async function manageEventlistener() {
         })
     };
 };
-// async function lightbox() {
-//     const { media } = await getDataMedia();
-//     show();
-// };
-// //Lightbox
-// function lightboxAppear() {
-//     const lightbox = document.querySelector('.lightbox');
-//     lightbox.style.display = "block";
-//     lightbox.setAttribute('aria-hidden', false);
-// };
-
-// function closeLightbox() {
-//     const lightbox = document.querySelector('.lightbox');
-//     const imgLightbox = document.querySelector('.lightbox-image');
-//     const source = document.querySelector('lightbox-video');
-//     lightbox.style.display = "none";
-//     lightbox.setAttribute('aria-hidden', true);
-//     imgLightbox.removeAttribute("src");
-//     imgLightbox.style.display = "none";
-//     source.removeAttribute("src");
-//     source.style.display = "none";
-// };
-
-// function show() {
-//     const src = document.querySelectorAll(".lightboxable[href]");
-//     src.forEach(link => link.addEventListener('click', function(event) {
-//         let photo = event.currentTarget.getAttribute("href");
-//         lightboxAppear();
-//         // console.log(photo.split(".").pop());
-//         // console.log(src);
-//         if (photo.split(".").pop() == "jpg") // refaire la condition sur l'extension du fichier
-//         {
-//             // console.log(1);
-//             // image
-//             const source = document.querySelector('.lightbox-video');
-//             source.style.display = "none";
-//             const img = document.querySelector('.lightbox-image');
-//             img.style.display = "block";
-//             img.setAttribute("src", photo);
-
-//         } else if (photo.split(".").pop() == "mp4") // refaire la condition sur l'extension du fichier
-//         {
-//             // console.log(2);
-//             //video
-//             const img = document.querySelector('.lightbox-image');
-//             img.style.display = "none";
-//             const source = document.querySelector('.lightbox-video');
-//             source.style.display = "block";
-//             source.setAttribute("src", photo);
-//             source.setAttribute("controls", 'controls');
-//         }
-//     }));
-// };
-
-// function next() {
-//     const btnNext = document.querySelector(".lightbox__next");
-//     btnNext.addEventListener('click', function(event) {
-//         event.preventDefault();
-//         const img = document.querySelector('.lightbox-image', '.lightbox-video');
-//         let href = img.getAttribute("src");
-//         const srcs = Array.from(document.querySelectorAll('.lightboxable'));
-//         const gallery = srcs.map(src => src.getAttribute('href'));
-//         let indexGallery = gallery.findIndex(image => image === href);
-//         img.removeAttribute("src");
-//         if (indexGallery > gallery.length) {
-//             indexGallery = 0;
-//         } else if (href.split(".").pop() == "mp4") {
-//             const photo = document.querySelector('.lightbox-image');
-//             photo.style.display = "none";
-//             const source = document.querySelector('.lightbox-video');
-//             source.style.display = "block";
-//             source.setAttribute('src', gallery[indexGallery]);
-//             source.setAttribute("controls", 'controls');
-//         } else if (href.split(".").pop() == "jpg") {
-//             const source = document.querySelector('.lightbox-video');
-//             source.style.display = "none";
-//             const photo = document.querySelector('.lightbox-image');
-//             photo.style.display = "block";
-//             //     photo.setAttribute("src", gallery[current.indexGallery]);
-//         }
-//         let nextImg = img.setAttribute('src', gallery[indexGallery + 1]);
-//         // show(nextImg);
-//         console.log(img);
-//         console.log(href);
-//         console.log(srcs);
-//         console.log(gallery);
-//         console.log(indexGallery);
-//     })
-// };
-// lightbox();
 launchLightbox();
 
 async function launchLightbox() {
@@ -839,7 +734,6 @@ async function launchLightbox() {
     src.forEach(link => link.addEventListener('click', function(event) {
         let photo = event.currentTarget.getAttribute("href");
         let indexPhoto = event.currentTarget.dataset.index;
-        // console.log(indexPhoto);
         lightbox();
         show(photo, indexPhoto);
     }));
@@ -871,7 +765,6 @@ function manageNextButton() {
 }
 
 function next() {
-
     const photo = document.querySelector('.lightbox-image');
     const video = document.querySelector('.lightbox-video');
     let media
@@ -880,17 +773,13 @@ function next() {
     } else if (video.style.display == 'block') {
         media = video
     };
-    //NE PAS TOUCHER !!!!!!
     let gallery = document.querySelectorAll('.lightboxable');
-    // recup le dataset
     let currentIndex = parseInt(media.dataset.index);
     let nextIndex = currentIndex + 1;
-    // console.log(nextIndex);
     if (nextIndex > gallery.length - 1) {
         nextIndex = 0;
-    }
+    };
     console.log(currentIndex, nextIndex, gallery.length);
-    // recup img par rapport a next index
     let nextSrc = "";
     gallery.forEach(function(link) {
         if (parseInt(link.dataset.index) == nextIndex) {
@@ -917,17 +806,12 @@ function prev() {
     } else if (video.style.display == 'block') {
         media = video
     };
-    console.log(media);
-    //NE PAS TOUCHER !!!!!!
     let gallery = document.querySelectorAll('.lightboxable');
-    // recup le dataset
     let currentIndex = parseInt(media.dataset.index);
     let prevIndex = currentIndex - 1;
     if (prevIndex < 0) {
         prevIndex = gallery.length - 1;
-    }
-    console.log(currentIndex, prevIndex, gallery.length);
-    // recup img par rapport a prev index
+    };
     let prevSrc = "";
     gallery.forEach(function(link) {
         if (parseInt(link.dataset.index) == prevIndex) {
@@ -939,10 +823,8 @@ function prev() {
 
 function show(media, indexPhoto) {
     if (media.split(".").pop() == "jpg") {
-        // console.log(1);
         showPhoto(media, indexPhoto);
     } else if (media.split(".").pop() == "mp4") {
-        // console.log(2);
         showVideo(media, indexPhoto);
     }
 };
