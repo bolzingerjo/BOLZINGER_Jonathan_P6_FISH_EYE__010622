@@ -54,7 +54,7 @@ function createIndexDOM(photographer) {
     return article
 };
 
-//rajout d'attributs d'accessibilité
+// rajout d'attributs d'accessibilité
 function accessibilityIndex() {
     const indexNav = document.querySelector('.photographer_section');
     indexNav.setAttribute("aria-label", 'photographers navigation');
@@ -87,4 +87,4 @@ async function initPageIndex() {
     applyDOMData(photographers);
     accessibilityIndex();
 };
-initPageIndex();
+initPageIndex()

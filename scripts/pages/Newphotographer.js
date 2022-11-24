@@ -467,7 +467,6 @@ function createHeart() {
     imgHeart.setAttribute("src", "./assets/icons/heart-regular.svg");
     return imgHeart
 };
-
 //Video
 //Trier
 trierPop();
@@ -536,6 +535,8 @@ function displayModal() {
     focusables[0].focus()
     modal.addEventListener('click', closeModal);
     modal.querySelector('.modal').addEventListener('click', stopPropagation);
+    focusInModal();
+    windowEvent();
 };
 
 function closeModal() {
@@ -550,31 +551,35 @@ const stopPropagation = function(e) {
     e.stopPropagation()
 };
 
-const focusInModal = function(e) {
-    e.preventDefault()
-    let index = focusables.findIndex(f => f === modal.querySelector(':focus'))
-    if (e.shiftKey === true) {
-        index--
-    } else {
-        index++
-    }
-    if (index >= focusables.length) {
-        index = 0
-    }
-    if (index < 0) {
-        index = focusables.length - 1
-    }
-    focusables[index].focus()
+function focusInModal() {
+    const focusInModal = function(e) {
+        e.preventDefault()
+        let index = focusables.findIndex(f => f === modal.querySelector(':focus'))
+        if (e.shiftKey === true) {
+            index--
+        } else {
+            index++
+        }
+        if (index >= focusables.length) {
+            index = 0
+        }
+        if (index < 0) {
+            index = focusables.length - 1
+        }
+        focusables[index].focus()
+    };
 };
 
-window.addEventListener('keydown', function(e) {
-    if (e.key === "Escape" || e.key === "Esc") {
-        closeModal(e)
-    }
-    if (e.key === 'Tab') {
-        focusInModal(e)
-    }
-});
+function windowEvent() {
+    window.addEventListener('keydown', function(e) {
+        if (e.key === "Escape" || e.key === "Esc") {
+            closeModal(e)
+        }
+        if (e.key === 'Tab') {
+            focusInModal(e)
+        }
+    });
+};
 // Modale de contact
 //Events
 changeForName();
@@ -870,4 +875,47 @@ function closeLightbox() {
     imgLightbox.style.display = "none";
     source.removeAttribute("src");
     source.style.display = "none";
+};
+
+// navigation clavier
+manageNavClavier();
+async function manageNavClavier() {
+    const { media } = await getDataMedia();
+    navClavierPagePhotographe();
+};
+
+function navClavierPagePhotographe() {
+    const main = document.querySelector("body");
+    const selectors = 'a, button';
+    console.log(selectors);
+    let focusable = [];
+    focusable = Array.from(main.querySelectorAll(selectors));
+    console.log(focusable);
+    let previousFocusedElement = null;
+
+    previousFocusedElement = document.querySelector(':focus');
+    focusable[0].focus();
+    if (previousFocusedElement !== null) previousFocusedElement.focus();
+    const focusInMain = (e) => {
+        e.preventDefault();
+        let index = focusable.findIndex(f => f === main.querySelector(':focus'));
+        if (e.shiftKey === true) {
+            index--;
+        } else {
+            index++;
+        }
+        if (index >= focusable.length) {
+            index = 0;
+        }
+        if (index < 0) {
+            index = focusable.length - 1;
+        }
+        focusable[index].focus();
+    };
+
+    main.addEventListener('keydown', function(e) {
+        if (e.key === 'Tab') {
+            focusInMain(e)
+        }
+    });
 };

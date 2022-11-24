@@ -149,6 +149,11 @@ li:focus {
     opacity: 1;
 }
 
+.ulPrincipale:focus .ulSecondaire {
+    visibility: visible;
+    opacity: 1;
+}
+
 #ouvert {
     visibility: hidden;
     opacity: 0;
