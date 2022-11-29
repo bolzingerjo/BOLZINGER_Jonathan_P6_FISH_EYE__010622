@@ -1,6 +1,7 @@
 function createLinkPagePhotographe(photographer) {
     const link = document.createElement('a');
     link.className = 'link';
+    link.setAttribute('tabindex', '0');
     link.href = "photographer.html?id=" + photographer.id;
     link.appendChild(createIMG(photographer));
     link.appendChild(createTitleName(photographer));

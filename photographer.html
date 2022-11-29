@@ -13,27 +13,27 @@
 
 <body>
     <header>
-        <a href="index.html" alt="Fisheye home page" aria-label="retour à l 'acceuil"><img src="assets/images/logo.png" class="logo" /></a>
+        <a href="index.html" alt="Fisheye home page" aria-label="retour à l 'acceuil" tabindex="0"><img src="assets/images/logo.png" class="logo" /></a>
     </header>
     <main id="main">
         <div class="photograph-header">
-            <button class="contact_button" onclick="displayModal()">Contactez-moi</button>
+            <button class="contact_button" onclick="displayModal()" tabindex="0">Contactez-moi</button>
         </div>
         <div class="trier">
             <p>Trier par </p>
             <nav>
                 <ul class="ulPrincipale">
                     <li>
-                        <a href="#" aria-label="trier par popularité"><button class="btn-pop">Popularité</button></a>
+                        <a href="#" aria-label="trier par popularité" tabindex="-1"><button class="btn-pop" tabindex="0">Popularité</button></a>
                         <i id="ouvert" class=" fa-solid fa-chevron-up"></i>
                         <i id="fermer" class="fa-solid fa-chevron-down"></i>
                     </li>
                     <ul class="ulSecondaire">
                         <li>
-                            <a href="#" aria-label="trier par date"><button class="btn-date">Date</button></a>
+                            <a href="#" aria-label="trier par date" tabindex="-1"><button class="btn-date" tabindex="0">Date</button></a>
                         </li>
                         <li>
-                            <a href="#" aria-label="trier par titre"><button class="btn-titre">Titre</button></a>
+                            <a href="#" aria-label="trier par titre" tabindex="-1"><button class="btn-titre" tabindex="0">Titre</button></a>
                         </li>
                     </ul>
                 </ul>
@@ -46,36 +46,36 @@
         <div class="modal">
             <header>
                 <h2 id="title-modal"></h2>
-                <button class="btn-close"><img class="close-modal" src="assets/icons/close.svg" onclick="closeModal()" aria-label="close contact form" /></button>
+                <button class="btn-close" tabindex="0"><img class="close-modal" src="assets/icons/close.svg" onclick="closeModal()" aria-label="close contact form" /></button>
             </header>
             <form>
                 <div>
                     <label class="prenom">Prénom</label>
-                    <input id="prenom" type="text" name="forname" required aria-required="true" minlength="2" aria-labelledby="pénom" />
+                    <input id="prenom" type="text" name="forname" required aria-required="true" minlength="2" aria-labelledby="pénom" tabindex="0" />
                     <small id="prenom-small"></small>
                 </div>
                 <div>
                     <label class="nom">Nom</label>
-                    <input id="nom" type="text" name="name" required aria-required="true " minlength="2" aria-labelledby="nom" />
+                    <input id="nom" type="text" name="name" required aria-required="true " minlength="2" aria-labelledby="nom" tabindex="0" />
                     <small id="nom-small"></small>
                 </div>
                 <div>
                     <label class="email">Email</label>
-                    <input id="email" type="email " name="email" required aria-required="true" aria-labelledby="email" />
+                    <input id="email" type="email " name="email" required aria-required="true" aria-labelledby="email" tabindex="0" />
                     <small id="email-small"></small>
                 </div>
                 <div>
                     <label class="message">Votre message</label>
-                    <input id="message" type="text " name="message" required aria-required="true" aria-labelledby="message" maxlength="100" />
+                    <input id="message" type="text " name="message" required aria-required="true" aria-labelledby="message" maxlength="100" tabindex="0" />
                 </div>
-                <button aria-label="Send" class="contact_button">Envoyer</button>
+                <button aria-label="Send" class="contact_button" tabindex="0">Envoyer</button>
             </form>
         </div>
     </div>
     <div class="lightbox" aria-hidden="true">
-        <button class="lightbox__close" aria-label="close dialog"><i class="fa-solid fa-xmark"></i></button>
-        <button class="lightbox__next" aria-label="next image"><i class="fa-solid fa-chevron-right"></i></button>
-        <button class="lightbox__prev" aria-label="previous image"><i class="fa-solid fa-chevron-left"></i></button>
+        <button class="lightbox__close" aria-label="close dialog" tabindex="0"><i class="fa-solid fa-xmark"></i></button>
+        <button class="lightbox__next" aria-label="next image" tabindex="0"><i class="fa-solid fa-chevron-right"></i></button>
+        <button class="lightbox__prev" aria-label="previous image" tabindex="0"><i class="fa-solid fa-chevron-left"></i></button>
         <div class="lightbox__container">
             <img class="lightbox-image" src="">
             <video class="lightbox-video" src=""></video>

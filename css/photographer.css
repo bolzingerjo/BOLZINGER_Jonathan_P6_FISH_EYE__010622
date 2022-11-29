@@ -101,7 +101,8 @@ li:focus {
     border-radius: 5px;
 }
 
-.ulPrincipale:hover {
+.ulPrincipale:hover,
+.ulPrincipale:focus-within {
     border-radius: 5px 5px 0px 0px;
 }
 
@@ -149,7 +150,7 @@ li:focus {
     opacity: 1;
 }
 
-.ulPrincipale:focus .ulSecondaire {
+.ulPrincipale:focus-within .ulSecondaire {
     visibility: visible;
     opacity: 1;
 }

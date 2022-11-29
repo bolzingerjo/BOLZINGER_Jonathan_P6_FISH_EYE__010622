@@ -878,44 +878,44 @@ function closeLightbox() {
 };
 
 // navigation clavier
-manageNavClavier();
-async function manageNavClavier() {
-    const { media } = await getDataMedia();
-    navClavierPagePhotographe();
-};
+// manageNavClavier();
+// async function manageNavClavier() {
+//     const { media } = await getDataMedia();
+//     navClavierPagePhotographe();
+// };
 
-function navClavierPagePhotographe() {
-    const main = document.querySelector("body");
-    const selectors = 'a, button';
-    console.log(selectors);
-    let focusable = [];
-    focusable = Array.from(main.querySelectorAll(selectors));
-    console.log(focusable);
-    let previousFocusedElement = null;
+// function navClavierPagePhotographe() {
+//     const main = document.querySelector("body");
+//     const selectors = 'a, button';
+//     console.log(selectors);
+//     let focusable = [];
+//     focusable = Array.from(main.querySelectorAll(selectors));
+//     console.log(focusable);
+//     let previousFocusedElement = null;
+//     previousFocusedElement = document.querySelector(':focus');
+//     focusable[0].focus();
+//     if (previousFocusedElement !== null) previousFocusedElement.focus();
+//     const focusInMain = (e) => {
+//         e.preventDefault();
+//         let index = focusable.findIndex(f => f === main.querySelector(':focus'));
+//         if (e.shiftKey === true) {
+//             index--;
+//         } else {
+//             index++;
+//         }
+//         if (index >= focusable.length) {
+//             index = 0;
+//         }
+//         if (index < 0) {
+//             index = focusable.length - 1;
+//         }
+//         console.log(index);
+//         focusable[index].focus();
+//     };
 
-    previousFocusedElement = document.querySelector(':focus');
-    focusable[0].focus();
-    if (previousFocusedElement !== null) previousFocusedElement.focus();
-    const focusInMain = (e) => {
-        e.preventDefault();
-        let index = focusable.findIndex(f => f === main.querySelector(':focus'));
-        if (e.shiftKey === true) {
-            index--;
-        } else {
-            index++;
-        }
-        if (index >= focusable.length) {
-            index = 0;
-        }
-        if (index < 0) {
-            index = focusable.length - 1;
-        }
-        focusable[index].focus();
-    };
-
-    main.addEventListener('keydown', function(e) {
-        if (e.key === 'Tab') {
-            focusInMain(e)
-        }
-    });
-};
+//     main.addEventListener('keydown', function(e) {
+//         if (e.key === 'Tab') {
+//             focusInMain(e)
+//         }
+//     });
+// };
