@@ -291,6 +291,7 @@ function createLinkLightboxImages(media, index) {
     const pictures = `assets/images/${media.image}`;
     linkLightbox.setAttribute("href", pictures);
     linkLightbox.setAttribute("aria-label", media.title);
+    linkLightbox.setAttribute("tabindex", '0');
     linkLightbox.className = 'lightboxable';
     linkLightbox.appendChild(createImgMedia(media));
     linkLightbox.dataset.index = index;
@@ -340,6 +341,7 @@ function createCountLikes(media) {
 function createLikeButton(media) {
     const likebtn = document.createElement('button')
     likebtn.className = 'like-btn'
+    likebtn.setAttribute("tabindex", '0');
     likebtn.appendChild(createHeart())
     return likebtn
 };
@@ -350,6 +352,8 @@ function createLinkLightboxVideo(media, index) {
     const videos = `assets/images/${media.video}`;
     linkLightbox.setAttribute("href", videos);
     linkLightbox.setAttribute("type", 'video/mp4');
+    linkLightbox.setAttribute("aria-label", media.title);
+    linkLightbox.setAttribute("tabindex", '0');
     linkLightbox.className = 'lightboxable';
     linkLightbox.appendChild(createElmtVideo(media));
     linkLightbox.dataset.index = index;
@@ -469,8 +473,18 @@ function createHeart() {
 };
 //Video
 //Trier
-trierPop();
+trierPopchargement();
+async function trierPopchargement() {
+    const { media } = await getDataMedia();
+    const mediasTrierPop = Array.from(media);
+    mediasTrierPop.sort(function(a, b) {
+        return b.likes - a.likes;
+    });
+    document.querySelector(".photograph-article").innerHTML = "";
+    createArticlePhotoVideo(mediasTrierPop);
+};
 
+trierPop();
 async function trierPop() {
     //trier par popularité
     const boutonTrier = document.querySelector(".btn-pop");
@@ -480,14 +494,20 @@ async function trierPop() {
         mediasTrierPop.sort(function(a, b) {
             return b.likes - a.likes;
         });
-        // console.log(mediasTrierPop);
+        const boutonDate = document.querySelector(".btn-date");
+        const boutonTitre = document.querySelector(".btn-titre");
+        boutonTrier.innerText = "Popularité";
+        boutonTrier.classList = "btn-pop";
+        boutonDate.innerText = "Date";
+        boutonDate.classList = "btn-date";
+        boutonTitre.innerText = "Titre";
+        boutonTitre.classList = "btn-titre";
         document.querySelector(".photograph-article").innerHTML = "";
         createArticlePhotoVideo(mediasTrierPop);
     });
 };
 
 trierDate();
-
 async function trierDate() {
     //trier par date
     const boutonDate = document.querySelector(".btn-date");
@@ -497,14 +517,20 @@ async function trierDate() {
         mediasTrierDate.sort(function(a, b) {
             return b.date.localeCompare(a.date);
         });
-        // console.log(mediasTrierDate);
+        const boutonTrier = document.querySelector(".btn-pop");
+        const boutonTitre = document.querySelector(".btn-titre");
+        boutonTrier.innerText = "Date";
+        boutonTrier.classList = "btn-date";
+        boutonDate.innerText = "Popularité";
+        boutonDate.classList = "btn-pop";
+        boutonTitre.innerText = "Titre";
+        boutonTitre.classList = "btn-titre";
         document.querySelector(".photograph-article").innerHTML = "";
         createArticlePhotoVideo(mediasTrierDate);
     });
 };
 
 trierTitre();
-
 async function trierTitre() {
     //trier par titre
     const boutonTitre = document.querySelector(".btn-titre");
@@ -514,34 +540,47 @@ async function trierTitre() {
         mediasTrierTitre.sort(function(a, b) {
             return a.title.localeCompare(b.title);
         });
-        // console.log(mediasTrierTitre);
+        const boutonDate = document.querySelector(".btn-date");
+        const boutonTrier = document.querySelector(".btn-pop");
+        boutonTrier.innerText = "Titre";
+        boutonTrier.classList = "btn-titre";
+        boutonDate.innerText = "Date";
+        boutonDate.classList = "btn-date";
+        boutonTitre.innerText = "Popularité";
+        boutonTitre.classList = "btn-pop";
         document.querySelector(".photograph-article").innerHTML = "";
         createArticlePhotoVideo(mediasTrierTitre);
     });
 };
 //Trier
 // Modale de contact
-const modal = document.getElementById("contact_modal");
-const focusableSelector = 'img, input, button';
-let focusables = [];
-let previouslyFocusedElement = null;
 
 function displayModal() {
+    const modal = document.getElementById("contact_modal");
+    const retouracceuil = document.querySelector('header a');
+    retouracceuil.setAttribute('tabindex', '-1');
+    const btnmodal = document.querySelector(".contact_button");
+    btnmodal.setAttribute('tabindex', '-1');
+    const main = document.querySelector('main');
+    const tabindexable = main.querySelectorAll('a, button, video');
+    tabindexable.forEach(liens => liens.setAttribute('tabindex', '-1'));
     modal.style.display = "block";
     modal.setAttribute('aria-hidden', false);
     modal.setAttribute('aria-modal', true);
-    focusables = Array.from(modal.querySelectorAll(focusableSelector));
-    previouslyFocusedElement = document.querySelector(':focus')
-    focusables[0].focus()
     modal.addEventListener('click', closeModal);
     modal.querySelector('.modal').addEventListener('click', stopPropagation);
-    focusInModal();
     windowEvent();
 };
 
 function closeModal() {
-    if (previouslyFocusedElement !== null) previouslyFocusedElement.focus()
+    const modal = document.getElementById("contact_modal");
     modal.style.display = "none";
+    const btnmodal = document.querySelector(".contact_button");
+    btnmodal.setAttribute('tabindex', '0');
+    const tabindexable = main.querySelectorAll('a, button');
+    tabindexable.forEach(liens => liens.setAttribute('tabindex', '0'));
+    const stayminusone = document.querySelectorAll('ul a');
+    stayminusone.forEach(liens => liens.setAttribute('tabindex', '-1'));
     modal.setAttribute('aria-hidden', true);
     modal.setAttribute('aria-modal', false);
     modal.removeEventListener('click', closeModal);
@@ -551,33 +590,14 @@ const stopPropagation = function(e) {
     e.stopPropagation()
 };
 
-function focusInModal() {
-    const focusInModal = function(e) {
-        e.preventDefault()
-        let index = focusables.findIndex(f => f === modal.querySelector(':focus'))
-        if (e.shiftKey === true) {
-            index--
-        } else {
-            index++
-        }
-        if (index >= focusables.length) {
-            index = 0
-        }
-        if (index < 0) {
-            index = focusables.length - 1
-        }
-        focusables[index].focus()
-    };
-};
-
 function windowEvent() {
     window.addEventListener('keydown', function(e) {
         if (e.key === "Escape" || e.key === "Esc") {
             closeModal(e)
         }
-        if (e.key === 'Tab') {
-            focusInModal(e)
-        }
+        // if (e.key === 'Tab') {
+        //     focusInModal(e)
+        // }
     });
 };
 // Modale de contact
@@ -753,6 +773,13 @@ function lightboxAppear() {
     const lightbox = document.querySelector('.lightbox');
     lightbox.style.display = "block";
     lightbox.setAttribute('aria-hidden', false);
+    const retouracceuil = document.querySelector('header a');
+    retouracceuil.setAttribute('tabindex', '-1');
+    const btnmodal = document.querySelector(".contact_button");
+    btnmodal.setAttribute('tabindex', '-1');
+    const main = document.querySelector('main');
+    const tabindexable = main.querySelectorAll('a, button, video');
+    tabindexable.forEach(liens => liens.setAttribute('tabindex', '-1'));
 };
 
 function manageLigthboxButtons() {
@@ -875,47 +902,10 @@ function closeLightbox() {
     imgLightbox.style.display = "none";
     source.removeAttribute("src");
     source.style.display = "none";
+    const btnmodal = document.querySelector(".contact_button");
+    btnmodal.setAttribute('tabindex', '0');
+    const tabindexable = main.querySelectorAll('a, button');
+    tabindexable.forEach(liens => liens.setAttribute('tabindex', '0'));
+    const stayminusone = document.querySelectorAll('ul a');
+    stayminusone.forEach(liens => liens.setAttribute('tabindex', '-1'));
 };
-
-// navigation clavier
-// manageNavClavier();
-// async function manageNavClavier() {
-//     const { media } = await getDataMedia();
-//     navClavierPagePhotographe();
-// };
-
-// function navClavierPagePhotographe() {
-//     const main = document.querySelector("body");
-//     const selectors = 'a, button';
-//     console.log(selectors);
-//     let focusable = [];
-//     focusable = Array.from(main.querySelectorAll(selectors));
-//     console.log(focusable);
-//     let previousFocusedElement = null;
-//     previousFocusedElement = document.querySelector(':focus');
-//     focusable[0].focus();
-//     if (previousFocusedElement !== null) previousFocusedElement.focus();
-//     const focusInMain = (e) => {
-//         e.preventDefault();
-//         let index = focusable.findIndex(f => f === main.querySelector(':focus'));
-//         if (e.shiftKey === true) {
-//             index--;
-//         } else {
-//             index++;
-//         }
-//         if (index >= focusable.length) {
-//             index = 0;
-//         }
-//         if (index < 0) {
-//             index = focusable.length - 1;
-//         }
-//         console.log(index);
-//         focusable[index].focus();
-//     };
-
-//     main.addEventListener('keydown', function(e) {
-//         if (e.key === 'Tab') {
-//             focusInMain(e)
-//         }
-//     });
-// };
