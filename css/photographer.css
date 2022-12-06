@@ -101,12 +101,7 @@ li:focus {
 }
 
 .ulPrincipale li button {
-    margin: 0px 8px;
-}
-
-.ulPrincipale:hover,
-.ulPrincipale:focus-within {
-    border-radius: 5px 5px 0px 0px;
+    padding: 16px;
 }
 
 .btn-pop,
@@ -147,29 +142,17 @@ li:focus {
     transition: all 0.2s ease;
 }
 
-.ulPrincipale:hover .ulSecondaire {
-    visibility: visible;
-    opacity: 1;
+.btn-fermer,
+.btn-ouvert {
+    border-radius: 5px;
 }
 
-.ulPrincipale:focus-within .ulSecondaire {
-    visibility: visible;
-    opacity: 1;
-}
-
-#ouvert {
-    visibility: hidden;
-    opacity: 0;
-}
-
-.ulPrincipale:hover #ouvert {
-    visibility: visible;
-    opacity: 1;
-}
-
-.ulPrincipale:hover #fermer {
-    visibility: hidden;
-    opacity: 0;
+.btn-ouvert,
+.btn-fermer {
+    border: none;
+    width: 100%;
+    color: transparent;
+    background-color: transparent;
 }
 
 .ulSecondaire li {
@@ -189,7 +172,7 @@ li:focus {
     border-radius: 5px;
 }
 
-ul i {
+ul img {
     color: white;
     position: absolute;
     right: 8px;

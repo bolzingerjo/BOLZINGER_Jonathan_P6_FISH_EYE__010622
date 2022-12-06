@@ -123,6 +123,34 @@ function createTitleModal(photographer) {
     h2.innerText = 'Contactez-moi ' + photographer.name;
     return h2
 };
+openUlSecondaire()
+
+function openUlSecondaire() {
+    const btnUlSecondaire = document.querySelector('.btn-fermer')
+    btnUlSecondaire.addEventListener('click', function(event) {
+        event.preventDefault()
+        const getClassBtn = event.currentTarget.getAttribute('class')
+        if (getClassBtn === 'btn-fermer') {
+            const button = document.querySelector('.chevron')
+            button.setAttribute('src', './assets/icons/chevron-down-solid.svg')
+            btnUlSecondaire.setAttribute('class', 'btn-ouvert')
+            const ulSecondaire = document.querySelector('.ulSecondaire')
+            ulSecondaire.style.visibility = 'visible'
+            ulSecondaire.style.opacity = '1'
+            const ulPrincipale = document.querySelector('.ulPrincipale')
+            ulPrincipale.style.borderRadius = "5px 5px 0px 0px"
+        } else if (getClassBtn === 'btn-ouvert') {
+            const button = document.querySelector('.chevron')
+            button.setAttribute('src', './assets/icons/chevron-up-solid.svg')
+            btnUlSecondaire.setAttribute('class', 'btn-fermer')
+            const ulSecondaire = document.querySelector('.ulSecondaire')
+            ulSecondaire.style.visibility = 'hidden'
+            ulSecondaire.style.opacity = '0'
+            const ulPrincipale = document.querySelector('.ulPrincipale')
+            ulPrincipale.style.borderRadius = "5px"
+        };
+    })
+};
 
 initArticlePhoto()
 
@@ -473,8 +501,8 @@ function createHeart() {
 };
 //Video
 //Trier
-trierPopchargement();
-async function trierPopchargement() {
+trierPopAuChargement();
+async function trierPopAuChargement() {
     const { media } = await getDataMedia();
     const mediasTrierPop = Array.from(media);
     mediasTrierPop.sort(function(a, b) {
@@ -494,14 +522,16 @@ async function trierPop() {
         mediasTrierPop.sort(function(a, b) {
             return b.likes - a.likes;
         });
-        const boutonDate = document.querySelector(".btn-date");
-        const boutonTitre = document.querySelector(".btn-titre");
-        boutonTrier.innerText = "Popularité";
-        boutonTrier.classList = "btn-pop";
-        boutonDate.innerText = "Date";
-        boutonDate.classList = "btn-date";
-        boutonTitre.innerText = "Titre";
-        boutonTitre.classList = "btn-titre";
+        const firstButton = document.querySelector('#btn-first');
+        const secondButton = document.querySelector("#btn-second");
+        const thirdButton = document.querySelector("#btn-third");
+
+        firstButton.innerText = "Popularité";
+        firstButton.classList = "btn-pop";
+        secondButton.innerText = "Date";
+        secondButton.classList = "btn-date";
+        thirdButton.innerText = "Titre";
+        thirdButton.classList = "btn-titre";
         document.querySelector(".photograph-article").innerHTML = "";
         createArticlePhotoVideo(mediasTrierPop);
     });
@@ -517,14 +547,17 @@ async function trierDate() {
         mediasTrierDate.sort(function(a, b) {
             return b.date.localeCompare(a.date);
         });
-        const boutonTrier = document.querySelector(".btn-pop");
-        const boutonTitre = document.querySelector(".btn-titre");
-        boutonTrier.innerText = "Date";
-        boutonTrier.classList = "btn-date";
-        boutonDate.innerText = "Popularité";
-        boutonDate.classList = "btn-pop";
-        boutonTitre.innerText = "Titre";
-        boutonTitre.classList = "btn-titre";
+        const firstButton = document.querySelector('#btn-first');
+        const secondButton = document.querySelector("#btn-second");
+        const thirdButton = document.querySelector("#btn-third");
+        const ulPrincipale = document.querySelector('.ulPrincipale');
+        ulPrincipale.style.borderRadius = "5px 5px 0px 0px";
+        firstButton.innerText = "Date";
+        firstButton.classList = "btn-date";
+        secondButton.innerText = "Popularité";
+        secondButton.classList = "btn-pop";
+        thirdButton.innerText = "Titre";
+        thirdButton.classList = "btn-titre";
         document.querySelector(".photograph-article").innerHTML = "";
         createArticlePhotoVideo(mediasTrierDate);
     });
@@ -540,14 +573,17 @@ async function trierTitre() {
         mediasTrierTitre.sort(function(a, b) {
             return a.title.localeCompare(b.title);
         });
-        const boutonDate = document.querySelector(".btn-date");
-        const boutonTrier = document.querySelector(".btn-pop");
-        boutonTrier.innerText = "Titre";
-        boutonTrier.classList = "btn-titre";
-        boutonDate.innerText = "Date";
-        boutonDate.classList = "btn-date";
-        boutonTitre.innerText = "Popularité";
-        boutonTitre.classList = "btn-pop";
+        const firstButton = document.querySelector('#btn-first');
+        const secondButton = document.querySelector("#btn-second");
+        const thirdButton = document.querySelector("#btn-third");
+        const ulPrincipale = document.querySelector('.ulPrincipale');
+        ulPrincipale.style.borderRadius = "5px 5px 0px 0px";
+        firstButton.innerText = "Titre";
+        firstButton.classList = "btn-titre";
+        secondButton.innerText = "Date";
+        secondButton.classList = "btn-date";
+        thirdButton.innerText = "Popularité";
+        thirdButton.classList = "btn-pop";
         document.querySelector(".photograph-article").innerHTML = "";
         createArticlePhotoVideo(mediasTrierTitre);
     });
