@@ -758,19 +758,14 @@ async function compteurLikes() {
 
 function handleLikesButton() {
     const btnLike = document.querySelectorAll('.like-btn');
-    // console.log(btnLike);
     btnLike.forEach(button => button.addEventListener('click', function(event) {
         const totallikes = document.querySelector('.cmptlikes');
-        console.log(totallikes.innerHTML);
         event.currentTarget.getAttribute("src");
-        console.log(event.currentTarget.firstChild.getAttribute("src"));
         if (event.currentTarget.firstChild.getAttribute("src") == './assets/icons/heart-solid.svg') {
-            // console.log(2);
             event.currentTarget.firstChild.setAttribute("src", './assets/icons/heart-regular.svg');
             event.currentTarget.previousSibling.innerHTML--
                 totallikes.innerHTML--
         } else {
-            // console.log(1);
             event.currentTarget.firstChild.setAttribute("src", './assets/icons/heart-solid.svg');
             event.currentTarget.previousSibling.innerHTML++
                 totallikes.innerHTML++
