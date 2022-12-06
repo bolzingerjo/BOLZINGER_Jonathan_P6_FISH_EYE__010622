@@ -24,11 +24,11 @@ async function getDataHeader() {
 
 async function createHeader(photographer) {
     const photographersHeader = document.querySelector(".photograph-header");
-    const articleHeader = createArticleHeader(photographer);
+    const articleHeader = createArticleHeaderFactory(photographer);
     photographersHeader.appendChild(articleHeader);
 };
 
-function createArticleHeader(photographer) {
+function createArticleHeaderFactory(photographer) {
     const main = document.querySelector('main');
     const article = document.createElement('article');
     article.className = 'article-header';
@@ -37,37 +37,70 @@ function createArticleHeader(photographer) {
     article.appendChild(createImgHeader(photographer));
     main.appendChild(createLikeCount(photographer));
     createTitleModal(photographer);
+
+    function createDiv(photographer) {
+        const div1 = document.createElement('div');
+        div1.appendChild(createNamePage(photographer));
+        div1.appendChild(createWherePage(photographer));
+        div1.appendChild(createTagPage(photographer));
+        return div1
+    };
+
+    function createBtnModal() {
+        const btnmodal = document.querySelector('.contact_button ');
+        return btnmodal
+    };
+
+    function createImgHeader(photographer) {
+        const img = document.createElement('img');
+        let picture = `assets/photographers/${photographer.portrait}`;
+        img.setAttribute("src", picture);
+        img.setAttribute("alt", photographer.name);
+        img.className = 'img-Page';
+        return img
+    };
+
+    function createLikeCount(photographer) {
+        const likesTarifs = document.createElement('div');
+        likesTarifs.className = 'comptLikes';
+        likesTarifs.appendChild(createSpanCount());
+        likesTarifs.appendChild(PricePerDay(photographer));
+        return likesTarifs
+    };
+
+    function PricePerDay(photographer) {
+        const prix = document.createElement('p');
+        prix.innerText = photographer.price + '€/jour';
+        return prix
+    };
+
+    function createNamePage(photographer) {
+        const h1 = document.createElement('h1');
+        h1.textContent = photographer.name;
+        h1.className = 'name-Page';
+        return h1
+    };
+
+    function createWherePage(photographer) {
+        const where = document.createElement('p');
+        where.textContent = photographer.city + ', ' + photographer.country;
+        where.className = 'where-Page';
+        return where
+    };
+
+    function createTagPage(photographer) {
+        const tag = document.createElement('p');
+        tag.textContent = photographer.tagline;
+        tag.className = 'tag-Page';
+        return tag
+    };
+
+    function createTitleModal(photographer) {
+        const h2 = document.querySelector('#title-modal');
+        h2.innerText = 'Contactez-moi ' + photographer.name;
+        return h2
+    };
     return article
-};
-
-function createDiv(photographer) {
-    const div1 = document.createElement('div');
-    div1.appendChild(createNamePage(photographer));
-    div1.appendChild(createWherePage(photographer));
-    div1.appendChild(createTagPage(photographer));
-    return div1
-};
-
-function createBtnModal() {
-    const btnmodal = document.querySelector('.contact_button ');
-    return btnmodal
-};
-
-function createImgHeader(photographer) {
-    const img = document.createElement('img');
-    let picture = `assets/photographers/${photographer.portrait}`;
-    img.setAttribute("src", picture);
-    img.setAttribute("alt", photographer.name);
-    img.className = 'img-Page';
-    return img
-};
-
-function createLikeCount(photographer) {
-    const likesTarifs = document.createElement('div');
-    likesTarifs.className = 'comptLikes';
-    likesTarifs.appendChild(createSpanCount());
-    likesTarifs.appendChild(PricePerDay(photographer));
-    return likesTarifs
 };
 
 function createSpanCount() {
@@ -91,38 +124,6 @@ function createHeartCount() {
     return imgHeart
 };
 
-function PricePerDay(photographer) {
-    const prix = document.createElement('p');
-    prix.innerText = photographer.price + '€/jour';
-    return prix
-};
-
-function createNamePage(photographer) {
-    const h1 = document.createElement('h1');
-    h1.textContent = photographer.name;
-    h1.className = 'name-Page';
-    return h1
-};
-
-function createWherePage(photographer) {
-    const where = document.createElement('p');
-    where.textContent = photographer.city + ', ' + photographer.country;
-    where.className = 'where-Page';
-    return where
-};
-
-function createTagPage(photographer) {
-    const tag = document.createElement('p');
-    tag.textContent = photographer.tagline;
-    tag.className = 'tag-Page';
-    return tag
-};
-
-function createTitleModal(photographer) {
-    const h2 = document.querySelector('#title-modal');
-    h2.innerText = 'Contactez-moi ' + photographer.name;
-    return h2
-};
 openUlSecondaire()
 
 function openUlSecondaire() {
@@ -156,15 +157,15 @@ initArticlePhoto()
 
 async function initArticlePhoto() {
     // Récupère les medi
-    const { media } = await getDataMedia();
-    // console.log(media);
-    createArticlePhotoVideo(media);
-    gestionVideo();
+    const { media } = await getDataMedia()
+        // console.log(media);
+    createArticlePhotoVideo(media)
+    gestionVideo()
 };
 async function getDataMedia() {
     // remplacer par les données récupérées dans le json
-    let params = (new URL(document.location)).searchParams;
-    let pageId = params.get('id');
+    let params = (new URL(document.location)).searchParams
+    let pageId = params.get('id')
     const media =
         await fetch('./data/photographers.json')
         .then((Response) => Response.json())
@@ -177,17 +178,17 @@ async function getDataMedia() {
 };
 async function createArticlePhotoVideo(media) {
     const photographiesSection = document.querySelector(".photograph-article");
-    let index = 0;
+    let index = 0
     media.forEach((media) => {
         if (object = media.image) {
-            const photoCardDOM = createArticlePhoto(media, index);
-            photographiesSection.appendChild(photoCardDOM);
+            const photoCardDOM = createArticlePhotoFactory(media, index)
+            photographiesSection.appendChild(photoCardDOM)
         } else if (object = media.video) {
-            const videoCardDOM = createArticleVideo(media, index);
-            photographiesSection.appendChild(videoCardDOM);
-        } else { console.log('erreur') };
-        index++;
-    });
+            const videoCardDOM = createArticleVideoFactory(media, index)
+            photographiesSection.appendChild(videoCardDOM)
+        } else { console.log('erreur') }
+        index++
+    })
 };
 
 function gestionVideo() {
@@ -296,210 +297,233 @@ function gestionVideo() {
         timerBar.style.width = `${barLength}px`;
     };
 };
-
-function createArticlePhoto(media, index) {
-    const articlePhoto = document.createElement('article');
-    articlePhoto.className = 'article-Photo';
-    articlePhoto.appendChild(createLinkLightboxImages(media, index));
-    articlePhoto.appendChild(createDivUnderPhoto(media));
-    return articlePhoto
-};
-
-function createArticleVideo(media, index) {
-    const articleVideo = document.createElement('article');
-    articleVideo.className = 'article-video';
-    articleVideo.appendChild(createLinkLightboxVideo(media, index));
-    articleVideo.appendChild(createDivControls());
-    articleVideo.appendChild(createDivTxtVideo(media));
-    return articleVideo
-};
 // Photo
-function createLinkLightboxImages(media, index) {
-    const linkLightbox = document.createElement('a');
-    const pictures = `assets/images/${media.image}`;
-    linkLightbox.setAttribute("href", pictures);
-    linkLightbox.setAttribute("aria-label", media.title);
-    linkLightbox.setAttribute("tabindex", '0');
-    linkLightbox.className = 'lightboxable';
-    linkLightbox.appendChild(createImgMedia(media));
-    linkLightbox.dataset.index = index;
-    return linkLightbox
-};
+function createArticlePhotoFactory(media, index) {
+    const articlePhoto = document.createElement('article')
+    articlePhoto.className = 'article-Photo'
+    articlePhoto.appendChild(createLinkLightboxImages(media, index))
+    articlePhoto.appendChild(createDivUnderPhoto(media))
 
-function createImgMedia(media) {
-    const photos = document.createElement('img');
-    const pictures = `assets/images/${media.image}`;
-    photos.setAttribute("src", pictures);
-    photos.setAttribute("role", 'link');
-    photos.setAttribute("alt", media.title + ', ' + media.date + ', ' + media.likes + ', prix : ' + media.price + '€');
-    photos.className = 'photobook';
-    return photos
-};
+    function createLinkLightboxImages(media, index) {
+        const linkLightbox = document.createElement('a')
+        const pictures = `assets/images/${media.image}`
+        linkLightbox.setAttribute("href", pictures)
+        linkLightbox.setAttribute("aria-label", media.title)
+        linkLightbox.setAttribute("tabindex", '0')
+        linkLightbox.className = 'lightboxable'
+        linkLightbox.appendChild(createImgMedia(media))
+        linkLightbox.dataset.index = index
+        return linkLightbox
+    };
 
-function createDivUnderPhoto(media) {
-    const divText = document.createElement('div');
-    divText.className = 'photo-text';
-    divText.appendChild(createTitleUnderPhoto(media));
-    divText.appendChild(createSpanUnderPhoto(media));
-    return divText
-};
+    function createImgMedia(media) {
+        const photos = document.createElement('img')
+        const pictures = `assets/images/${media.image}`
+        photos.setAttribute("src", pictures)
+        photos.setAttribute("role", 'link')
+        photos.setAttribute("alt", media.title + ', ' + media.date + ', ' + media.likes + ', prix : ' + media.price + '€')
+        photos.className = 'photobook'
+        return photos
+    };
 
-function createTitleUnderPhoto(media) {
-    const text = document.createElement('p');
-    text.textContent = media.title;
-    text.className = 'title-photo';
-    return text
-};
+    function createDivUnderPhoto(media) {
+        const divText = document.createElement('div')
+        divText.className = 'photo-text'
+        divText.appendChild(createTitleUnderPhoto(media))
+        divText.appendChild(createSpanUnderPhoto(media))
+        return divText
+    };
 
-function createSpanUnderPhoto(media) {
-    const spanLikes = document.createElement('span');
-    spanLikes.setAttribute("aria-label", 'likes');
-    spanLikes.appendChild(createCountLikes(media));
-    spanLikes.appendChild(createLikeButton(media));
-    return spanLikes
-};
+    function createTitleUnderPhoto(media) {
+        const text = document.createElement('p')
+        text.textContent = media.title
+        text.className = 'title-photo'
+        return text
+    };
 
-function createCountLikes(media) {
-    const cptLikes = document.createElement('div');
-    cptLikes.textContent = media.likes;
-    cptLikes.className = 'likes';
-    return cptLikes
-};
+    function createSpanUnderPhoto(media) {
+        const spanLikes = document.createElement('span')
+        spanLikes.setAttribute('aria-label', 'likes')
+        spanLikes.appendChild(createCountLikes(media))
+        spanLikes.appendChild(createLikeButton(media))
+        return spanLikes
+    };
 
-function createLikeButton(media) {
-    const likebtn = document.createElement('button')
-    likebtn.className = 'like-btn'
-    likebtn.setAttribute("tabindex", '0');
-    likebtn.appendChild(createHeart())
-    return likebtn
+    function createCountLikes(media) {
+        const cptLikes = document.createElement('div')
+        cptLikes.textContent = media.likes
+        cptLikes.className = 'likes'
+        return cptLikes
+    };
+
+    function createLikeButton(media) {
+        const likebtn = document.createElement('button')
+        likebtn.className = 'like-btn'
+        likebtn.setAttribute('tabindex', '0')
+        likebtn.appendChild(createHeart())
+        return likebtn
+    };
+
+    function createHeart() {
+        const imgHeart = document.createElement('img')
+        imgHeart.className = 'regular__heart'
+        imgHeart.setAttribute("src", "./assets/icons/heart-regular.svg")
+        return imgHeart
+    };
+    return articlePhoto
 };
 // Photo
 // Video
-function createLinkLightboxVideo(media, index) {
-    const linkLightbox = document.createElement('a');
-    const videos = `assets/images/${media.video}`;
-    linkLightbox.setAttribute("href", videos);
-    linkLightbox.setAttribute("type", 'video/mp4');
-    linkLightbox.setAttribute("aria-label", media.title);
-    linkLightbox.setAttribute("tabindex", '0');
-    linkLightbox.className = 'lightboxable';
-    linkLightbox.appendChild(createElmtVideo(media));
-    linkLightbox.dataset.index = index;
-    return linkLightbox
-};
+function createArticleVideoFactory(media, index) {
+    const articleVideo = document.createElement('article')
+    articleVideo.className = 'article-video'
+    articleVideo.appendChild(createLinkLightboxVideo(media, index))
+    articleVideo.appendChild(createDivControls())
+    articleVideo.appendChild(createDivTxtVideo(media))
 
-function createElmtVideo(media) {
-    const videoPage = document.createElement('video');
-    videoPage.setAttribute("controls", 'controls');
-    videoPage.className = 'video';
-    videoPage.setAttribute("aria-label", media.title + ', ' + media.date + ', ' + media.likes + ', prix : ' + media.price + '€');
-    videoPage.appendChild(createElmtSource(media));
-    return videoPage
-};
+    function createLinkLightboxVideo(media, index) {
+        const linkLightbox = document.createElement('a')
+        const videos = `assets/images/${media.video}`
+        linkLightbox.setAttribute("href", videos)
+        linkLightbox.setAttribute("type", 'video/mp4')
+        linkLightbox.setAttribute("aria-label", media.title)
+        linkLightbox.setAttribute("tabindex", '0')
+        linkLightbox.className = 'lightboxable'
+        linkLightbox.appendChild(createElmtVideo(media))
+        linkLightbox.dataset.index = index
+        return linkLightbox
+    };
 
-function createDivTxtVideo(media) {
-    const divText = document.createElement('div');
-    divText.className = 'photo-text';
-    divText.appendChild(createTxtVideo(media));
-    divText.appendChild(createSpanUnderVideo(media));
-    return divText
-};
+    function createElmtVideo(media) {
+        const videoPage = document.createElement('video')
+        videoPage.setAttribute("controls", 'controls')
+        videoPage.className = 'video'
+        videoPage.setAttribute("aria-label", media.title + ', ' + media.date + ', ' + media.likes + ', prix : ' + media.price + '€')
+        videoPage.appendChild(createElmtSource(media))
+        return videoPage
+    };
 
-function createDivControls() {
-    const ariaControls = document.createElement('div');
-    ariaControls.className = 'controls';
-    ariaControls.appendChild(createBtnPlay());
-    ariaControls.appendChild(createBtnStop());
-    ariaControls.appendChild(createDiv1Timer());
-    ariaControls.appendChild(createBtnRewind());
-    ariaControls.appendChild(createBtnForward());
-    return ariaControls
-};
+    function createDivTxtVideo(media) {
+        const divText = document.createElement('div')
+        divText.className = 'photo-text'
+        divText.appendChild(createTxtVideo(media))
+        divText.appendChild(createSpanUnderVideo(media))
+        return divText
+    };
 
-function createElmtSource(media) {
-    const source = document.createElement('source');
-    const videos = `assets/images/${media.video}`;
-    source.setAttribute("src", videos);
-    source.setAttribute("type", 'video/mp4');
-    source.setAttribute("preload", 'auto');
-    source.className = 'source';
-    return source
-};
+    function createDivControls() {
+        const ariaControls = document.createElement('div')
+        ariaControls.className = 'controls'
+        ariaControls.appendChild(createBtnPlay())
+        ariaControls.appendChild(createBtnStop())
+        ariaControls.appendChild(createDiv1Timer())
+        ariaControls.appendChild(createBtnRewind())
+        ariaControls.appendChild(createBtnForward())
+        return ariaControls
+    };
 
-function createTxtVideo(media) {
-    const text = document.createElement('p');
-    text.textContent = media.title;
-    text.className = 'title-photo';
-    return text
-};
+    function createElmtSource(media) {
+        const source = document.createElement('source')
+        const videos = `assets/images/${media.video}`
+        source.setAttribute("src", videos)
+        source.setAttribute("type", 'video/mp4')
+        source.setAttribute("preload", 'auto')
+        source.className = 'source'
+        return source
+    };
 
-function createSpanUnderVideo(media) {
-    const spanLikes = document.createElement('span');
-    spanLikes.setAttribute("aria-label", 'likes');
-    spanLikes.appendChild(createCountLikes(media));
-    spanLikes.appendChild(createLikeButton());
-    return spanLikes
-};
+    function createTxtVideo(media) {
+        const text = document.createElement('p')
+        text.textContent = media.title
+        text.className = 'title-photo'
+        return text
+    };
 
-function createBtnPlay() {
-    const btnPlay = document.createElement('button');
-    btnPlay.className = 'play';
-    btnPlay.setAttribute("data-icon", 'P');
-    btnPlay.setAttribute("aria-label", 'Play Pause Toggle');
-    return btnPlay
-};
+    function createSpanUnderVideo(media) {
+        const spanLikes = document.createElement('span')
+        spanLikes.setAttribute("aria-label", 'likes')
+        spanLikes.appendChild(createCountLikes(media))
+        spanLikes.appendChild(createLikeButton())
+        return spanLikes
+    };
 
-function createBtnStop() {
-    const btnStop = document.createElement('button');
-    btnStop.className = 'stop';
-    btnStop.setAttribute("data-icon", 'S');
-    btnStop.setAttribute("aria-label", 'Stop');
-    return btnStop
-};
+    function createBtnPlay() {
+        const btnPlay = document.createElement('button')
+        btnPlay.className = 'play'
+        btnPlay.setAttribute("data-icon", 'P')
+        btnPlay.setAttribute("aria-label", 'Play Pause Toggle')
+        return btnPlay
+    };
 
-function createDiv1Timer() {
-    const timer = document.createElement('div');
-    timer.className = 'timer';
-    timer.appendChild(createDiv2Timer());
-    timer.appendChild(createSpantimer());
-    return timer
-};
+    function createBtnStop() {
+        const btnStop = document.createElement('button')
+        btnStop.className = 'stop'
+        btnStop.setAttribute("data-icon", 'S')
+        btnStop.setAttribute("aria-label", 'Stop')
+        return btnStop
+    };
 
-function createDiv2Timer() {
-    const div2 = document.createElement('div');
-    return div2;
-};
+    function createDiv1Timer() {
+        const timer = document.createElement('div')
+        timer.className = 'timer'
+        timer.appendChild(createDiv2Timer())
+        timer.appendChild(createSpantimer())
+        return timer
+    };
 
-function createSpantimer() {
-    const span = document.createElement('span');
-    span.setAttribute("aria-label", 'timer');
-    span.textContent = '00:00';
-    return span
-};
+    function createDiv2Timer() {
+        const div2 = document.createElement('div')
+        return div2
+    };
 
-function createBtnRewind() {
-    const rewind = document.createElement('button');
-    rewind.className = 'rwd';
-    rewind.setAttribute("data-icon", 'B');
-    rewind.setAttribute("aria-label", 'Rewind');
-    return rewind
-};
+    function createSpantimer() {
+        const span = document.createElement('span')
+        span.setAttribute("aria-label", 'timer')
+        span.textContent = '00:00'
+        return span
+    };
 
-function createBtnForward() {
-    const forward = document.createElement('button');
-    forward.className = 'fwd';
-    forward.setAttribute("data-icon", 'F');
-    forward.setAttribute("aria-label", 'Fast forward');
-    return forward
-};
+    function createBtnRewind() {
+        const rewind = document.createElement('button')
+        rewind.className = 'rwd'
+        rewind.setAttribute("data-icon", 'B')
+        rewind.setAttribute("aria-label", 'Rewind')
+        return rewind
+    };
 
-function createHeart() {
-    const imgHeart = document.createElement('img');
-    imgHeart.className = 'regular__heart';
-    imgHeart.setAttribute("src", "./assets/icons/heart-regular.svg");
-    return imgHeart
+    function createBtnForward() {
+        const forward = document.createElement('button')
+        forward.className = 'fwd'
+        forward.setAttribute("data-icon", 'F')
+        forward.setAttribute("aria-label", 'Fast forward')
+        return forward
+    };
+
+    function createCountLikes(media) {
+        const cptLikes = document.createElement('div')
+        cptLikes.textContent = media.likes
+        cptLikes.className = 'likes'
+        return cptLikes
+    };
+
+    function createLikeButton(media) {
+        const likebtn = document.createElement('button')
+        likebtn.className = 'like-btn'
+        likebtn.setAttribute('tabindex', '0')
+        likebtn.appendChild(createHeart())
+        return likebtn
+    };
+
+    function createHeart() {
+        const imgHeart = document.createElement('img')
+        imgHeart.className = 'regular__heart'
+        imgHeart.setAttribute("src", "./assets/icons/heart-regular.svg")
+        return imgHeart
+    };
+    return articleVideo
 };
 //Video
+
 //Trier
 trierPopAuChargement();
 async function trierPopAuChargement() {
@@ -525,7 +549,6 @@ async function trierPop() {
         const firstButton = document.querySelector('#btn-first');
         const secondButton = document.querySelector("#btn-second");
         const thirdButton = document.querySelector("#btn-third");
-
         firstButton.innerText = "Popularité";
         firstButton.classList = "btn-pop";
         secondButton.innerText = "Date";
@@ -550,8 +573,6 @@ async function trierDate() {
         const firstButton = document.querySelector('#btn-first');
         const secondButton = document.querySelector("#btn-second");
         const thirdButton = document.querySelector("#btn-third");
-        const ulPrincipale = document.querySelector('.ulPrincipale');
-        ulPrincipale.style.borderRadius = "5px 5px 0px 0px";
         firstButton.innerText = "Date";
         firstButton.classList = "btn-date";
         secondButton.innerText = "Popularité";
@@ -576,8 +597,6 @@ async function trierTitre() {
         const firstButton = document.querySelector('#btn-first');
         const secondButton = document.querySelector("#btn-second");
         const thirdButton = document.querySelector("#btn-third");
-        const ulPrincipale = document.querySelector('.ulPrincipale');
-        ulPrincipale.style.borderRadius = "5px 5px 0px 0px";
         firstButton.innerText = "Titre";
         firstButton.classList = "btn-titre";
         secondButton.innerText = "Date";
