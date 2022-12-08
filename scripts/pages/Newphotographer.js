@@ -307,9 +307,9 @@ function createArticlePhotoFactory(media, index) {
     function createLinkLightboxImages(media, index) {
         const linkLightbox = document.createElement('a')
         const pictures = `assets/images/${media.image}`
-        linkLightbox.setAttribute("href", pictures)
-        linkLightbox.setAttribute("aria-label", media.title)
-        linkLightbox.setAttribute("tabindex", '0')
+        linkLightbox.setAttribute('href', pictures)
+        linkLightbox.setAttribute('aria-label', media.title)
+        linkLightbox.setAttribute('tabindex', '0')
         linkLightbox.className = 'lightboxable'
         linkLightbox.appendChild(createImgMedia(media))
         linkLightbox.dataset.index = index
@@ -360,6 +360,7 @@ function createArticlePhotoFactory(media, index) {
         const likebtn = document.createElement('button')
         likebtn.className = 'like-btn'
         likebtn.setAttribute('tabindex', '0')
+        likebtn.setAttribute('aria-label', 'Like button')
         likebtn.appendChild(createHeart())
         return likebtn
     };
@@ -384,10 +385,10 @@ function createArticleVideoFactory(media, index) {
     function createLinkLightboxVideo(media, index) {
         const linkLightbox = document.createElement('a')
         const videos = `assets/images/${media.video}`
-        linkLightbox.setAttribute("href", videos)
-        linkLightbox.setAttribute("type", 'video/mp4')
-        linkLightbox.setAttribute("aria-label", media.title)
-        linkLightbox.setAttribute("tabindex", '0')
+        linkLightbox.setAttribute('href', videos)
+        linkLightbox.setAttribute('type', 'video/mp4')
+        linkLightbox.setAttribute('aria-label', media.title)
+        linkLightbox.setAttribute('tabindex', '0')
         linkLightbox.className = 'lightboxable'
         linkLightbox.appendChild(createElmtVideo(media))
         linkLightbox.dataset.index = index
@@ -510,6 +511,7 @@ function createArticleVideoFactory(media, index) {
         const likebtn = document.createElement('button')
         likebtn.className = 'like-btn'
         likebtn.setAttribute('tabindex', '0')
+        likebtn.setAttribute('aria-label', 'Like button')
         likebtn.appendChild(createHeart())
         return likebtn
     };
@@ -650,10 +652,17 @@ function windowEvent() {
         if (e.key === "Escape" || e.key === "Esc") {
             closeModal(e)
         }
-        // if (e.key === 'Tab') {
-        //     focusInModal(e)
-        // }
     });
+};
+
+dataInConsole();
+
+function dataInConsole() {
+    const sendButton = document.querySelector('.send_button')
+    sendButton.addEventListener('click', function(event) {
+        event.preventDefault();
+        closeModal();
+    })
 };
 // Modale de contact
 //Events
@@ -804,13 +813,14 @@ launchLightbox();
 
 async function launchLightbox() {
     const { media } = await getDataMedia();
-    const src = document.querySelectorAll(".lightboxable[href]");
+    const src = document.querySelectorAll(".lightboxable");
 
     src.forEach(link => link.addEventListener('click', function(event) {
         let photo = event.currentTarget.getAttribute("href");
         let indexPhoto = event.currentTarget.dataset.index;
+        let titrePhoto = event.currentTarget.getAttribute("aria-label");
         lightbox();
-        show(photo, indexPhoto);
+        show(photo, indexPhoto, titrePhoto);
     }));
 };
 
@@ -861,14 +871,16 @@ function next() {
     if (nextIndex > gallery.length - 1) {
         nextIndex = 0;
     };
-    console.log(currentIndex, nextIndex, gallery.length);
+    // console.log(currentIndex, nextIndex, gallery.length);
     let nextSrc = "";
+    let nextTitre = "";
     gallery.forEach(function(link) {
         if (parseInt(link.dataset.index) == nextIndex) {
             nextSrc = link.getAttribute('href');
+            nextTitre = link.getAttribute('aria-label');
         }
     });
-    show(nextSrc, nextIndex);
+    show(nextSrc, nextIndex, nextTitre);
 };
 
 function managePrevButton() {
@@ -895,23 +907,25 @@ function prev() {
         prevIndex = gallery.length - 1;
     };
     let prevSrc = "";
+    let prevTitre = "";
     gallery.forEach(function(link) {
         if (parseInt(link.dataset.index) == prevIndex) {
             prevSrc = link.getAttribute('href');
+            prevTitre = link.getAttribute('aria-label');
         }
     });
-    show(prevSrc, prevIndex);
+    show(prevSrc, prevIndex, prevTitre);
 };
 
-function show(media, indexPhoto) {
+function show(media, indexPhoto, titrePhoto) {
     if (media.split(".").pop() == "jpg") {
-        showPhoto(media, indexPhoto);
+        showPhoto(media, indexPhoto, titrePhoto);
     } else if (media.split(".").pop() == "mp4") {
-        showVideo(media, indexPhoto);
+        showVideo(media, indexPhoto, titrePhoto);
     }
 };
 
-function showPhoto(photo, indexPhoto) {
+function showPhoto(photo, indexPhoto, titrePhoto) {
     const source = document.querySelector('.lightbox-video');
     source.style.display = "none";
     source.dataset.index = "";
@@ -920,9 +934,11 @@ function showPhoto(photo, indexPhoto) {
     img.style.display = "block";
     img.setAttribute("src", photo);
     img.dataset.index = indexPhoto;
+    const h2Photo = document.querySelector('.lightbox_titre')
+    h2Photo.innerHTML = titrePhoto
 };
 
-function showVideo(video, indexPhoto) {
+function showVideo(video, indexPhoto, titrePhoto) {
     const img = document.querySelector('.lightbox-image');
     img.style.display = "none";
     img.setAttribute('src', "");
@@ -932,6 +948,8 @@ function showVideo(video, indexPhoto) {
     source.setAttribute("src", video);
     source.setAttribute("controls", 'controls');
     source.dataset.index = indexPhoto;
+    const h2Photo = document.querySelector('.lightbox_titre')
+    h2Photo.innerHTML = titrePhoto
 };
 
 function manageCloseButton() {

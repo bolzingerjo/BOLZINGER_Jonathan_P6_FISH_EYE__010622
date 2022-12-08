@@ -31,7 +31,8 @@ header a {
     margin: 8px;
 }
 
-.contact_button {
+.contact_button,
+.send_button {
     font-size: 20px;
     font-weight: bold;
     color: white;
@@ -45,7 +46,9 @@ header a {
 }
 
 .contact_button:hover,
-.contact_button:focus {
+.contact_button:focus,
+.send_button:hover,
+.send_button:focus {
     background-color: #D3573C;
 }
 
