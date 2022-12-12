@@ -10,9 +10,9 @@
     overflow: auto;
 }
 
-.lightbox__next i,
-.lightbox__prev i,
-.lightbox__close i {
+.lightbox__next strong,
+.lightbox__prev strong,
+.lightbox__close strong {
     color: #901C1C;
     font-size: 24px;
 }

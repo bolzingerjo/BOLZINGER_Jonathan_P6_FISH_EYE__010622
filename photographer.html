@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 
 <head>
     <link href="css/style.css" rel="stylesheet" type="text/css" />
@@ -13,7 +13,7 @@
 
 <body>
     <header>
-        <a href="index.html" alt="Fisheye home page" aria-label="retour à l'acceuil" tabindex="0"><img src="assets/images/logo.png" class="logo" /></a>
+        <a href="index.html" alt="Fisheye home page" aria-label="retour à l'acceuil" tabindex="0"><img src="assets/images/logo.png" alt="logo" class="logo" /></a>
     </header>
     <main id="main">
         <div class="photograph-header">
@@ -45,38 +45,38 @@
         <div class="modal">
             <header>
                 <h2 id="title-modal"></h2>
-                <button class="btn-close" tabindex="0"><img class="close-modal" src="assets/icons/close.svg" onclick="closeModal()" aria-label="close contact form" /></button>
+                <button class="btn-close" tabindex="0"><img class="close-modal" alt="close modal" src="assets/icons/close.svg" onclick="closeModal()" aria-label="close contact form" /></button>
             </header>
             <form>
                 <div>
-                    <label class="prenom">Prénom</label>
-                    <input id="prenom" type="text" name="forname" required aria-required="true" minlength="2" aria-labelledby="pénom" tabindex="0" />
+                    <label for="prenom" class="prenom">Prénom</label>
+                    <input id="prenom" type="text" name="forname" placeholder="Armand" required aria-required="true" minlength="2" aria-labelledby="prenom" tabindex="0" />
                     <small id="prenom-small"></small>
                 </div>
                 <div>
-                    <label class="nom">Nom</label>
-                    <input id="nom" type="text" name="name" required aria-required="true " minlength="2" aria-labelledby="nom" tabindex="0" />
+                    <label for="nom" class="nom">Nom</label>
+                    <input id="nom" type="text" name="name" placeholder="DURAND" required aria-required="true " minlength="2" aria-labelledby="nom" tabindex="0" />
                     <small id="nom-small"></small>
                 </div>
                 <div>
-                    <label class="email">Email</label>
-                    <input id="email" type="email " name="email" required aria-required="true" aria-labelledby="email" tabindex="0" />
+                    <label for="email" class="email">Email</label>
+                    <input id="email" type="email " name="email" placeholder="abc@gmail.com" required aria-required="true" aria-labelledby="email" tabindex="0" />
                     <small id="email-small"></small>
                 </div>
                 <div>
-                    <label class="message">Votre message</label>
-                    <input id="message" type="text " name="message" required aria-required="true" aria-labelledby="message" maxlength="100" tabindex="0" />
+                    <label for="message" class="message">Votre message</label>
+                    <input id="message" type="text " name="message" placeholder="Votre message ici" required aria-required="true" aria-labelledby="message" maxlength="100" tabindex="0" />
                 </div>
                 <button aria-label="Send" class="send_button" tabindex="0">Envoyer</button>
             </form>
         </div>
     </div>
     <div class="lightbox" aria-hidden="true">
-        <button class="lightbox__close" aria-label="close dialog" tabindex="0"><i class="fa-solid fa-xmark"></i></button>
-        <button class="lightbox__next" aria-label="next image" tabindex="0"><i class="fa-solid fa-chevron-right"></i></button>
-        <button class="lightbox__prev" aria-label="previous image" tabindex="0"><i class="fa-solid fa-chevron-left"></i></button>
+        <button class="lightbox__close" aria-label="close dialog" tabindex="0"><strong class="fa-solid fa-xmark"></strong></button>
+        <button class="lightbox__next" aria-label="next image" tabindex="0"><strong class="fa-solid fa-chevron-right"></strong></button>
+        <button class="lightbox__prev" aria-label="previous image" tabindex="0"><strong class="fa-solid fa-chevron-left"></strong></button>
         <div class="lightbox__container">
-            <img class="lightbox-image" src="">
+            <img class="lightbox-image" alt="" src="">
             <video class="lightbox-video" src=""></video>
             <h2 class="lightbox_titre"></h2>
         </div>

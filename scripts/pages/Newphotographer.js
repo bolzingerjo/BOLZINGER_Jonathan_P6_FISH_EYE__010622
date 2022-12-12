@@ -1,100 +1,117 @@
 initHeaderPhotographe()
-
+    // Récupère les datas du photographe
 async function initHeaderPhotographe() {
-    // Récupère les datas des photographes
-    let photographer = await getDataHeader();
-    // console.log(photographer[0]);
-    createHeader(photographer[0]);
+    const photographer = await getDataHeader()
+    createHeader(photographer[0])
 };
-
+// remplacer par les données récupérées dans le json
 async function getDataHeader() {
-    // remplacer par les données récupérées dans le json
-    let params = (new URL(document.location)).searchParams;
-    let pageId = params.get('id');
+    const params = (new URL(document.location)).searchParams
+    const pageId = params.get('id')
     const photographer =
         await fetch('./data/photographers.json')
         .then((Response) => Response.json())
         .then(data => data.photographers.filter((object) => object.id == pageId))
-        // console.log(photographers);
-        // retourner le tableau photographers seulement une fois
+        // retourner le tableau photographer seulement une fois
     return (
         photographer
     )
 };
-
+// creation du header
 async function createHeader(photographer) {
-    const photographersHeader = document.querySelector(".photograph-header");
-    const articleHeader = createArticleHeaderFactory(photographer);
-    photographersHeader.appendChild(articleHeader);
+    const photographersHeader = document.querySelector('.photograph-header')
+    const articleHeader = createArticleHeaderFactory(photographer)
+    photographersHeader.appendChild(articleHeader)
 };
-
+// Factory header
 function createArticleHeaderFactory(photographer) {
-    const main = document.querySelector('main');
-    const article = document.createElement('article');
-    article.className = 'article-header';
-    article.appendChild(createDiv(photographer));
-    article.appendChild(createBtnModal());
-    article.appendChild(createImgHeader(photographer));
-    main.appendChild(createLikeCount(photographer));
-    createTitleModal(photographer);
-
+    const main = document.querySelector('main')
+    const article = document.createElement('article')
+    article.className = 'article-header'
+    article.appendChild(createDiv(photographer))
+    article.appendChild(createBtnModal())
+    article.appendChild(createImgHeader(photographer))
+    main.appendChild(createLikeCount(photographer))
+    createTitleModal(photographer)
+        // div englobante
     function createDiv(photographer) {
-        const div1 = document.createElement('div');
-        div1.appendChild(createNamePage(photographer));
-        div1.appendChild(createWherePage(photographer));
-        div1.appendChild(createTagPage(photographer));
+        const div1 = document.createElement('div')
+        div1.appendChild(createNamePage(photographer))
+        div1.appendChild(createWherePage(photographer))
+        div1.appendChild(createTagPage(photographer))
         return div1
     };
-
+    // bouton de la modale
     function createBtnModal() {
-        const btnmodal = document.querySelector('.contact_button ');
+        const btnmodal = document.querySelector('.contact_button ')
         return btnmodal
     };
-
+    // Récup de la photo de profil
     function createImgHeader(photographer) {
-        const img = document.createElement('img');
-        let picture = `assets/photographers/${photographer.portrait}`;
-        img.setAttribute("src", picture);
-        img.setAttribute("alt", photographer.name);
-        img.className = 'img-Page';
+        const img = document.createElement('img')
+        const picture = `assets/photographers/${photographer.portrait}`
+        img.setAttribute('src', picture)
+        img.setAttribute('alt', photographer.name)
+        img.className = 'img-Page'
         return img
     };
-
+    // Compteur de likes
     function createLikeCount(photographer) {
-        const likesTarifs = document.createElement('div');
-        likesTarifs.className = 'comptLikes';
-        likesTarifs.appendChild(createSpanCount());
-        likesTarifs.appendChild(PricePerDay(photographer));
+        const likesTarifs = document.createElement('div')
+        likesTarifs.className = 'comptLikes'
+        likesTarifs.appendChild(createSpanCount())
+        likesTarifs.appendChild(PricePerDay(photographer))
         return likesTarifs
     };
-
+    // Span compteur de likes
+    function createSpanCount() {
+        const span = document.createElement('span')
+        span.className = 'span__count'
+        span.appendChild(createPCount())
+        span.appendChild(createHeartCount())
+        return span
+    };
+    // P compteur de likes
+    function createPCount() {
+        const nbr = document.createElement('p')
+        nbr.className = 'cmptlikes'
+        nbr.innerText = '0'
+        return nbr
+    };
+    // Icon compteur de likes
+    function createHeartCount() {
+        const imgHeart = document.createElement('i')
+        imgHeart.className = 'fa-solid fa-heart'
+        return imgHeart
+    };
+    // tarif journalier en bas
     function PricePerDay(photographer) {
         const prix = document.createElement('p');
         prix.innerText = photographer.price + '€/jour';
         return prix
     };
-
+    // nom du photographe
     function createNamePage(photographer) {
-        const h1 = document.createElement('h1');
-        h1.textContent = photographer.name;
-        h1.className = 'name-Page';
+        const h1 = document.createElement('h1')
+        h1.textContent = photographer.name
+        h1.className = 'name-Page'
         return h1
     };
-
+    // lieux du photographe
     function createWherePage(photographer) {
-        const where = document.createElement('p');
-        where.textContent = photographer.city + ', ' + photographer.country;
-        where.className = 'where-Page';
+        const where = document.createElement('p')
+        where.textContent = photographer.city + ', ' + photographer.country
+        where.className = 'where-Page'
         return where
     };
-
+    // Tagline
     function createTagPage(photographer) {
-        const tag = document.createElement('p');
-        tag.textContent = photographer.tagline;
-        tag.className = 'tag-Page';
+        const tag = document.createElement('p')
+        tag.textContent = photographer.tagline
+        tag.className = 'tag-Page'
         return tag
     };
-
+    // Titre de la modale
     function createTitleModal(photographer) {
         const h2 = document.querySelector('#title-modal');
         h2.innerText = 'Contactez-moi ' + photographer.name;
@@ -103,29 +120,8 @@ function createArticleHeaderFactory(photographer) {
     return article
 };
 
-function createSpanCount() {
-    const span = document.createElement('span');
-    span.className = 'span__count'
-    span.appendChild(createPCount());
-    span.appendChild(createHeartCount());
-    return span
-};
-
-function createPCount() {
-    const nbr = document.createElement('p');
-    nbr.className = 'cmptlikes';
-    nbr.innerText = '0';
-    return nbr
-};
-
-function createHeartCount() {
-    const imgHeart = document.createElement('i');
-    imgHeart.className = 'fa-solid fa-heart';
-    return imgHeart
-};
-
 openUlSecondaire()
-
+    // bouton de tri cachés
 function openUlSecondaire() {
     const btnUlSecondaire = document.querySelector('.btn-fermer')
     btnUlSecondaire.addEventListener('click', function(event) {
@@ -139,7 +135,7 @@ function openUlSecondaire() {
             ulSecondaire.style.visibility = 'visible'
             ulSecondaire.style.opacity = '1'
             const ulPrincipale = document.querySelector('.ulPrincipale')
-            ulPrincipale.style.borderRadius = "5px 5px 0px 0px"
+            ulPrincipale.style.borderRadius = '5px 5px 0px 0px'
         } else if (getClassBtn === 'btn-ouvert') {
             const button = document.querySelector('.chevron')
             button.setAttribute('src', './assets/icons/chevron-up-solid.svg')
@@ -148,36 +144,34 @@ function openUlSecondaire() {
             ulSecondaire.style.visibility = 'hidden'
             ulSecondaire.style.opacity = '0'
             const ulPrincipale = document.querySelector('.ulPrincipale')
-            ulPrincipale.style.borderRadius = "5px"
+            ulPrincipale.style.borderRadius = '5px'
         };
     })
 };
 
 initArticlePhoto()
-
+    // Récupère les medias
 async function initArticlePhoto() {
-    // Récupère les medi
     const { media } = await getDataMedia()
-        // console.log(media);
     createArticlePhotoVideo(media)
     gestionVideo()
 };
+// remplacer les données récupérées dans le json
 async function getDataMedia() {
-    // remplacer par les données récupérées dans le json
-    let params = (new URL(document.location)).searchParams
-    let pageId = params.get('id')
+    const params = (new URL(document.location)).searchParams
+    const pageId = params.get('id')
     const media =
         await fetch('./data/photographers.json')
         .then((Response) => Response.json())
         .then(data => data.media.filter((object) => object.photographerId == pageId))
-        // console.log(media)
         // retourner le tableau photos seulement une fois
     return ({
         media
     })
 };
+// factory page photographe
 async function createArticlePhotoVideo(media) {
-    const photographiesSection = document.querySelector(".photograph-article");
+    const photographiesSection = document.querySelector('.photograph-article')
     let index = 0
     media.forEach((media) => {
         if (object = media.image) {
@@ -190,111 +184,111 @@ async function createArticlePhotoVideo(media) {
         index++
     })
 };
-
+// gestion accessibilité des videos
 function gestionVideo() {
-    const gstVideo = document.querySelector('.video');
-    const controls = document.querySelector('.controls');
-    const play = document.querySelector('.play');
-    const stop = document.querySelector('.stop');
-    const rwd = document.querySelector('.rwd');
-    const fwd = document.querySelector('.fwd');
-    const timerWrapper = document.querySelector('.timer');
-    const timer = document.querySelector('.timer span');
-    const timerBar = document.querySelector('.timer div');
-    let intervalFwd;
-    let intervalRwd;
+    const gstVideo = document.querySelector('.video')
+    const controls = document.querySelector('.controls')
+    const play = document.querySelector('.play')
+    const stop = document.querySelector('.stop')
+    const rwd = document.querySelector('.rwd')
+    const fwd = document.querySelector('.fwd')
+    const timerWrapper = document.querySelector('.timer')
+    const timer = document.querySelector('.timer span')
+    const timerBar = document.querySelector('.timer div')
+    let intervalFwd
+    let intervalRwd
 
-    gstVideo.removeAttribute("controls");
-    controls.style.visibility = 'visible';
-    play.addEventListener('click', playPauseMedia);
-    stop.addEventListener('click', stopMedia);
-    gstVideo.addEventListener('ended', stopMedia);
-    rwd.addEventListener('click', mediaBackward);
-    fwd.addEventListener('click', mediaForward);
-    gstVideo.addEventListener('timeupdate', setTime);
+    gstVideo.removeAttribute('controls')
+    controls.style.visibility = 'visible'
+    play.addEventListener('click', playPauseMedia)
+    stop.addEventListener('click', stopMedia)
+    gstVideo.addEventListener('ended', stopMedia)
+    rwd.addEventListener('click', mediaBackward)
+    fwd.addEventListener('click', mediaForward)
+    gstVideo.addEventListener('timeupdate', setTime)
 
     function playPauseMedia() {
-        rwd.classList.remove('active');
-        fwd.classList.remove('active');
-        clearInterval(intervalRwd);
-        clearInterval(intervalFwd);
+        rwd.classList.remove('active')
+        fwd.classList.remove('active')
+        clearInterval(intervalRwd)
+        clearInterval(intervalFwd)
         if (gstVideo.paused) {
-            play.setAttribute('data-icon', 'u');
+            play.setAttribute('data-icon', 'u')
             gstVideo.play();
         } else {
-            play.setAttribute('data-icon', 'P');
-            gstVideo.pause();
+            play.setAttribute('data-icon', 'P')
+            gstVideo.pause()
         }
     };
 
     function stopMedia() {
-        gstVideo.pause();
-        gstVideo.currentTime = 0;
-        rwd.classList.remove('active');
-        fwd.classList.remove('active');
-        clearInterval(intervalRwd);
-        clearInterval(intervalFwd);
-        play.setAttribute('data-icon', 'P');
+        gstVideo.pause()
+        gstVideo.currentTime = 0
+        rwd.classList.remove('active')
+        fwd.classList.remove('active')
+        clearInterval(intervalRwd)
+        clearInterval(intervalFwd)
+        play.setAttribute('data-icon', 'P')
     };
 
     function mediaBackward() {
-        clearInterval(intervalFwd);
-        fwd.classList.remove('active');
+        clearInterval(intervalFwd)
+        fwd.classList.remove('active')
 
         if (rwd.classList.contains('active')) {
-            rwd.classList.remove('active');
-            clearInterval(intervalRwd);
-            gstVideo.play();
+            rwd.classList.remove('active')
+            clearInterval(intervalRwd)
+            gstVideo.play()
         } else {
-            rwd.classList.add('active');
-            gstVideo.pause();
-            intervalRwd = setInterval(windBackward, 200);
+            rwd.classList.add('active')
+            gstVideo.pause()
+            intervalRwd = setInterval(windBackward, 200)
         }
     };
 
     function mediaForward() {
-        clearInterval(intervalRwd);
-        rwd.classList.remove('active');
+        clearInterval(intervalRwd)
+        rwd.classList.remove('active')
 
         if (fwd.classList.contains('active')) {
-            fwd.classList.remove('active');
-            clearInterval(intervalFwd);
-            gstVideo.play();
+            fwd.classList.remove('active')
+            clearInterval(intervalFwd)
+            gstVideo.play()
         } else {
-            fwd.classList.add('active');
-            gstVideo.pause();
-            intervalFwd = setInterval(windForward, 200);
+            fwd.classList.add('active')
+            gstVideo.pause()
+            intervalFwd = setInterval(windForward, 200)
         }
     };
 
     function windBackward() {
         if (gstVideo.currentTime <= 3) {
-            stopMedia();
+            stopMedia()
         } else {
-            gstVideo.currentTime -= 3;
+            gstVideo.currentTime -= 3
         }
     };
 
     function windForward() {
         if (gstVideo.currentTime >= gstVideo.duration - 3) {
-            stopMedia();
+            stopMedia()
         } else {
-            gstVideo.currentTime += 3;
+            gstVideo.currentTime += 3
         }
     };
 
     function setTime() {
-        const minutes = Math.floor(gstVideo.currentTime / 60);
-        const seconds = Math.floor(gstVideo.currentTime - minutes * 60);
+        const minutes = Math.floor(gstVideo.currentTime / 60)
+        const seconds = Math.floor(gstVideo.currentTime - minutes * 60)
 
-        const minuteValue = minutes.toString().padStart(2, '0');
-        const secondValue = seconds.toString().padStart(2, '0');
+        const minuteValue = minutes.toString().padStart(2, '0')
+        const secondValue = seconds.toString().padStart(2, '0')
 
-        const mediaTime = `${minuteValue}:${secondValue}`;
-        timer.textContent = mediaTime;
+        const mediaTime = `${minuteValue}:${secondValue}`
+        timer.textContent = mediaTime
 
         const barLength = timerWrapper.clientWidth * (gstVideo.currentTime / gstVideo.duration);
-        timerBar.style.width = `${barLength}px`;
+        timerBar.style.width = `${barLength}px`
     };
 };
 // Photo
@@ -319,9 +313,9 @@ function createArticlePhotoFactory(media, index) {
     function createImgMedia(media) {
         const photos = document.createElement('img')
         const pictures = `assets/images/${media.image}`
-        photos.setAttribute("src", pictures)
-        photos.setAttribute("role", 'link')
-        photos.setAttribute("alt", media.title + ', ' + media.date + ', ' + media.likes + ', prix : ' + media.price + '€')
+        photos.setAttribute('src', pictures)
+        photos.setAttribute('role', 'link')
+        photos.setAttribute('alt', media.title + ', ' + media.date + ', ' + media.likes + ', prix : ' + media.price + '€')
         photos.className = 'photobook'
         return photos
     };
@@ -368,7 +362,7 @@ function createArticlePhotoFactory(media, index) {
     function createHeart() {
         const imgHeart = document.createElement('img')
         imgHeart.className = 'regular__heart'
-        imgHeart.setAttribute("src", "./assets/icons/heart-regular.svg")
+        imgHeart.setAttribute('src', './assets/icons/heart-regular.svg')
         return imgHeart
     };
     return articlePhoto
@@ -397,9 +391,9 @@ function createArticleVideoFactory(media, index) {
 
     function createElmtVideo(media) {
         const videoPage = document.createElement('video')
-        videoPage.setAttribute("controls", 'controls')
+        videoPage.setAttribute('controls', 'controls')
         videoPage.className = 'video'
-        videoPage.setAttribute("aria-label", media.title + ', ' + media.date + ', ' + media.likes + ', prix : ' + media.price + '€')
+        videoPage.setAttribute('aria-label', media.title + ', ' + media.date + ', ' + media.likes + ', prix : ' + media.price + '€')
         videoPage.appendChild(createElmtSource(media))
         return videoPage
     };
@@ -426,9 +420,9 @@ function createArticleVideoFactory(media, index) {
     function createElmtSource(media) {
         const source = document.createElement('source')
         const videos = `assets/images/${media.video}`
-        source.setAttribute("src", videos)
-        source.setAttribute("type", 'video/mp4')
-        source.setAttribute("preload", 'auto')
+        source.setAttribute('src', videos)
+        source.setAttribute('type', 'video/mp4')
+        source.setAttribute('preload', 'auto')
         source.className = 'source'
         return source
     };
@@ -442,7 +436,7 @@ function createArticleVideoFactory(media, index) {
 
     function createSpanUnderVideo(media) {
         const spanLikes = document.createElement('span')
-        spanLikes.setAttribute("aria-label", 'likes')
+        spanLikes.setAttribute('aria-label', 'likes')
         spanLikes.appendChild(createCountLikes(media))
         spanLikes.appendChild(createLikeButton())
         return spanLikes
@@ -451,16 +445,16 @@ function createArticleVideoFactory(media, index) {
     function createBtnPlay() {
         const btnPlay = document.createElement('button')
         btnPlay.className = 'play'
-        btnPlay.setAttribute("data-icon", 'P')
-        btnPlay.setAttribute("aria-label", 'Play Pause Toggle')
+        btnPlay.setAttribute('data-icon', 'P')
+        btnPlay.setAttribute('aria-label', 'Play Pause Toggle')
         return btnPlay
     };
 
     function createBtnStop() {
         const btnStop = document.createElement('button')
         btnStop.className = 'stop'
-        btnStop.setAttribute("data-icon", 'S')
-        btnStop.setAttribute("aria-label", 'Stop')
+        btnStop.setAttribute('data-icon', 'S')
+        btnStop.setAttribute('aria-label', 'Stop')
         return btnStop
     };
 
@@ -479,7 +473,7 @@ function createArticleVideoFactory(media, index) {
 
     function createSpantimer() {
         const span = document.createElement('span')
-        span.setAttribute("aria-label", 'timer')
+        span.setAttribute('aria-label', 'timer')
         span.textContent = '00:00'
         return span
     };
@@ -487,16 +481,16 @@ function createArticleVideoFactory(media, index) {
     function createBtnRewind() {
         const rewind = document.createElement('button')
         rewind.className = 'rwd'
-        rewind.setAttribute("data-icon", 'B')
-        rewind.setAttribute("aria-label", 'Rewind')
+        rewind.setAttribute('data-icon', 'B')
+        rewind.setAttribute('aria-label', 'Rewind')
         return rewind
     };
 
     function createBtnForward() {
         const forward = document.createElement('button')
         forward.className = 'fwd'
-        forward.setAttribute("data-icon", 'F')
-        forward.setAttribute("aria-label", 'Fast forward')
+        forward.setAttribute('data-icon', 'F')
+        forward.setAttribute('aria-label', 'Fast forward')
         return forward
     };
 
@@ -661,6 +655,13 @@ function dataInConsole() {
     const sendButton = document.querySelector('.send_button')
     sendButton.addEventListener('click', function(event) {
         event.preventDefault();
+        //récupération des inputs formulaire
+        //console log inputs
+        const forName = document.getElementById("prenom");
+        const birthName = document.getElementById("nom");
+        const email = document.getElementById("email");
+        const message = document.getElementById("message");
+        console.log(forName.value, birthName.value, email.value, message.value);
         closeModal();
     })
 };
@@ -677,11 +678,7 @@ function changeForName() {
 
 const validForName = function(inputForName) {
     let smallForName = document.querySelector("#prenom-small");
-    // console.log(inputForName);
-    console.log(inputForName.value);
     if (inputForName.value.length >= 2) {
-        // smallForName.innerHTML = 'Prénom valide'
-        // smallForName.style.color = "green"
         smallForName.innerHTML = ''
         return true
     } else {
@@ -702,11 +699,7 @@ function changeBirthName() {
 
 const validBirthName = function(inputBirthName) {
     let smallBirthName = document.querySelector("#nom-small");
-    // console.log(inputBirthName);
-    console.log(inputBirthName.value);
     if (inputBirthName.value.length >= 2) {
-        // smallBirthName.innerHTML = 'Nom valide'
-        // smallBirthName.style.color = "green"
         smallBirthName.innerHTML = ''
         return true
     } else {
@@ -729,11 +722,7 @@ const validEmail = function(inputEmail) {
     let emailRegex = new RegExp('^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$');
     let testEmail = emailRegex.test(inputEmail.value);
     let small = document.querySelector("#email-small");
-    // console.log(testEmail);
-    console.log(inputEmail.value);
     if (emailRegex.test(inputEmail.value)) {
-        // small.innerHTML = 'Adresse valide'
-        // small.style.color = "green"
         small.innerHTML = ''
         return true
     } else {
@@ -741,19 +730,6 @@ const validEmail = function(inputEmail) {
         small.style.color = "red"
         return false
     };
-};
-
-changeMessage();
-
-function changeMessage() {
-    const message = document.getElementById("message");
-    message.addEventListener('change', function() {
-        validMessage(this);
-    });
-};
-
-const validMessage = function(inputMessage) {
-    console.log(inputMessage.value);
 };
 //Events
 //Cpt Likes
@@ -764,7 +740,7 @@ async function compteurLikes() {
     handleLikesButton();
     addLikescounter();
 };
-
+// INC et DEC des boutons coeur
 function handleLikesButton() {
     const btnLike = document.querySelectorAll('.like-btn');
     btnLike.forEach(button => button.addEventListener('click', function(event) {
@@ -785,15 +761,12 @@ function handleLikesButton() {
 function addLikescounter() {
     const totallike = document.querySelectorAll('.likes');
     const arrayTotallike = Array.from(totallike);
-    // console.log(arrayTotallike);
     let toto = 0;
     for (let i = 0; i < arrayTotallike.length; i++) {
         let like = arrayTotallike[i].innerText;
-        // console.log(like);
         toto += parseInt(like);
     };
     document.querySelector('.cmptlikes').innerText = toto;
-    // console.log(toto)
 };
 //Cpt Likes
 //Lightbox
@@ -933,6 +906,7 @@ function showPhoto(photo, indexPhoto, titrePhoto) {
     const img = document.querySelector('.lightbox-image');
     img.style.display = "block";
     img.setAttribute("src", photo);
+    img.setAttribute("alt", titrePhoto);
     img.dataset.index = indexPhoto;
     const h2Photo = document.querySelector('.lightbox_titre')
     h2Photo.innerHTML = titrePhoto

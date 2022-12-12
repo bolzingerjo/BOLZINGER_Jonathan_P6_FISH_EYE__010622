@@ -1,10 +1,10 @@
 async function getDataPhotographers() {
-    // Penser à remplacer par les données récupérées dans le json
+    // remplacer par les données récupérées dans le json
     const photographers =
         await fetch('./data/photographers.json')
         .then((Response) => Response.json())
         .then(data => data.photographers)
-        // et bien retourner le tableau photographers seulement une fois
+        // bien retourner le tableau photographers seulement une fois
     return ({
         photographers
     })
@@ -38,7 +38,7 @@ function createLinkPagePhotographe(photographer) {
 
 function createIMG(photographer) {
     const img = document.createElement('img')
-    let picture = `assets/photographers/${photographer.portrait}`
+    const picture = `assets/photographers/${photographer.portrait}`
     img.setAttribute('src', picture)
     img.setAttribute('role', 'link')
     img.setAttribute('alt', photographer.name + ', from ' + photographer.city + ', ' + photographer.country + ', citation : ' + photographer.tagline + ', ' + photographer.price + '€ par jour')
